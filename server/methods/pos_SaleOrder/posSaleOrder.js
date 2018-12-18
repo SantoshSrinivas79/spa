@@ -160,7 +160,7 @@ Meteor.methods({
                     transactionType: (data.netTotal - data.paid) > 0 ? "SaleOrder" : "Sale Order Receipt"
                 };
 
-                Meteor.call("queryPosInvoiceByCustomerId", data.customerId, data.saleOrderDate, (err, result) => {
+                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.saleOrderDate, (err, result) => {
                     posReceivePaymentDoc.invoice = result;
                     result.forEach((obj) => {
                         posReceivePaymentDoc.balanceUnPaid += numeral(obj.amount).value();
@@ -266,7 +266,7 @@ Meteor.methods({
                     }
                 ;
 
-                Meteor.call("queryPosInvoiceByCustomerId", data.customerId, data.saleOrderDate, (err, result) => {
+                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.saleOrderDate, (err, result) => {
                     posReceivePaymentDoc.invoice = result;
                     result.forEach((obj) => {
                         posReceivePaymentDoc.balanceUnPaid += numeral(obj.amount).value();

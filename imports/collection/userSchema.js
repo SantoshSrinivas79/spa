@@ -80,7 +80,8 @@ export const UserSchema = new SimpleSchema({
                     {label: 'Director', value: 'director'},
                     {label: 'Department', value: 'department'},
                     {label: 'Teacher', value: 'teacher'},
-                    {label: 'Class Boar', value: 'board'},
+                    {label: 'Administration', value: 'administration'},
+                    {label: 'Class Board', value: 'board'},
                     {label: 'Register', value: 'register'},
                     {label: 'Admin', value: 'admin'},
 

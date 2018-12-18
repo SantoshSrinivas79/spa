@@ -1,3 +1,4 @@
+
 import {Pos_Invoice} from '../../../imports/collection/posInvoice';
 import {Pos_InvoiceReact} from '../../../imports/collection/posInvoice';
 import {Pos_Customer, Pos_CustomerReact} from '../../../imports/collection/posCustomer';
@@ -188,7 +189,7 @@ Meteor.methods({
                     transactionType: isReceiveItem == true ? "Invoice Sale Order" : (data.netTotal - data.paid) > 0 ? "Invoice" : "Sale Receipt"
                 };
 
-                Meteor.call("queryPosInvoiceByCustomerId", data.customerId, data.invoiceDate, (err, result) => {
+                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate, (err, result) => {
                     posReceivePaymentDoc.invoice = result;
                     result.forEach((obj) => {
                         if (obj._id != id) {
@@ -327,7 +328,7 @@ Meteor.methods({
                     }
                 ];
                 */
-                Meteor.call("queryPosInvoiceByCustomerId", data.customerId, data.invoiceDate, (err, result) => {
+                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate, (err, result) => {
                     posReceivePaymentDoc.invoice = result;
                     result.forEach((obj) => {
                         if (obj._id != _id) {

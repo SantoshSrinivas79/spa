@@ -227,3 +227,38 @@ schReportDirector.route('/schTeacherSalaryReport', {
     }
 
 });
+
+import '../../imports/ui/report/schTeacherByLevel/schTeacherByLevel';
+
+schReportDirector.route('/schTeacherByLevelReport', {
+    name: 'sch.schTeacherByLevelReport',
+    title: "Teacher ByLevel Report",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('sch_teacherByLevelReport');
+    }
+
+});
+import '../../imports/ui/report/schTeacherDevelopment/schTeacherDevelopment';
+
+schReportDirector.route('/schTeacherDevelopmentReport', {
+    name: 'sch.schTeacherDevelopmentReport',
+    title: "Teacher Development Report",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('sch_teacherDevelopmentReport');
+    }
+
+});
+
+import '../../imports/ui/report/schTeacherLevelSalary/schTeacherLevelSalary';
+
+schReportDirector.route('/schTeacherLevelSalaryReport', {
+    name: 'sch.schTeacherLevelSalaryReport',
+    title: "Teacher LevelSalary Report",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('sch_teacherLevelSalaryReport');
+    }
+
+});

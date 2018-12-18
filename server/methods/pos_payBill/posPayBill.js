@@ -247,6 +247,33 @@ Meteor.methods({
             return [];
         });
     },
+    queryPosBillEndingByVendorId(vendorId, paidDate, locationId) {
+        return Pos_Bill.find({
+            vendorId: vendorId,
+            locationId: locationId,
+            status: {$in: ["Active", "Partial"]}
+        }).fetch().map((obj) => {
+            if (obj) {
+                return {
+                    _id: obj._id,
+                    billNo: obj.billNo,
+                    termId: obj.termId,
+                    amount: obj.netTotal - obj.paid,
+                    rawAmount: obj.total,
+                    isApplyTerm: false,
+                    discount: 0,
+                    billDate: obj.billDate,
+                    dueDate: obj.dueDate,
+                    netAmount: obj.netTotal - obj.paid,
+                    paid: obj.paid,
+                    isShow: true,
+                    isPaid: false,
+                    dayOverDue: moment(paidDate).startOf("days").diff(moment(obj.dueDate).startOf("days").toDate(), "days") < 0 ? 0 : moment(paidDate).startOf("day").diff(moment(obj.dueDate).startOf("days").toDate(), "days")
+                }
+            }
+            return [];
+        });
+    },
     /*queryPosBillByVendorIdSubmit(vendorId, paidDate) {
         return Pos_Bill.find({vendorId: vendorId, status: {$in: ["Active", "Partial"]}}).fetch().map((obj) => {
             return {

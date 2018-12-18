@@ -1,7 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {WB_waterBillingSetup} from '../../../imports/collection/waterBillingSetup';
 import {Sch_Teacher} from '../../../imports/collection/schTeacher';
-
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
@@ -41,7 +40,8 @@ Meteor.methods({
             parameter.$or = [
                 {
                     startDate: {$exists: false}
-                }, {
+                },
+                {
 
                     startDate: {
                         $lte: moment(params.date).endOf("day").toDate()
@@ -50,9 +50,10 @@ Meteor.methods({
             ]
 
             newParam.$or = [
-                {
+                /*{
                     "position.startDate": {$exists: false}
-                }, {
+                },*/
+                {
 
                     "position.startDate": {
                         $lte: moment(params.date).endOf("day").toDate()

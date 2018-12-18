@@ -330,6 +330,33 @@ Meteor.methods({
             return [];
         });
     },
+    queryPosInvoiceEndingByCustomerId(customerId, receiveDate, locationId) {
+        return Pos_Invoice.find({
+            customerId: customerId,
+            locationId: locationId,
+            status: {$in: ["Active", "Partial"]}
+        }).fetch().map((obj) => {
+            if (obj) {
+                return {
+                    _id: obj._id,
+                    invoiceNo: obj.invoiceNo,
+                    termId: obj.termId,
+                    amount: obj.netTotal - obj.paid - (obj.balanceNotCut || 0),
+                    rawAmount: obj.total,
+                    isApplyTerm: false,
+                    discount: 0,
+                    invoiceDate: obj.invoiceDate,
+                    dueDate: obj.dueDate,
+                    netAmount: obj.netTotal - obj.paid - (obj.balanceNotCut || 0),
+                    paid: obj.paid,
+                    isShow: true,
+                    isPaid: false,
+                    dayOverDue: moment(receiveDate).startOf("days").diff(moment(obj.dueDate).startOf("days").toDate(), "days") < 0 ? 0 : moment(receiveDate).startOf("day").diff(moment(obj.dueDate).startOf("days").toDate(), "days")
+                }
+            }
+            return [];
+        });
+    },
     queryPosSaleOrderPartialByCustomerId(customerId, receiveDate, locationId) {
         let data = Pos_SaleOrder.find({
             customerId: customerId,

@@ -648,7 +648,7 @@
                                 :label="langConfig['kambrak']">
                             <template slot-scope="scope">
                                 <el-input v-model="scope.row.level"
-                                          :placeholder="langConfig['kambrak']"
+                                          placeholder="ក.៣.៤"
                                           @change="handleEditLevelSalary(scope.$index, scope.row)"></el-input>
                             </template>
                         </el-table-column>
@@ -1250,7 +1250,7 @@
                                 :label="langConfig['kambrak']">
                             <template slot-scope="scope">
                                 <el-input v-model="scope.row.level"
-                                          :placeholder="langConfig['kambrak']"
+                                          placeholder="ក.៣.៤"
                                           @change="handleEditLevelSalary(scope.$index, scope.row)"></el-input>
                             </template>
                         </el-table-column>
@@ -1725,7 +1725,8 @@
                         });
 
                         this.levelSalaryData.map((obj) => {
-                            if (obj.number) {
+                            if (obj.date) {
+                                obj.type = obj.level && obj.level.substring(0, 1) || "";
                                 levelSalary.push(obj);
                             }
                         });
@@ -1852,7 +1853,8 @@
                             }
                         });
                         this.levelSalaryData.map((obj) => {
-                            if (obj.number) {
+                            if (obj.date) {
+                                obj.type = obj.level && obj.level.substring(0, 1) || "";
                                 levelSalary.push(obj);
                             }
                         });

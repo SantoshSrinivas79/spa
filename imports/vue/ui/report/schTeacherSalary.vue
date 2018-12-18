@@ -114,7 +114,7 @@
                               <div class="col-md-12  balckOnPrint" style="text-align: center;">
                                                                    <p style="font-family: 'Khmer OS Moul'">របាយការណ៍</p>
 
-                                 <p style="font-family: 'Khmer OS Moul'">តារាងទិន្នន័យមន្ត្រីរាជការណ៍ទាំងអស់ក្នុងតារាងបៀវត្ស</p>
+                                 <p style="font-family: 'Khmer OS Moul'">តារាងទិន្នន័យមន្ត្រីរាជការទាំងអស់ក្នុងតារាងបៀវត្ស</p>
                                   <p style="font-family:tacteing ">rs</p>
                               </div>
                           </div>

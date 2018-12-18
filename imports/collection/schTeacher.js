@@ -221,6 +221,10 @@ Sch_Teacher.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    "levelSalary.type": {
+        type: String,
+        optional: true
+    },
     "levelSalary.desc": {
         type: String,
         optional: true
