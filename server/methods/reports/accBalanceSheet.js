@@ -303,17 +303,17 @@ Meteor.methods({
             if (obj._id == "10") {
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">ASSETS</th>
+                        <th style="text-align: left !important;">ASSETS （ទ្រព្យសកម្ម）</th>
                         <td></td>
                     </tr>
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}Current Assets</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}Current Assets (ទ្រព្យសកម្មរយៈពេលខ្លី)</th>
                         <td></td>
                     </tr>`;
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}Bank Accounts</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}Bank Accounts (គណនីធនាគារ)</th>
                         <td></td>
                     </tr>
                 `;
@@ -396,7 +396,7 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Bank Accounts</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Bank Accounts (សរុបគណនីធនាគារ)</u></th>
                         <th>${formatCurrency(totalBankAccount, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -404,7 +404,7 @@ Meteor.methods({
             else if (obj._id == "11") {
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}Account Receivable</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}Account Receivable (ទឹកប្រាក់ត្រូវទទួល)</th>
                         <td></td>
                     </tr>
                 `;
@@ -490,14 +490,14 @@ Meteor.methods({
                 )
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Account Receivable</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Account Receivable (សរុបទឹកប្រាក់ត្រូវទទួល)</u></th>
                         <th>${formatCurrency(totalAR, data.currencyHeader)}</th>
                     </tr>
                 `;
             } else if (obj._id == "15") {
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}Other Current Assets</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}Other Current Assets (ទ្រព្យសកម្មរយៈពេលខ្លីផ្សេងៗ)</th>
                         <td></td>
                     </tr>
                 `;
@@ -581,7 +581,7 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Other Current Assets</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Other Current Assets (សរុបទ្រព្យសកម្មរយៈពេលខ្លីផ្សេងៗ)</u></th>
                         <th>${formatCurrency(totalOtherCurrentAsset, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -589,7 +589,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Current Assets</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Current Assets (សរុបទ្រព្យសកម្មរយៈពេលខ្លី)</u></th>
                         <th>${formatCurrency(totalBankAccount + totalAR + totalOtherCurrentAsset, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -598,7 +598,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Fixed Assets</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Fixed Assets (ទ្រព្យសកម្មរយៈពេលវែង)</u></th>
                         <td></td>
                     </tr>
                 `;
@@ -682,7 +682,7 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Fixed Assets</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Fixed Assets (សរុបទ្រព្យសកម្មរយៈពេលវែង)</u></th>
                         <th>${formatCurrency(totalFixedAsset, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -690,7 +690,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}Other Assets</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}Other Assets (ទ្រព្យសកម្មផ្សេងៗ)</th>
                         <td></td>
                     </tr>
                 `;
@@ -774,38 +774,38 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Other Assets</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Other Assets​ (សរុបទ្រព្យសកម្មផ្សេងៗ)</u></th>
                         <th>${formatCurrency(totalOtherAsset, data.currencyHeader)}</th>
                     </tr>
                 `;
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">TOTAL ASSETS</th>
+                        <th style="text-align: left !important;">TOTAL ASSETS (សរុបទ្រព្យសកម្ម)</th>
                         <th>${formatCurrency(totalBankAccount + totalAR + totalOtherCurrentAsset + totalFixedAsset + totalOtherAsset, data.currencyHeader)}</th>
                     </tr>
                 `;
             } else if (obj._id == "30") {
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">LIABILITIES AND EQUITY</th>
+                        <th style="text-align: left !important;">LIABILITIES AND EQUITY (បំណុល និង ទ្រព្យម្ចាស់)</th>
                         <td></td>
                     </tr>
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}Liabilities</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}Liabilities (បំណុល)</th>
                         <td></td>
                     </tr>`;
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}Current Liabilities</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}Current Liabilities (បំណុលរយៈពេលខ្លី)</th>
                         <td></td>
                     </tr>
                 `;
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(18)}Accounts Payable</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(18)}Accounts Payable (ទឹកប្រាក់ត្រូវសងគេ)</th>
                         <td></td>
                     </tr>
                 `;
@@ -889,7 +889,7 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(18)}<u>Total Accounts Payable</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(18)}<u>Total Accounts Payable (សរុបទឹកប្រាក់ត្រូវសងគេ)</u></th>
                         <th>${formatCurrency(totalAccountsPayable, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -898,7 +898,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(18)}Credit Cards</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(18)}Credit Cards (ជំពាក់ធនាគារ)</th>
                         <td></td>
                     </tr>
                 `;
@@ -982,7 +982,7 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(18)}<u>Total Credit Cards</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(18)}<u>Total Credit Cards (សរុបជំពាក់ធនាគារ)</u></th>
                         <th>${formatCurrency(totalCreditCards, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -990,7 +990,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(18)}Other Current Liabilities</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(18)}Other Current Liabilities (បំណុលរយៈពេលខ្លីផ្សេងៗ)</th>
                         <td></td>
                     </tr>
                 `;
@@ -1075,7 +1075,7 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(18)}<u>Total Other Current Liabilities</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(18)}<u>Total Other Current Liabilities​ (សរុបបំណុលរយៈពេលខ្លីផ្សេងៗ)</u></th>
                         <th>${formatCurrency(totalOtherCurrentLiabilities, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -1083,7 +1083,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Current Liabilities</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Current Liabilities (សរុបបំណុលរយៈពេលខ្លី)</u></th>
                         <th>${formatCurrency(totalAccountsPayable + totalCreditCards + totalOtherCurrentLiabilities, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -1091,7 +1091,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}Long Term Liabilities</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}Long Term Liabilities​ (បំណុលរយៈពេលវែង)</th>
                         <td></td>
                     </tr>
                 `;
@@ -1174,14 +1174,14 @@ Meteor.methods({
                 })
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Long Term Liabilities</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}<u>Total Long Term Liabilities (សរុបបំណុលរយៈពេលវែង)</u></th>
                         <th>${formatCurrency(totalLongTermLiabilities, data.currencyHeader)}</th>
                     </tr>
                 `;
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Liabilities</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Liabilities (សរុបបំណុល)</u></th>
                         <th>${formatCurrency(totalAccountsPayable + totalCreditCards + totalOtherCurrentLiabilities + totalLongTermLiabilities, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -1189,7 +1189,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}Equity</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}Equity (ទ្រព្យម្ចាស់)</th>
                         <td></td>
                     </tr>
                 `;
@@ -1401,7 +1401,7 @@ Meteor.methods({
 
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(12)}Net Income</th>
+                        <th style="text-align: left !important;">${SpaceChar.space(12)}Net Income (ចំណេញសុទ្ធ)</th>
                         <th>${formatCurrency(netIncome[0] && -netIncome[0].balance || 0, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -1409,7 +1409,7 @@ Meteor.methods({
                 totalEquity -= netIncome[0] && netIncome[0].balance || 0;
                 balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Equity</u></th>
+                        <th style="text-align: left !important;">${SpaceChar.space(6)}<u>Total Equity (សរុបទ្រព្យម្ចាស់)</u></th>
                         <th>${formatCurrency(totalEquity, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -1419,7 +1419,7 @@ Meteor.methods({
 
         balanceSheetHTML += `
                     <tr>
-                        <th style="text-align: left !important;">TOTAL LIABILITIES AND EQUITY</th>
+                        <th style="text-align: left !important;">TOTAL LIABILITIES AND EQUITY (សរុប បំណុល និងទ្រព្យម្ចាស់)</th>
                         <th>${formatCurrency(totalAccountsPayable + totalCreditCards + totalOtherCurrentLiabilities + totalLongTermLiabilities + totalEquity, data.currencyHeader)}</th>
                     </tr>
                 `;

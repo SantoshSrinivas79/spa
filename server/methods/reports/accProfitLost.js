@@ -203,7 +203,7 @@ Meteor.methods({
 
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;" colspan="2">INCOME</th>
+                        <th style="text-align: left !important;" colspan="2">INCOME (ចំណូល)</th>
                     </tr>
                     `;
 
@@ -272,7 +272,7 @@ Meteor.methods({
 
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;">TOTAL INCOME</th>
+                        <th style="text-align: left !important;">TOTAL INCOME (សរុបចំណូល)</th>
                         <th>${formatCurrency(totalIncome, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -280,7 +280,7 @@ Meteor.methods({
 
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;" colspan="2">COST OF GOODS SOLD</th>
+                        <th style="text-align: left !important;" colspan="2">COST OF GOODS SOLD (ចំណាយថ្លៃដើម)</th>
                     </tr>
                     `;
         AccountTypeList.forEach(function (obj) {
@@ -346,14 +346,14 @@ Meteor.methods({
         })
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;">TOTAL COST OF GOODS SOLD</th>
+                        <th style="text-align: left !important;">TOTAL COST OF GOODS SOLD​ (សរុបចំណាយថ្លៃដើម)</th>
                         <th>${formatCurrency(totalCOGS, data.currencyHeader)}</th>
                     </tr>
                 `;
 
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;">GROSS PROFIT</th>
+                        <th style="text-align: left !important;">GROSS PROFIT (ចំណេញដុល)</th>
                         <th>${formatCurrency(totalIncome - totalCOGS, data.currencyHeader)}</th>
                     </tr>
                 `;
@@ -361,7 +361,7 @@ Meteor.methods({
 
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;" colspan="2">EXPENSE</th>
+                        <th style="text-align: left !important;" colspan="2">EXPENSE (ចំណាយ)</th>
                     </tr>
                     `;
         AccountTypeList.forEach(function (obj) {
@@ -427,19 +427,19 @@ Meteor.methods({
 
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;">TOTAL EXPENSE</th>
+                        <th style="text-align: left !important;">TOTAL EXPENSE (សរុបចំណាយ)</th>
                         <th>${formatCurrency(totalExpense, data.currencyHeader)}</th>
                     </tr>
                 `;
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;">NET OPERATING INCOME</th>
+                        <th style="text-align: left !important;">NET OPERATING INCOME (ចំណេញក្រោយដកចំណាយប្រតិបត្តការ)</th>
                         <th>${formatCurrency(totalIncome - totalCOGS - totalExpense, data.currencyHeader)}</th>
                     </tr>
                 `;
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;" colspan="2">OTHER EXPENSE</th>
+                        <th style="text-align: left !important;" colspan="2">OTHER EXPENSE (ចំណាយផ្សេងៗ)</th>
                     </tr>
                 `;
 
@@ -509,13 +509,13 @@ Meteor.methods({
 
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;">TOTAL OTHER EXPENSE</th>
+                        <th style="text-align: left !important;">TOTAL OTHER EXPENSE (សរុបចំណាយផ្សេងៗ)</th>
                         <th>${formatCurrency(totalOtherExpense, data.currencyHeader)}</th>
                     </tr>
                 `;
         profitLostHTML += `
                     <tr>
-                        <th style="text-align: left !important;">NET INCOME</th>
+                        <th style="text-align: left !important;">NET INCOME (ចំណេញសុទ្ធ)</th>
                         <th>${formatCurrency(totalIncome - totalCOGS - totalExpense - totalOtherExpense, data.currencyHeader)}</th>
                     </tr>
                 `;
