@@ -217,26 +217,32 @@ Meteor.methods({
 
                 accountList.forEach(function (chartAccDoc) {
 
-                    profitLostHTML += `
-                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
                     let findJournalDocByChartAccountId = function (element) {
                         if (element._id.accountDoc._id == chartAccDoc._id) {
                             return element;
                         }
                     }
                     let journalDoc = journalList.find(findJournalDocByChartAccountId);
+
+
                     let totalParent = 0;
                     let totalAccount = 0;
 
 
                     if (journalDoc) {
-                        totalAccount += journalDoc.total;
-                        totalIncome += journalDoc.total;
-                        profitLostHTML += `
+                        if (journalDoc && journalDoc.total > 0) {
+                            profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+                            totalAccount += journalDoc.total;
+                            totalIncome += journalDoc.total;
+                            profitLostHTML += `
                         <td>${formatCurrency(totalAccount, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `;
+                        }
                     } else {
+
                         let childListDoc = chartAccountParentList.find((o) => o._id == chartAccDoc._id);
 
                         if (childListDoc && childListDoc.childList.length > 0) {
@@ -252,16 +258,21 @@ Meteor.methods({
                             }
                             journalList.find(findJournalDocByParentId);
                         }
-                        if (chartAccDoc.level == 0) {
+                        if (totalParent > 0) {
                             profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+                            if (chartAccDoc.level == 0) {
+                                profitLostHTML += `
                         <th>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</th>
                     </tr>
                 `
-                        } else {
-                            profitLostHTML += `
+                            } else {
+                                profitLostHTML += `
                         <td>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `
+                            }
                         }
                     }
 
@@ -293,8 +304,6 @@ Meteor.methods({
 
                 accountList.forEach(function (chartAccDoc) {
 
-                    profitLostHTML += `
-                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
                     let findJournalDocByChartAccountId = function (element) {
                         if (element._id.accountDoc._id == chartAccDoc._id) {
                             return element;
@@ -306,12 +315,18 @@ Meteor.methods({
 
 
                     if (journalDoc) {
-                        totalAccount += journalDoc.total;
-                        totalCOGS += journalDoc.total;
-                        profitLostHTML += `
+                        if (journalDoc.total > 0) {
+                            profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+                            totalAccount += journalDoc.total;
+                            totalCOGS += journalDoc.total;
+                            profitLostHTML += `
                         <td>${formatCurrency(totalAccount, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `;
+                        }
+
                     } else {
                         let childListDoc = chartAccountParentList.find((o) => o._id == chartAccDoc._id);
 
@@ -328,16 +343,24 @@ Meteor.methods({
                             }
                             journalList.find(findJournalDocByParentId);
                         }
-                        if (chartAccDoc.level == 0) {
+                        if (totalParent > 0) {
+
                             profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+
+                            if (chartAccDoc.level == 0) {
+                                profitLostHTML += `
                         <th>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</th>
                     </tr>
                 `
-                        } else {
-                            profitLostHTML += `
+                            } else {
+                                profitLostHTML += `
                         <td>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `
+                            }
+
                         }
                     }
 
@@ -374,8 +397,6 @@ Meteor.methods({
 
                 accountList.forEach(function (chartAccDoc) {
 
-                    profitLostHTML += `
-                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
                     let findJournalDocByChartAccountId = function (element) {
                         if (element._id.accountDoc._id == chartAccDoc._id) {
                             return element;
@@ -387,12 +408,18 @@ Meteor.methods({
 
 
                     if (journalDoc) {
-                        totalAccount += journalDoc.total;
-                        totalExpense += journalDoc.total;
-                        profitLostHTML += `
+                        if (journalDoc.total > 0) {
+                            profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+                            totalAccount += journalDoc.total;
+                            totalExpense += journalDoc.total;
+                            profitLostHTML += `
                         <td>${formatCurrency(totalAccount, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `;
+
+                        }
                     } else {
                         let childListDoc = chartAccountParentList.find((o) => o._id == chartAccDoc._id);
 
@@ -409,15 +436,21 @@ Meteor.methods({
                             }
                             journalList.find(findJournalDocByParentId);
                         }
-                        if (chartAccDoc.level == 0) {
-                            profitLostHTML += `<th>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</th>
+
+                        if (totalParent > 0) {
+                            profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+                            if (chartAccDoc.level == 0) {
+                                profitLostHTML += `<th>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</th>
                             </tr>
                         `
-                        } else {
-                            profitLostHTML += `
+                            } else {
+                                profitLostHTML += `
                         <td>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `
+                            }
                         }
                     }
 
@@ -454,8 +487,6 @@ Meteor.methods({
 
                 accountList.forEach(function (chartAccDoc) {
 
-                    profitLostHTML += `
-                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
                     let findJournalDocByChartAccountId = function (element) {
                         if (element._id.accountDoc._id == chartAccDoc._id) {
                             return element;
@@ -467,12 +498,17 @@ Meteor.methods({
 
 
                     if (journalDoc) {
-                        totalAccount += journalDoc.total;
-                        totalOtherExpense += journalDoc.total;
-                        profitLostHTML += `
+                        if (journalDoc.total > 0) {
+                            profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+                            totalAccount += journalDoc.total;
+                            totalOtherExpense += journalDoc.total;
+                            profitLostHTML += `
                         <td>${formatCurrency(totalAccount, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `;
+                        }
                     } else {
                         let childListDoc = chartAccountParentList.find((o) => o._id == chartAccDoc._id);
 
@@ -489,16 +525,21 @@ Meteor.methods({
                             }
                             journalList.find(findJournalDocByParentId);
                         }
-                        if (chartAccDoc.level == 0) {
+                        if (totalParent > 0) {
                             profitLostHTML += `
+                                <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
+
+                            if (chartAccDoc.level == 0) {
+                                profitLostHTML += `
                         <th>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</th>
                     </tr>
                 `
-                        } else {
-                            profitLostHTML += `
+                            } else {
+                                profitLostHTML += `
                         <td>${formatCurrency(totalParent, data.currencyHeader) + SpaceChar.space(chartAccDoc.level * 15)}</td>
                     </tr>
                 `
+                            }
                         }
                     }
 
