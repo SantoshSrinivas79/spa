@@ -23,7 +23,15 @@ Meteor.methods({
     addPosAverageInventory(data) {
 
         if (data.transactionType === "Bill") {
+            let productName = "";
+            let proId = 0;
             data.item.forEach((doc) => {
+                if (proId === 0) {
+                    productName += doc.itemName.split(":")[1] ? doc.itemName.split(":")[1] : "";
+                } else {
+                    productName += doc.itemName.split(":")[1] ? " និង " + doc.itemName.split(":")[1] : "";
+                }
+                proId++;
                 let obj = {};
                 let onHandInventory = Pos_AverageInventory.findOne({
                     itemId: doc.itemId,
@@ -71,7 +79,7 @@ Meteor.methods({
                     journalDoc.journalDate = data.billDate;
                     journalDoc.journalDateName = moment(data.billDate).format("DD/MM/YYYY");
                     journalDoc.currencyId = companyDoc.baseCurrency;
-                    journalDoc.memo = "ទិញទំនិញពី " + venDoc.name;
+                    journalDoc.memo = "ទិញ" + productName + "ពី " + venDoc.name;
                     journalDoc.rolesArea = data.rolesArea;
                     journalDoc.closingEntryId = data.id;
                     journalDoc.status = "Bill";
@@ -122,7 +130,8 @@ Meteor.methods({
 
 
         } else if (data.transactionType === "Invoice") {
-
+            let productName = "";
+            let proId = 0;
             let avgCost = 0;
             data.item.forEach((doc) => {
                 let obj = {};
@@ -133,6 +142,13 @@ Meteor.methods({
                 }, {sort: {createdAt: -1}});
 
                 let customerDoc = Pos_Customer.findOne({_id: data.customerId});
+
+                if (proId === 0) {
+                    productName += doc.itemName.split(":")[1] ? doc.itemName.split(":")[1] : "";
+                } else {
+                    productName += doc.itemName.split(":")[1] ? " និង " + doc.itemName.split(":")[1] : "";
+                }
+                proId++;
 
                 obj = {
                     cusVendId: data.customerId,
@@ -191,7 +207,7 @@ Meteor.methods({
                     journalDoc.journalDate = data.invoiceDate;
                     journalDoc.journalDateName = moment(data.invoiceDate).format("DD/MM/YYYY");
                     journalDoc.currencyId = companyDoc.baseCurrency;
-                    journalDoc.memo = cusDoc.name + " ទិញទំនិញ";
+                    journalDoc.memo = cusDoc.name + " ទិញ" + productName;
                     journalDoc.rolesArea = data.rolesArea;
                     journalDoc.closingEntryId = data.id;
                     journalDoc.status = "Invoice";

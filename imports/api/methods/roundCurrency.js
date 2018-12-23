@@ -71,6 +71,13 @@ export const formatCurrency = (amount, currencyId) => {
 
 };
 
+export const formatNumber = (amount) => {
+    if (amount) {
+        return numeral(amount).format("0,00");
+    }
+    return "";
+}
+
 export const formatCurrencyLast = (amount, currencyId) => {
     let settingDoc = WB_waterBillingSetup.findOne();
     if (currencyId === undefined) {

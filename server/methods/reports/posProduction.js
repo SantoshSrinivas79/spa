@@ -6,10 +6,9 @@ import {Pos_ReceivePayment} from '../../../imports/collection/posReceivePayment'
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
-import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 
 Meteor.methods({
     posProductionReport(params, translate) {
@@ -94,7 +93,7 @@ Meteor.methods({
                                  <td  style="vertical-align: inherit;text-align: left !important;">${obj.name}</td>
                                  <td  style="vertical-align: inherit;text-align: left !important;">${obj.dateName}</td>
                                  <td style="text-align: left !important;">${obj.productConvertDoc.name}</td>
-                                 <td style="text-align: left">${obj.convert.qty}</td>
+                                 <td style="text-align: left">${formatNumber(obj.convert.qty)}</td>
                                  <td style="vertical-align: inherit">${obj.description || ""}</td>
                         </tr>
                 `;
