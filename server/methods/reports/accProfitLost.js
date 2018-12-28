@@ -258,7 +258,7 @@ Meteor.methods({
                             }
                             journalList.find(findJournalDocByParentId);
                         }
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             profitLostHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
 
@@ -343,7 +343,7 @@ Meteor.methods({
                             }
                             journalList.find(findJournalDocByParentId);
                         }
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
 
                             profitLostHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
@@ -437,7 +437,7 @@ Meteor.methods({
                             journalList.find(findJournalDocByParentId);
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             profitLostHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
 
@@ -525,7 +525,7 @@ Meteor.methods({
                             }
                             journalList.find(findJournalDocByParentId);
                         }
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             profitLostHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
 

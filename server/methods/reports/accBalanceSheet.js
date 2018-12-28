@@ -349,7 +349,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalBankAccount += journalDoc.total;
-                        if (totalAccount>0) {
+                        if (totalAccount > 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
 
@@ -386,7 +386,7 @@ Meteor.methods({
                             chartAccountBalance.find(findJournalDocClosingEntryByParentId);
 
                         }
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>`;
 
@@ -449,7 +449,7 @@ Meteor.methods({
                         if (journalDoc) {
                             totalAccount += journalDoc.total;
                             totalAR += journalDoc.total;
-                            if (totalAccount > 0) {
+                            if (totalAccount !== 0) {
                                 balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -486,7 +486,7 @@ Meteor.methods({
                                 chartAccountBalance.find(findJournalDocClosingEntryByParentId);
 
                             }
-                            if (totalParent > 0) {
+                            if (totalParent !== 0) {
                                 balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -550,7 +550,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalOtherCurrentAsset += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -589,7 +589,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -662,7 +662,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalFixedAsset += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -701,7 +701,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -765,7 +765,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalOtherAsset += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -804,7 +804,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -892,7 +892,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalAccountsPayable += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(24) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -930,7 +930,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(24) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -995,7 +995,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalCreditCards += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(24) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1034,7 +1034,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(24) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1097,7 +1097,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalOtherCurrentLiabilities += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(24) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1138,7 +1138,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(24) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1211,7 +1211,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalLongTermLiabilities += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1249,7 +1249,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(18) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1320,7 +1320,7 @@ Meteor.methods({
                     if (journalDoc) {
                         totalAccount += journalDoc.total;
                         totalEquity += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1358,7 +1358,7 @@ Meteor.methods({
                             chartAccountBalance.find(findJournalDocClosingEntryByParentId);
 
                         }
-                        if (totalParent > 0) {
+                        if (totalParent !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1412,7 +1412,7 @@ Meteor.methods({
 
                         totalAccount += journalDoc.total;
                         totalEquity += journalDoc.total;
-                        if (totalAccount > 0) {
+                        if (totalAccount !== 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
@@ -1451,7 +1451,7 @@ Meteor.methods({
 
                         }
 
-                        if (totalParent >0) {
+                        if (totalParent > 0) {
                             balanceSheetHTML += `
                                 <td style="text-align: left !important;">${SpaceChar.space(12) + SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</td>
                          
