@@ -116,7 +116,7 @@ Meteor.methods({
                                 }
 
                         },
-                        {$project: {_id: 0}}
+                        //{$project: {_id: 0}}
                     ],
                     as: 'payBillDoc'
                 }

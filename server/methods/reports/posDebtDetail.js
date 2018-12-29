@@ -118,7 +118,7 @@ Meteor.methods({
                                 }
 
                         },
-                        {$project: {_id: 0}}
+                        //{$project: {_id: 1}}
                     ],
                     as: 'receiveDoc'
                 }
@@ -166,7 +166,6 @@ Meteor.methods({
                     preserveNullAndEmptyArrays: true
                 }
             },
-
             {
                 $group: {
                     _id: {
@@ -240,6 +239,8 @@ Meteor.methods({
 
                 let newDebtHtml = "";
                 let balanceUnpay = 0;
+
+
                 obj.data.forEach((ob) => {
                     let findReceiveByInvoice = function (element) {
                         if (element._id.invoiceId === ob._id) {
@@ -247,7 +248,9 @@ Meteor.methods({
                         }
                     }
 
+
                     let receiveDoc = obj.dataReceivePayment.find(findReceiveByInvoice);
+
                     if (ob.total - (ob.totalPaidFromInvoice || 0) - (ob.totalDiscountFromInvoice || 0) - (ob.discountValue || 0) - (receiveDoc && receiveDoc.totalPaidReceive || 0) - (receiveDoc && receiveDoc.totalDiscountReceive || 0) > 0) {
 
                         ob.invoiceNo = ob && ob.invoiceNo.length > 9 ? parseInt((ob && ob.invoiceNo || "0000000000000").substr(9, 13)) : parseInt(ob && ob.invoiceNo || "0");

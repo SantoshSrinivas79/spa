@@ -196,9 +196,6 @@ Meteor.methods({
             debtList[0].data.forEach((obj) => {
                 let toPaid = 0;
                 let toDiscount = 0;
-                if (obj.customerDoc._id === "uxiMaNLBbpfbiKo6v") {
-                    console.log(obj.invoiceDoc);
-                }
                 if (obj.invoiceDoc.length > 0) {
 
                     obj.invoiceDoc.forEach((inv) => {
