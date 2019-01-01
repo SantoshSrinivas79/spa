@@ -6,7 +6,7 @@ import {Pos_ReceivePayment} from '../../../imports/collection/posReceivePayment'
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
@@ -35,7 +35,7 @@ Meteor.methods({
 
         let stockReceiveList;
         let stockReceiveHTML = "";
-
+        let totalQty = 0;
         //Range Date
         if (params.groupBy == "Customer") {
             stockReceiveList = Pos_Invoice.aggregate([
@@ -101,6 +101,7 @@ Meteor.methods({
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
+                            totalQty += o.qty;
                             balProfit += (o.amount - o.totalCost);
                             stockReceiveHTML += `
                            <tr>
@@ -129,7 +130,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -177,6 +180,8 @@ Meteor.methods({
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
+                            totalQty += o.qty;
+
                             balProfit += (o.amount - o.totalCost);
 
                             stockReceiveHTML += `
@@ -208,7 +213,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -267,6 +274,8 @@ Meteor.methods({
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
+                            totalQty += o.qty;
+
                             balProfit += (o.amount - o.totalCost);
 
                             stockReceiveHTML += `
@@ -297,7 +306,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -365,6 +376,7 @@ Meteor.methods({
                     obj.data.forEach((ob) => {
                         bal += ob.item.amount;
                         balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
 
                         stockReceiveHTML += `
                            <tr>
@@ -392,7 +404,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -452,6 +466,7 @@ Meteor.methods({
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
 
                             stockReceiveHTML += `
                            <tr>
@@ -480,7 +495,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -540,6 +557,7 @@ Meteor.methods({
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
 
                             stockReceiveHTML += `
                            <tr>
@@ -570,7 +588,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -629,6 +649,7 @@ Meteor.methods({
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
 
                             stockReceiveHTML += `
                            <tr>
@@ -657,7 +678,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -728,6 +751,7 @@ Meteor.methods({
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
 
                             stockReceiveHTML += `
                            <tr>
@@ -756,7 +780,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -813,6 +839,8 @@ Meteor.methods({
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
+                            totalQty += o.qty;
+
                             balProfit += (o.amount - o.totalCost);
                             stockReceiveHTML += `
                            <tr>
@@ -841,7 +869,9 @@ Meteor.methods({
                 })
                 stockReceiveHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(stockReceiveList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>

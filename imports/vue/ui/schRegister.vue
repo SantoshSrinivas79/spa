@@ -228,8 +228,10 @@
                 </el-row>
                 <hr style="margin-top: 0px !important;">
                 <el-row class="pull-right">
-                    <el-button @click="dialogAddSchRegister = false, cancel()">{{langConfig['cancel']}} <i>(ESC)</i></el-button>
-                    <el-button type="primary" @click="saveSchRegister($event)">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button @click="dialogAddSchRegister = false, cancel()">{{langConfig['cancel']}} <i>(ESC)</i>
+                    </el-button>
+                    <el-button type="primary" @click="saveSchRegister($event)">{{langConfig['save']}} <i>(Ctrl +
+                        Enter)</i></el-button>
                 </el-row>
                 <br>
             </el-form>
@@ -363,8 +365,10 @@
                 <input type="hidden" v-model="schRegisterForm._id"/>
                 <hr style="margin-top: 0px !important;">
                 <el-row class="pull-right">
-                    <el-button @click="dialogUpdateSchRegister = false ,cancel()">{{langConfig['cancel']}} <i>(ESC)</i></el-button>
-                    <el-button type="primary" @click="updateSchRegister">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button @click="dialogUpdateSchRegister = false ,cancel()">{{langConfig['cancel']}} <i>(ESC)</i>
+                    </el-button>
+                    <el-button type="primary" @click="updateSchRegister">{{langConfig['save']}} <i>(Ctrl + Enter)</i>
+                    </el-button>
                 </el-row>
                 <br>
             </el-form>
@@ -520,7 +524,8 @@
                 <el-row class="pull-right">
                     <el-button @click="dialogUpdateSchRegisterToClass = false ,cancel()">{{langConfig['cancel']}} <i>(ESC)</i>
                     </el-button>
-                    <el-button type="primary" @click="updateSchRegister">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button type="primary" @click="updateSchRegister">{{langConfig['save']}} <i>(Ctrl + Enter)</i>
+                    </el-button>
                 </el-row>
                 <br>
             </el-form>

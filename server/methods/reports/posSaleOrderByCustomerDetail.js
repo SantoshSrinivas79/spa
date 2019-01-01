@@ -6,7 +6,7 @@ import {Pos_ReceivePayment} from '../../../imports/collection/posReceivePayment'
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
@@ -36,6 +36,7 @@ Meteor.methods({
         // parameter.status = {$ne: "Complete"};
         let saleOrderList;
         let saleOrderHTML = "";
+        let totalQty = 0;
 
         //Range Date
         if (params.groupBy == "Customer") {
@@ -87,23 +88,20 @@ Meteor.methods({
             ]);
             if (saleOrderList.length > 0) {
                 saleOrderList[0].data.forEach((obj) => {
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj.customerDoc.name}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-            `;
+
 
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
+                            totalQty += o.qty;
+                            balQty += o.qty;
                             balProfit += (o.amount - o.totalCost);
-                            saleOrderHTML += `
+                            newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -126,10 +124,23 @@ Meteor.methods({
                             ind++;
                         })
                     })
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj.customerDoc.name}</th>
+                            <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+            `;
+                    saleOrderHTML += newSaleOrderHtml;
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -172,12 +183,15 @@ Meteor.methods({
                 let bal = 0;
                 let ind = 1;
                 let balProfit = 0;
+                let balQty = 0;
 
                 saleOrderList[0].data.forEach((obj) => {
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
+                            balQty += o.qty;
 
                             saleOrderHTML += `
                            <tr>
@@ -207,7 +221,9 @@ Meteor.methods({
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -254,21 +270,16 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
-
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.transactionType}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-                    `;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
+                            balQty += o.qty;
 
-                            saleOrderHTML += `
+                            newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -292,10 +303,23 @@ Meteor.methods({
                             ind++;
                         })
                     })
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj._id.transactionType}</th>
+                            <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+                    `;
+                    saleOrderHTML += newSaleOrderHtml;
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -350,21 +374,17 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
 
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.itemName}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-                    `;
 
                     obj.data.forEach((ob) => {
                         bal += ob.item.amount;
                         balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+                        balQty += ob.item.qty;
 
-                        saleOrderHTML += `
+                        newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -386,10 +406,25 @@ Meteor.methods({
                     `;
                         ind++;
                     })
+
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj._id.itemName}</th>
+                              <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+                    `;
+                    saleOrderHTML += newSaleOrderHtml;
+
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -435,22 +470,18 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
 
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.day}/${obj._id.month}/${obj._id.year}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-                    `;
 
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
+                            balQty += o.qty;
 
-                            saleOrderHTML += `
+                            newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -473,10 +504,25 @@ Meteor.methods({
                             ind++;
                         })
                     })
+
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj._id.day}/${obj._id.month}/${obj._id.year}</th>
+                              <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+                    `;
+                    saleOrderHTML += newSaleOrderHtml;
+
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -522,22 +568,18 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
 
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.month}/${obj._id.year} -សប្តាហ៍ ${obj._id.week}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-                    `;
 
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
+                            balQty += o.qty;
 
-                            saleOrderHTML += `
+                            newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -562,10 +604,24 @@ Meteor.methods({
                             ind++;
                         })
                     })
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj._id.month}/${obj._id.year} -សប្តាហ៍ ${obj._id.week}</th>
+                              <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+                    `;
+                    saleOrderHTML += newSaleOrderHtml;
+
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -610,22 +666,18 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
 
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.month}/${obj._id.year}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-                    `;
 
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
+                            balQty += o.qty;
 
-                            saleOrderHTML += `
+                            newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -648,10 +700,24 @@ Meteor.methods({
                             ind++;
                         })
                     })
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj._id.month}/${obj._id.year}</th>
+                              <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+                    `;
+                    saleOrderHTML += newSaleOrderHtml;
+
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -708,22 +774,18 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
 
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.year}- ត្រីមាស ${obj._id.quarter}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-                    `;
 
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
+                            totalQty += o.qty;
+                            balQty += o.qty;
 
-                            saleOrderHTML += `
+                            newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -746,10 +808,24 @@ Meteor.methods({
                             ind++;
                         })
                     })
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj._id.year}- ត្រីមាស ${obj._id.quarter}</th>
+                              <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+                    `;
+                    saleOrderHTML += newSaleOrderHtml;
+
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
@@ -793,21 +869,18 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     let balProfit = 0;
+                    let balQty = 0;
+                    let newSaleOrderHtml = "";
 
-                    saleOrderHTML += `
-                    <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.year}</th>
-                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
-                            <td colspan="3"></td>
-                    </tr>
-            
-                    `;
 
                     obj.data.forEach((ob) => {
                         ob.item.forEach((o) => {
                             bal += o.amount;
                             balProfit += (o.amount - o.totalCost);
-                            saleOrderHTML += `
+                            totalQty += o.qty;
+                            balQty += o.qty;
+
+                            newSaleOrderHtml += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
@@ -830,10 +903,24 @@ Meteor.methods({
                             ind++;
                         })
                     })
+                    saleOrderHTML += `
+                    <tr>
+                            <th style="text-align: left !important;" colspan="6">${obj._id.year}</th>
+                              <th>${formatNumber(balQty)}</th>
+                            <th colspan="2"></th>
+                            <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
+                            <td colspan="3"></td>
+                    </tr>
+            
+                    `;
+                    saleOrderHTML += newSaleOrderHtml;
+
                 })
                 saleOrderHTML += `
             <tr>
-                <th colspan="9">${translate['grandTotal']}</th>
+                <th colspan="6">${translate['grandTotal']}</th>
+                <th>${formatNumber(totalQty)}</th>
+                <th colspan="2"></th>
                  <th>${formatCurrency(saleOrderList[0].total, companyDoc.baseCurrency)}</th>
                  <td colspan="3"></td>
             </tr>
