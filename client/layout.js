@@ -142,6 +142,7 @@ Template.MainLayout.helpers({
             ob.trascript = (ma.feature.indexOf("Transcript") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.score = (ma.feature.indexOf("Score") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.teacher = (ma.feature.indexOf("Teacher") > -1 ? true : false) || CheckRoles({roles: ['super']});
+            ob.student = (ma.feature.indexOf("Student") > -1 ? true : false) || CheckRoles({roles: ['super']});
 
             ob.inventory = (ma.feature.indexOf("Inventory") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.order = (ma.feature.indexOf("Order") > -1 ? true : false) || CheckRoles({roles: ['super']});
@@ -193,6 +194,8 @@ Template.sidebar.helpers({
             ob.trascript = (ma.feature.indexOf("Transcript") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.score = (ma.feature.indexOf("Score") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.teacher = (ma.feature.indexOf("Teacher") > -1 ? true : false) || CheckRoles({roles: ['super']});
+            ob.student = (ma.feature.indexOf("Student") > -1 ? true : false) || CheckRoles({roles: ['super']});
+
             ob.inventory = (ma.feature.indexOf("Inventory") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.order = (ma.feature.indexOf("Order") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.transfer = (ma.feature.indexOf("Transfer") > -1 ? true : false) || CheckRoles({roles: ['super']});
