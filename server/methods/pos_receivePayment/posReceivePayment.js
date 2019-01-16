@@ -330,7 +330,7 @@ Meteor.methods({
             return [];
         });
     },
-    queryPosInvoiceEndingByCustomerId(customerId, receiveDate, locationId) {
+    queryPosInvoiceEndingByCustomerId(customerId, receiveDate, locationId, isInvoice) {
         return Pos_Invoice.find({
             customerId: customerId,
             locationId: locationId,
@@ -348,7 +348,7 @@ Meteor.methods({
                     invoiceDate: obj.invoiceDate,
                     dueDate: obj.dueDate,
                     netAmount: obj.netTotal - obj.paid - (obj.balanceNotCut || 0),
-                    paid: obj.paid,
+                    paid: isInvoice ? 0 : obj.paid,
                     isShow: true,
                     isPaid: false,
                     dayOverDue: moment(receiveDate).startOf("days").diff(moment(obj.dueDate).startOf("days").toDate(), "days") < 0 ? 0 : moment(receiveDate).startOf("day").diff(moment(obj.dueDate).startOf("days").toDate(), "days")
