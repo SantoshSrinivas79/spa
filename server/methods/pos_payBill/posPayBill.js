@@ -247,7 +247,7 @@ Meteor.methods({
             return [];
         });
     },
-    queryPosBillEndingByVendorId(vendorId, paidDate, locationId) {
+    queryPosBillEndingByVendorId(vendorId, paidDate, locationId, isBill) {
         return Pos_Bill.find({
             vendorId: vendorId,
             locationId: locationId,
@@ -265,7 +265,7 @@ Meteor.methods({
                     billDate: obj.billDate,
                     dueDate: obj.dueDate,
                     netAmount: obj.netTotal - obj.paid,
-                    paid: obj.paid,
+                    paid: isBill ? 0 : obj.paid,
                     isShow: true,
                     isPaid: false,
                     dayOverDue: moment(paidDate).startOf("days").diff(moment(obj.dueDate).startOf("days").toDate(), "days") < 0 ? 0 : moment(paidDate).startOf("day").diff(moment(obj.dueDate).startOf("days").toDate(), "days")
