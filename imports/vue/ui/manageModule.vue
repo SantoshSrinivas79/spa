@@ -100,6 +100,7 @@
                     {label: "Transcript", value: "Transcript"},
                     {label: "Score", value: "Score"},
                     {label: "Teacher", value: "Teacher"},
+                    {label: "Student", value: "Student"},
 
                     //Account
 

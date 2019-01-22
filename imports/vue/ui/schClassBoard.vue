@@ -479,7 +479,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="langConfig['promotion']" prop="promotionId">
+                <!--<el-form-item :label="langConfig['promotion']" prop="promotionId">
                     <el-select style="display: block !important;"
                                filterable
                                v-model="schPromoteToClassForm.promotionId"
@@ -492,7 +492,7 @@
                                 :disabled="item.disabled">
                         </el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item :label="langConfig['startClassDate']" prop="startClassDate">
                     <el-date-picker
                             v-model="schPromoteToClassForm.startClassDate"
@@ -579,7 +579,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item :label="langConfig['promotion']" prop="promotionId">
+                <!--<el-form-item :label="langConfig['promotion']" prop="promotionId">
                     <el-select style="display: block !important;"
                                filterable
                                v-model="schUnPromoteToClassForm.promotionId"
@@ -592,7 +592,7 @@
                                 :disabled="item.disabled">
                         </el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item :label="langConfig['startClassDate']" prop="startClassDate">
                     <el-date-picker
                             v-model="schUnPromoteToClassForm.startClassDate"
