@@ -96,32 +96,16 @@
                 rolesAreaOption: [],
                 featureList: [
                     //School
-                    {label: "Bus", value: "Bus"},
                     {label: "Transcript", value: "Transcript"},
                     {label: "Score", value: "Score"},
                     {label: "Teacher", value: "Teacher"},
                     {label: "Student", value: "Student"},
 
-                    //Account
-
-
-                    //POS
-                    {label: "Inventory", value: "Inventory"},
-                    {label: "Order", value: "Order"},
-                    {label: "Transfer", value: "Transfer"},
-                    {label: "Vendor", value: "Vendor"},
-                    {label: "Customer", value: "Customer"},
-                    {label: "Production", value: "Production"},
-                    {label: "Coffee", value: "Coffee"},
-                    {label: "Restaurant", value: "Restaurant"},
-                    {label: "Phone Shop", value: "Phone Shop"},
 
                 ],
                 moduleOption: [
-                    // {label: "Water Billing", value: "Water Billing"},
                     {label: "School", value: "School"},
-                    {label: "Accounting", value: "Accounting"},
-                    {label: "POS", value: "POS"}]
+                ]
             }
         },
         watch: {

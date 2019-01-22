@@ -150,9 +150,7 @@ editTmpl.onCreated(function () {
 
     this.moduleOpt = new ReactiveVar([]);
 
-    let moduleListRaw = [{label: "School", value: "School"},
-        {label: "Accounting", value: "Accounting"},
-        {label: "POS", value: "POS"}];
+    let moduleListRaw = [{label: "School", value: "School"}];
     let moduleList = [];
     Meteor.call("queryManageModule", (err, result) => {
         if (result) {

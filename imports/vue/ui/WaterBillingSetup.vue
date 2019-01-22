@@ -78,7 +78,7 @@
 
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item label="Water Billing Short Name">
+                                    <el-form-item label="Short Name">
                                         <el-select prop="waterBillingUsageShortName"
                                                    v-model="form.waterBillingUsageShortName"
                                                    placeholder="(Select one)">
@@ -127,14 +127,14 @@
                                     <el-form-item label="Khmer Ministry Name">
                                         <el-input v-model="form.ministryKhName"></el-input>
                                     </el-form-item>
-                                    <el-form-item label="Integrated Pos and Account">
+                                    <!--<el-form-item label="Integrated Pos and Account">
                                         <el-radio-group v-model="form.integratedPosAccount">
                                             <el-radio :label="true">Yes</el-radio>
                                             <el-radio :label="false">No</el-radio>
                                         </el-radio-group>
 
-                                    </el-form-item>
-                                    <el-form-item label="Depreciation Type">
+                                    </el-form-item>-->
+                                   <!-- <el-form-item label="Depreciation Type">
                                         <el-select v-model="form.depreciationType" filterable placeholder="Select">
                                             <el-option
                                                     v-for="item in depreciationTypeOption"
@@ -153,7 +153,7 @@
                                                     :value="item.value">
                                             </el-option>
                                         </el-select>
-                                    </el-form-item>
+                                    </el-form-item>-->
 
                                 </el-col>
                                 <el-col :span="12">
@@ -185,10 +185,10 @@
                                         <el-input-number v-model="form.thbDigit" :step="2"></el-input-number>
                                     </el-form-item>
 
-                                    <el-form-item label="Validate Stock">
+                                    <!--<el-form-item label="Validate Stock">
                                         <el-switch v-model="form.validateStock">
                                         </el-switch>
-                                    </el-form-item>
+                                    </el-form-item>-->
                                 </el-col>
                             </el-row>
 
