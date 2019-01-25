@@ -111,6 +111,9 @@ Template.MainLayout.helpers({
     schLayout() {
         return Session.get("module") == "School";
     },
+    loanLayout() {
+        return Session.get("module") == "Loan";
+    },
     loginSetup() {
         return LoginSetup.findOne();
     }
@@ -176,8 +179,8 @@ Template.sidebar.helpers({
     accountLayout() {
         return Session.get("module") === "Accounting";
     },
-    wbLayout() {
-        return Session.get("module") === "Water Billing";
+    loanLayout() {
+        return Session.get("module") === "Loan";
     },
     schLayout() {
         return Session.get("module") === "School";

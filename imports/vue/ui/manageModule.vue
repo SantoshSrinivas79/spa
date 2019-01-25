@@ -121,7 +121,9 @@
                     // {label: "Water Billing", value: "Water Billing"},
                     {label: "School", value: "School"},
                     {label: "Accounting", value: "Accounting"},
-                    {label: "POS", value: "POS"}]
+                    {label: "POS", value: "POS"},
+                    {label: "Loan", value: "Loan"},
+                ]
             }
         },
         watch: {

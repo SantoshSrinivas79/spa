@@ -139,8 +139,8 @@ AutoForm.hooks({
 function iconModule(o) {
     let icon = '';
     switch (o) {
-        case 'Water Billing':
-            icon = "<i class='material-icons'>monetization_on</i><br> WB";
+        case 'Loan':
+            icon = "<i class='material-icons'>monetization_on</i><br> LOAN";
             break;
         case 'Accounting':
             icon = "<i class='material-icons'>account_balance</i> <br>Acc";

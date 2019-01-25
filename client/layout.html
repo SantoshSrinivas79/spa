@@ -120,6 +120,11 @@
                                                             Report
                                                         {{/if}}
                                                     {{/if}}
+                                                    {{#if loanLayout}}
+                                                        {{#if isShowSettingRole}}
+                                                            Report
+                                                        {{/if}}
+                                                    {{/if}}
 
                                                 </i>
                                             </a>
@@ -1112,6 +1117,48 @@
                 </ul>
             {{/if}}
 
+            {{#if loanLayout}}
+                <ul class="sidebar-menu tree animated-padding animated fadeInLeft" data-widget="tree">
+                    <a href="#" class="title-head">
+                        <i style="color: white !important;" class="fa fa-user"></i> <span style="color: white;">{{_
+                            "pos.sidebarMenu.customer"}}</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <li><a href="{{pathFor 'pos.customer'}}" class="title-body">
+                        <i class="fa fa-user" aria-hidden="true"></i> {{_ "pos.sidebarMenu.customer"}}</a>
+                    </li>
+
+
+                    <a href="#" class="title-head">
+                        <i style="color: white !important;" class="fa fa-database"></i> <span style="color: white;">{{_
+                            "sch.sidebarMenu.data"}}</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+
+                    <li><a href="{{pathFor 'loan.creditOfficer'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                            "loan.sidebarMenu.creditOfficer"}}</a>
+                    </li>
+
+                    <a href="#" class="title-head">
+                        <i style="color: white !important;" class="fa fa-cogs"></i> <span style="color: white;">{{_
+                            "sch.sidebarMenu.setting"}}</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <li><a href="{{pathFor 'loan.penalty'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                            "loan.sidebarMenu.penalty"}}</a>
+                    </li>
+                    <li><a href="{{pathFor 'loan.penaltyClosing'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                            "loan.sidebarMenu.penaltyClosing"}}</a>
+                    </li>
+                    <li><a href="{{pathFor 'loan.product'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                            "loan.sidebarMenu.product"}}</a>
+                    </li>
+
+                    <li><a href="{{pathFor 'loan.config'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                            "loan.sidebarMenu.config"}}</a>
+                    </li>
+                </ul>
+            {{/if}}
             {{#if schLayout}}
                 <ul class="sidebar-menu tree animated-padding animated fadeInLeft" data-widget="tree">
                     {{#if manageModule.student}}

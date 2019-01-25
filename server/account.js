@@ -23,7 +23,7 @@ Accounts.onCreateUser((options, user) => {
             };
             if (user.username == 'super') {
                 user.profile.approved = true;
-                user.profile.modules = ['School', 'Accounting', "POS"];
+                user.profile.modules = ['School', 'Accounting', "POS", "Loan"];
                 user.profile.status = 'enable';
                 user.roles = ['super'];
                 user.areaId = 'super';

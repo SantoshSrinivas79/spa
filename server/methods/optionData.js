@@ -29,8 +29,28 @@ import {Sch_Activity} from "../../imports/collection/schActivity";
 import {Pos_Production} from "../../imports/collection/posProduction";
 import {Pos_TableLocation} from "../../imports/collection/posTableLocation";
 import {Pos_Table} from "../../imports/collection/posTable";
+import {Loan_Penalty} from "../../imports/collection/loanPenalty";
+import {Loan_PenaltyClosing} from "../../imports/collection/loanPenaltyClosing";
 
 Meteor.methods({
+
+    queryLoanPenaltyOption(selector) {
+        let list = [];
+
+        Loan_Penalty.find(selector).fetch().forEach(function (obj) {
+            list.push({label: obj.name, value: obj._id});
+        });
+        return list;
+    }
+    ,queryLoanPenaltyClosingOption(selector) {
+        let list = [];
+
+        Loan_PenaltyClosing.find(selector).fetch().forEach(function (obj) {
+            list.push({label: obj.name, value: obj._id});
+        });
+        return list;
+    }
+    ,
     querySchStudentOption(q) {
         let selector = {};
         if (q !== "") {

@@ -124,5 +124,15 @@
       "exchange": "អត្រាប្តូរប្រាក់",
       "fixedAsset": "ទ្រព្យសកម្ម"
     }
+  },
+  "loan": {
+    "sidebarMenu": {
+      "home": "home",
+      "config": "ការកំណត់",
+      "creditOfficer": "មន្ត្រីឥណទាន",
+      "product": "ផលិតផល",
+      "penalty": "ពិន័យ",
+      "penaltyClosing": "ពិន័យបង់ផ្តាច់មុនកាលកំណត់"
+    }
   }
 }

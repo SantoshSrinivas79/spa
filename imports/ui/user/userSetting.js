@@ -152,7 +152,9 @@ editTmpl.onCreated(function () {
 
     let moduleListRaw = [{label: "School", value: "School"},
         {label: "Accounting", value: "Accounting"},
-        {label: "POS", value: "POS"}];
+        {label: "POS", value: "POS"},
+        {label: "Loan", value: "Loan"}
+    ];
     let moduleList = [];
     Meteor.call("queryManageModule", (err, result) => {
         if (result) {
