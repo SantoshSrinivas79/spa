@@ -1778,7 +1778,7 @@
                 }
                 this.posBillForm.locationId = "001";
                 this.posBillForm.vendorId = "001";
-
+                let vm = this;
                 if (this.posBillForm.locationId) {
                     Meteor.call("queryPosVendorById", this.posBillForm.locationId, (err, result) => {
                         if (result) {

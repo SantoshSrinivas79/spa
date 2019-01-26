@@ -2491,7 +2491,7 @@
                 } else {
                     this.disabledItem = true;
                 }
-
+                let vm = this;
                 if (this.posInvoiceForm.customerId) {
                     Meteor.call("queryPosCustomerById", this.posInvoiceForm.customerId, (err, result) => {
                         if (result) {
