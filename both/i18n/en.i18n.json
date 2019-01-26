@@ -132,7 +132,8 @@
       "creditOfficer": "Credit Officer",
       "product": "Product",
       "penalty": "Penalty",
-      "penaltyClosing": "Penalty Closing"
+      "penaltyClosing": "Penalty Closing",
+      "disbursement": "Disbursement"
     }
   },
   "global": {

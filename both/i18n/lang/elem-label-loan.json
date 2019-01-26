@@ -115,6 +115,31 @@
       "interestReminderCharge": "Interest Reminder Charge %",
       "add": "Add Penalty Closing",
       "update": "Update Penalty Closing"
+    },
+    "disbursement": {
+      "searchHere": "Search Here ...",
+      "title": "Disbursement",
+      "action": "Action",
+      "save": "Save",
+      "cancel": "Cancel",
+      "warning": "Warning",
+      "message": "This will permanently delete the file. Continue?",
+      "saveSuccess": "Save Successfully!",
+      "saveFail": "Save Fail!",
+      "updateSuccess": "Update Successfully!",
+      "updateFail": "Update Fail!",
+      "removeSuccess": "Remove Successfully!",
+      "removeFail": "Remove Fail!",
+      "removeCancel": "Remove Cancel",
+      "client": "Client",
+      "product": "Product",
+      "currency": "Currency",
+      "creditOfficer": "Credit Officer",
+      "description": "Description",
+      "loanAmount": "Loan Amount",
+      "disbursementDate": "Disbursement Date",
+      "add": "Add Disbursement",
+      "update": "Update Disbursement"
     }
   },
   {
@@ -234,6 +259,31 @@
       "name": "ឈ្មោះ",
       "installmentTermLessThan": "ដំណាក់កាលតិចជាង %",
       "interestReminderCharge": "កាត់ការប្រាក់ %"
+    },
+    "disbursement": {
+      "searchHere": "ស្វែងរក​នៅទីនេះ ...",
+      "title": "កម្ចីប្រាក់",
+      "show": "បង្ហាញកម្ចីប្រាក់",
+      "action": "សកម្មភាព",
+      "save": "រក្សាទុក",
+      "cancel": "បោះបង់",
+      "warning": "ប្រយ័ត្ន",
+      "message": "នេះគឺលុបបាត់មិនអាចយកមកវិញបានទេ. ចង់បន្ត?",
+      "saveSuccess": "រក្សាទុកបានជោគជ័យ!",
+      "saveFail": "រក្សាទុកមិនបានជោគជ័យទេ!",
+      "updateSuccess": "កែប្រែបានជោគជ័យ!",
+      "updateFail": "កែប្រែមិនបានជោគជ័យទេ!",
+      "removeSuccess": "លុបបានជោជ័យ!",
+      "removeFail": "លុបមិនបានជោគជ័យទេ!",
+      "add": "បញ្ចូលព័តមានកម្ចីប្រាក់",
+      "update": "កែប្រែព័តមានកម្ចីប្រាក់",
+      "client": "អតិថិជន",
+      "product": "ផលិតផល",
+      "currency": "រូបិយប័ណ្ណ",
+      "creditOfficer": "មន្រ្តីឥណទាន",
+      "description": "បរិយាយ",
+      "loanAmount": "ទឹកប្រាក់",
+      "disbursementDate": "ថ្ងៃខ្ចី"
     }
   }
 ]

@@ -156,6 +156,10 @@
                         <el-form-item :label="langConfig['openingBalance']" prop="openingBalance">
                             <el-input v-model="posCustomerForm.openingBalance"></el-input>
                         </el-form-item>
+
+                        <el-form-item :label="langConfig['nationId']" prop="nationId">
+                            <el-input v-model="posCustomerForm.nationId"></el-input>
+                        </el-form-item>
                         <el-form-item :label="langConfig['note']" prop="note">
                             <el-input type="textarea" v-model="posCustomerForm.note"></el-input>
                         </el-form-item>
@@ -219,6 +223,9 @@
 
                         <el-form-item :label="langConfig['openingBalance']" prop="openingBalance">
                             <el-input v-model="posCustomerForm.openingBalance"></el-input>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['nationId']" prop="nationId">
+                            <el-input v-model="posCustomerForm.nationId"></el-input>
                         </el-form-item>
                         <el-form-item :label="langConfig['note']" prop="note">
                             <el-input type="textarea" v-model="posCustomerForm.note"></el-input>
@@ -287,6 +294,7 @@
                     termId: "",
                     openingBalance: "",
                     note: "",
+                    nationId:"",
                     _id: ""
                 },
                 rules: {
@@ -361,6 +369,7 @@
                             termId: vm.posCustomerForm.termId,
                             openingBalance: vm.posCustomerForm.openingBalance,
                             note: vm.posCustomerForm.note,
+                            nationId: vm.posCustomerForm.nationId,
                             rolesArea: Session.get('area')
                         };
 
@@ -400,6 +409,7 @@
                             termId: vm.posCustomerForm.termId,
                             openingBalance: vm.posCustomerForm.openingBalance,
                             note: vm.posCustomerForm.note,
+                            nationId: vm.posCustomerForm.nationId,
                             rolesArea: Session.get('area')
                         };
 

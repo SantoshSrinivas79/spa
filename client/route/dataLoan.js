@@ -49,3 +49,13 @@ loanData.route('/loanCreditOfficer', {
         _Main('loan_creditOfficer');
     }
 });
+import "../../imports/ui/loan_disbursement/loanDisbursement";
+// Bill
+loanData.route('/loanDisbursement', {
+    name: 'loan.disbursement',
+    parent: 'wb.homeData',
+    title: "Disbursement",
+    action: function (query, params) {
+        _Main('loan_disbursement');
+    }
+});

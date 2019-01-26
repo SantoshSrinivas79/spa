@@ -28,7 +28,8 @@
       "email": "Email",
       "term": "Term",
       "openingBalance": "Opening Balance",
-      "note": "Note"
+      "note": "Note",
+      "nationId": "Nation Id"
     },
     "invoice": {
       "searchHere": "Search Here ...",
@@ -802,7 +803,8 @@
       "email": "អ៊ីម៉ែល",
       "term": "លក្ខខ័ណ្ឌ",
       "openingBalance": "សមតុល្យដើមគ្រា",
-      "note": "កំណត់សំគាល់"
+      "note": "កំណត់សំគាល់",
+      "nationId": "លេខអត្តសញ្ញាណប័ណ្ណ"
     },
     "invoice": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",

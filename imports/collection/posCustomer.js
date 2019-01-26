@@ -26,6 +26,10 @@ Pos_Customer.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    nationId: {
+        type: String,
+        optional: true
+    },
     termId: {
         type: String,
         optional: true
