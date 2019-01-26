@@ -973,7 +973,7 @@
                     discountValue: 0,
                     termId: "",
                     address: "",
-                    vendorId: "",
+                    vendorId: "001",
 
                     paidUSD: 0,
                     paidKHR: 0,
@@ -983,7 +983,7 @@
                     remainKHR: 0,
                     remainTHB: 0,
                     desc: "",
-                    locationId: "",
+                    locationId: "001",
                     code: ""
 
 
@@ -1776,6 +1776,8 @@
                     this.$refs["posBillFormUpdate"].resetFields();
                     this.getTotal();
                 }
+                this.posBillForm.locationId = "001";
+                this.posBillForm.vendorId = "001";
             },
             getTotal() {
                 let vm = this;

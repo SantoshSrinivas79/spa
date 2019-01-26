@@ -1431,7 +1431,7 @@
                     discountValue: 0,
                     termId: "",
                     address: "",
-                    customerId: "",
+                    customerId: "001",
 
                     isRetail: true,
                     paidUSD: 0,
@@ -1445,7 +1445,7 @@
                     unit2: 1,
                     totalUnit: 1,
                     desc: "",
-                    locationId: "",
+                    locationId: "001",
                     rawQty: 0,
                     isReceiveAll: false,
                     balanceNotCut: 0,
@@ -2484,6 +2484,8 @@
                 if (this.$refs["posInvoiceFormUpdate"]) {
                     this.$refs["posInvoiceFormUpdate"].resetFields();
                 }
+                this.posInvoiceForm.locationId = "001";
+                this.posInvoiceForm.customerId = "001";
                 this.getTotal();
 
             }
