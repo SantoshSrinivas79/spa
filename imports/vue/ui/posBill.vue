@@ -1778,6 +1778,21 @@
                 }
                 this.posBillForm.locationId = "001";
                 this.posBillForm.vendorId = "001";
+
+                if (this.posBillForm.locationId) {
+                    Meteor.call("queryPosVendorById", this.posBillForm.locationId, (err, result) => {
+                        if (result) {
+                            vm.posBillForm.address = result.address;
+                            vm.posBillForm.termId = result.termId;
+                        }
+                    })
+                }
+
+                if (this.posBillForm.vendorId && this.posBillForm.vendorId !== "") {
+                    this.disabledItem = false;
+                } else {
+                    this.disabledItem = true;
+                }
             },
             getTotal() {
                 let vm = this;

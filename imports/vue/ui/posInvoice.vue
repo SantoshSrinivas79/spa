@@ -2486,6 +2486,22 @@
                 }
                 this.posInvoiceForm.locationId = "001";
                 this.posInvoiceForm.customerId = "001";
+                if (this.posInvoiceForm.locationId && this.posInvoiceForm.locationId !== "") {
+                    this.disabledItem = false;
+                } else {
+                    this.disabledItem = true;
+                }
+
+                if (this.posInvoiceForm.customerId) {
+                    Meteor.call("queryPosCustomerById", this.posInvoiceForm.customerId, (err, result) => {
+                        if (result) {
+                            vm.posInvoiceForm.address = result.address;
+                            if (vm.refForm === "posInvoiceFormAdd") {
+                                vm.posInvoiceForm.termId = result.termId;
+                            }
+                        }
+                    })
+                }
                 this.getTotal();
 
             }
