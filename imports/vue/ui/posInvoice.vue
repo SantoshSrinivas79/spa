@@ -260,12 +260,12 @@
                                     <el-input placeholder="Amount" v-model.number=posInvoiceDoc.amount
                                               disabled>
                                         <!--<template slot="append">{{currencySymbol}}</template>-->
-                                        <template slot="append">
+                                        <template slot="append" v-if="phoneShop===false">
                                             <el-dropdown trigger="click" :hide-on-click="false">
                                                     <span class="el-dropdown-link">
+                                                        <span v-if="phoneShop===false">{{langConfig['des']}}</span>
                                                         <span v-if="phoneShop===true">{{langConfig['imei']}}</span>
-                                                        <span v-if="phoneShop===false">{{langConfig['desc']}}</span>
-                                                        <span v-if="posInvoiceDoc.desc==''">
+                                                         <span v-if="posInvoiceDoc.desc==''">
                                                                 <i class="el-icon-caret-bottom el-icon--right"></i>
                                                             </span>
                                                             <span v-else>
@@ -276,18 +276,40 @@
                                                     </span>
                                                 <el-dropdown-menu slot="dropdown">
                                                     <el-dropdown-item class="clearfix">
-                                                        <el-input v-if="phoneShop===true"
-                                                                  :placeholder="langConfig['imei']" type="textarea"
+                                                        <el-input v-if="phoneShop===false"
+                                                                  :placeholder="langConfig['des']"
+                                                                  type="textarea"
                                                                   v-model.number=posInvoiceDoc.desc
                                                                   @keyup.native="updatePosInvoiceDetail(posInvoiceDoc, index)"></el-input>
-                                                        <el-input v-if="phoneShop===false"
-                                                                  :placeholder="langConfig['desc']" type="textarea"
+                                                        <el-input v-if="phoneShop===true"
+                                                                  :placeholder="langConfig['imei']"
+                                                                  type="textarea"
                                                                   v-model.number=posInvoiceDoc.desc
                                                                   @keyup.native="updatePosInvoiceDetail(posInvoiceDoc, index)"></el-input>
                                                     </el-dropdown-item>
                                                 </el-dropdown-menu>
                                             </el-dropdown>
                                         </template>
+                                        <template slot="append" v-if="phoneShop===true">
+                                            <el-button slot="append" type="primary" icon="el-icon-plus"
+                                                       @click.native="popUpAddImei(posInvoiceDoc,index)"
+                                            >
+                                                 <span class="el-dropdown-link">
+                                                        {{langConfig['imei']}}
+                                                         <span v-if="posInvoiceDoc.desc==''">
+                                                                <i
+                                                                        class="el-icon-caret-bottom el-icon--right"></i>
+                                                            </span>
+                                                            <span v-else>
+                                                                {{posInvoiceDoc.numImei || 0}} <i
+                                                                    class="el-icon-circle-check el-icon--right"
+                                                                    style="color: blue"></i>
+
+                                                            </span>
+                                                    </span>
+                                            </el-button>
+                                        </template>
+
                                     </el-input>
                                 </td>
                                 <td style="text-align: center;vertical-align: middle">
@@ -645,12 +667,12 @@
                                 <td>
                                     <el-input placeholder="Amount" v-model.number=posInvoiceDoc.amount
                                               disabled>
-                                        <template slot="append">
+                                        <template slot="append" v-if="phoneShop===false">
                                             <el-dropdown trigger="click" :hide-on-click="false">
                                                     <span class="el-dropdown-link">
+                                                        <span v-if="phoneShop===false">{{langConfig['des']}}</span>
                                                         <span v-if="phoneShop===true">{{langConfig['imei']}}</span>
-                                                        <span v-if="phoneShop===false">{{langConfig['desc']}}</span>
-                                                        <span v-if="posInvoiceDoc.desc==''">
+                                                         <span v-if="posInvoiceDoc.desc==''">
                                                                 <i class="el-icon-caret-bottom el-icon--right"></i>
                                                             </span>
                                                             <span v-else>
@@ -662,17 +684,39 @@
                                                 <el-dropdown-menu slot="dropdown">
                                                     <el-dropdown-item class="clearfix">
                                                         <el-input v-if="phoneShop===false"
-                                                                  :placeholder="langConfig['desc']" type="textarea"
+                                                                  :placeholder="langConfig['des']"
+                                                                  type="textarea"
                                                                   v-model.number=posInvoiceDoc.desc
                                                                   @keyup.native="updatePosInvoiceDetail(posInvoiceDoc, index)"></el-input>
                                                         <el-input v-if="phoneShop===true"
-                                                                  :placeholder="langConfig['imei']" type="textarea"
+                                                                  :placeholder="langConfig['imei']"
+                                                                  type="textarea"
                                                                   v-model.number=posInvoiceDoc.desc
                                                                   @keyup.native="updatePosInvoiceDetail(posInvoiceDoc, index)"></el-input>
                                                     </el-dropdown-item>
                                                 </el-dropdown-menu>
                                             </el-dropdown>
                                         </template>
+                                        <template slot="append" v-if="phoneShop===true">
+                                            <el-button slot="append" type="primary" icon="el-icon-plus"
+                                                       @click.native="popUpAddImei(posInvoiceDoc,index)"
+                                            >
+                                                 <span class="el-dropdown-link">
+                                                        {{langConfig['imei']}}
+                                                         <span v-if="posInvoiceDoc.desc==''">
+                                                                <i
+                                                                        class="el-icon-caret-bottom el-icon--right"></i>
+                                                            </span>
+                                                            <span v-else>
+                                                                {{posInvoiceDoc.numImei || 0}} <i
+                                                                    class="el-icon-circle-check el-icon--right"
+                                                                    style="color: blue"></i>
+
+                                                            </span>
+                                                    </span>
+                                            </el-button>
+                                        </template>
+
                                     </el-input>
                                 </td>
                                 <td style="text-align: center;vertical-align: middle">
@@ -1348,6 +1392,54 @@
             </span>
         </el-dialog>
         <!--End Form modal-->
+
+        <el-dialog
+                title="Add Imei"
+                :visible.sync="dialogAddImei"
+        >
+            <el-row style="font-family: 'Kh Battambang';font-size: 20px !important;font-weight: bold">
+                <span>បញ្ចូលលេខ Imei សម្រាប់  {{itemName}}</span>
+            </el-row>
+            <br>
+            <el-input v-model="imeiInput" prefix-icon="el-icon-edit"
+                      @keyup.native.13="addImei()" autofocus>
+                <el-button slot="append" type="primary" icon="el-icon-plus"
+                           @click="addImei()"></el-button>
+            </el-input>
+            <br>
+            <el-table
+                    :data="imeiShow"
+                    style="width: 100%"
+                    max-height="450"
+                    border
+            >
+                <el-table-column
+                        type="index"
+                        :index="indexMethod"
+                        :label="langConfig['no']"
+                        width="60"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        :label="langConfig['imei']"
+                >
+                </el-table-column>
+                <el-table-column
+                        :label="langConfig['action']"
+                        width="60"
+                >
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button type="danger" class="cursor-pointer" icon="el-icon-delete" size="mini"
+                                       @click="removeImei(scope.$index,scope.row)"
+                            ></el-button>
+                        </el-button-group>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+
     </div>
 
 
@@ -1407,6 +1499,7 @@
                 dialogUpdatePosInvoice: false,
                 dialogShowPosInvoice: false,
                 dialogAddPosReceiveItem: false,
+                dialogAddImei: false,
                 typeDiscount: "",
                 fullScreen: true,
                 phoneShop: false,
@@ -1450,7 +1543,8 @@
                     isReceiveAll: false,
                     balanceNotCut: 0,
                     balanceNotCutFull: 0,
-                    code: ""
+                    code: "",
+                    imei: []
 
                 },
                 rules: {
@@ -1516,7 +1610,14 @@
                 disabledItem: true,
                 timeStamp: [],
                 takeBarcode: '',
-                skip: 0
+                skip: 0,
+                imei: [],
+                imeiShow: [],
+                imeiInput: "",
+                itemId: "",
+                itemName: "",
+                indexRow: "",
+                rowDoc: "",
             }
         },
         mounted() {
@@ -1705,7 +1806,7 @@
                 }, 200)*/
             },
             barcodeScanInvoice(e) {
-                if (this.dialogAddPosInvoice === true || this.dialogUpdatePosInvoice === true) {
+                if ((this.dialogAddPosInvoice === true || this.dialogUpdatePosInvoice === true) && this.dialogAddImei === false) {
                     let scannerSensitivity = 100;
                     if (e.keyCode !== 13 && !isNaN(e.key)) {
                         this.takeBarcode += e.key;
@@ -1725,6 +1826,10 @@
                         }
                     }
                 }
+            },
+
+            indexMethod(index) {
+                return index + 1;
             },
             queryData: _.debounce(function (val, skip, limit) {
                 Meteor.call('queryPosInvoice', {
@@ -1822,6 +1927,7 @@
                             discountValue: vm.$_numeral(vm.posInvoiceForm.discountValue).value(),
                             termId: vm.posInvoiceForm.termId,
                             address: vm.posInvoiceForm.address,
+                            imei: vm.imei,
 
                             rolesArea: Session.get('area'),
                             paymentNumber: 1,
@@ -1901,6 +2007,7 @@
 
                             termId: vm.posInvoiceForm.termId,
                             address: vm.posInvoiceForm.address,
+                            imei: vm.imei,
 
                             rolesArea: Session.get('area'),
                             customerId: vm.posInvoiceForm.customerId,
@@ -2240,6 +2347,8 @@
                     vm.posInvoiceData = [];
                     if (data) {
                         vm.posInvoiceData = data.item;
+                        vm.imei = data.imei;
+
                         vm.posInvoiceForm = {
                             total: formatCurrency(data.total, companyDoc.baseCurrency),
                             netTotal: formatCurrency(data.netTotal, companyDoc.baseCurrency),
@@ -2506,6 +2615,9 @@
                     })
                 }
                 this.getTotal();
+                this.imeiShow = [];
+                this.imei = [];
+                this.imeiInput = "";
 
             }
             ,
@@ -2588,6 +2700,83 @@
                 } else {
                     FlowRouter.go('/pos-data/posInvoice/print?inv=' + data._id);
                 }
+
+            },
+            addImei() {
+                let vm = this;
+                if (vm.imeiInput !== "") {
+
+                    let isFindImei = vm.imei.find((obj) => {
+                        return obj.name === vm.imeiInput;
+                    })
+                    if (isFindImei) {
+                        vm.$message({
+                            type: 'error',
+                            message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                        });
+                    } else {
+                        Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
+                            if (result) {
+                                vm.$message({
+                                    type: 'error',
+                                    message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                });
+                            } else {
+                                vm.imei.push({name: vm.imeiInput, itemId: vm.itemId});
+                                vm.imeiShow.push({name: vm.imeiInput, itemId: vm.itemId});
+
+                                vm.imeiInput = "";
+                                vm.rowDoc.desc = "";
+                                vm.imeiShow.forEach((o) => {
+                                    vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
+                                })
+                                vm.rowDoc.imei = vm.imeiShow;
+                                vm.rowDoc.numImei = vm.imeiShow.length;
+                                vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
+
+                                vm.$message({
+                                    message: `បញ្ចូល ${vm.imeiInput} បានជោគជ័យ`,
+                                    type: 'success'
+                                });
+                            }
+                        })
+                    }
+                }
+
+
+            },
+            removeImei(index, row) {
+                let removeIndex = this.imei.map(function (item) {
+                    return item.itemId;
+                }).indexOf(row.itemId);
+
+                this.imei.splice(removeIndex, 1);
+                this.imeiShow.splice(index, 1);
+                this.rowDoc.desc = "";
+                this.imeiShow.forEach((o) => {
+                    this.rowDoc.desc = this.rowDoc.desc + " " + o.name;
+
+                })
+                this.updatePosInvoiceDetail(this.rowDoc, this.indexRow);
+
+            },
+            popUpAddImei(doc, index) {
+                this.itemId = doc.itemId;
+                this.itemName = doc.itemName;
+                this.dialogAddImei = true;
+                this.getImeiShow(doc.itemId, index);
+                this.indexRow = index;
+                this.rowDoc = doc;
+            },
+            getImeiShow(itemId, index) {
+                let vm = this;
+                this.imeiShow = [];
+                this.imei.forEach((obj) => {
+                    if (obj.itemId === itemId) {
+                        vm.imeiShow.push({name: obj.name, itemId: obj.itemId});
+                    }
+                })
+
 
             }
         },

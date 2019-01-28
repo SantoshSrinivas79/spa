@@ -192,6 +192,16 @@ Pos_Invoice.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    'item.$.imei': {
+        type: [Object],
+        optional: true,
+        blackbox: true
+    },
+    'item.$.numImei': {
+        type: Number,
+        optional: true,
+        defaultValue: 0
+    },
     discountType: {
         type: String,
         defaultValue: "Amount"
@@ -214,6 +224,7 @@ Pos_Invoice.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+
     createdAt: {
         type: Date,
         optional: true,

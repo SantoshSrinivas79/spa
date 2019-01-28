@@ -9,6 +9,7 @@ import {formatCurrency, getCurrencySymbolById} from "../../../imports/api/method
 import {WB_waterBillingSetup} from "../../../imports/collection/waterBillingSetup";
 import numeral from "numeral";
 import {Pos_ImeiBill} from "../../../imports/collection/posImeiBill";
+import {Pos_ImeiInvoice} from "../../../imports/collection/posImeiInvoice";
 
 Meteor.methods({
     queryPosBill({q, filter, options = {limit: 10, skip: 0}}) {
@@ -202,10 +203,8 @@ Meteor.methods({
             return obj;
         });
 
-        if (data.imei && data.imei.length > 0) {
-            removeImeiByBillId(_id);
-            addImeiBill(data.imei, _id);
-        }
+        removeImeiByBillId(_id);
+        addImeiBill(data.imei, _id);
 
         let isUpdated = Pos_Bill.update({_id: _id},
             {
@@ -292,6 +291,7 @@ Meteor.methods({
                 }
             })
             billReact(id);
+            removeImeiByBillId(id);
         }
         return isRemoved;
     },
@@ -341,6 +341,7 @@ let addImeiBill = function (imeiList, billId) {
         data.name = obj.name;
         data.billId = billId;
         Pos_ImeiBill.insert(data);
+        Pos_ImeiInvoice.remove({name: obj.name});
     })
 };
 let removeImeiByBillId = function (billId) {

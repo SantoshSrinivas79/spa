@@ -5,6 +5,9 @@ Pos_ImeiInvoice.schema = new SimpleSchema({
         type: String,
         label: "Name",
     },
+    invoiceId:{
+        type:String,
+    },
     createdAt: {
         type: Date,
         optional: true,

@@ -1429,7 +1429,7 @@
                             paidUSD: vm.$_numeral(vm.posBillForm.paidUSD).value(),
                             paidKHR: vm.$_numeral(vm.posBillForm.paidKHR).value(),
                             paidTHB: vm.$_numeral(vm.posBillForm.paidTHB).value(),
-                            imei: this.imei,
+                            imei: vm.imei,
                             remainUSD: vm.$_numeral(vm.posBillForm.remainUSD).value(),
                             remainKHR: vm.$_numeral(vm.posBillForm.remainKHR).value(),
                             remainTHB: vm.$_numeral(vm.posBillForm.remainTHB).value(),
@@ -1496,7 +1496,7 @@
                             remainKHR: vm.$_numeral(vm.posBillForm.remainKHR).value(),
                             remainTHB: vm.$_numeral(vm.posBillForm.remainTHB).value(),
                             _id: id,
-                            imei: this.imei,
+                            imei: vm.imei,
                             locationId: vm.posBillForm.locationId,
                             closeDate: vm.$_numeral(vm.posBillForm.balanceUnPaid).value() === 0 ? moment(vm.posBillForm.billDate).toDate() : "",
                             status: vm.$_numeral(vm.posBillForm.balanceUnpaid).value() === 0 ? "Complete" : vm.$_numeral(vm.posBillForm.balanceUnpaid).value() < vm.$_numeral(vm.posBillForm.netTotal).value() ? "Partial" : "Active"
@@ -1898,6 +1898,7 @@
                 }
                 this.imeiShow = [];
                 this.imei = [];
+                this.imeiInput= "";
 
             },
             getTotal() {

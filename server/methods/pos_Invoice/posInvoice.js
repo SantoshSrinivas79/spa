@@ -14,6 +14,8 @@ import {Pos_Bill} from "../../../imports/collection/posBill";
 import {Pos_SaleOrder} from "../../../imports/collection/posSaleOrder";
 import numeral from 'numeral';
 import {Pos_Vendor} from "../../../imports/collection/posVendor";
+import {Pos_ImeiBill} from "../../../imports/collection/posImeiBill";
+import {Pos_ImeiInvoice} from "../../../imports/collection/posImeiInvoice";
 
 Meteor.methods({
     queryPosInvoice({q, filter, options = {limit: 10, skip: 0}}) {
@@ -200,6 +202,8 @@ Meteor.methods({
             }
 
             invoiceReact(id);
+            addImeiInvoice(data.imei, id);
+
         }
 
         if (id) {
@@ -278,6 +282,8 @@ Meteor.methods({
             obj.desc = (obj.desc || "").toString();
             return obj;
         });
+        removeImeiByInvoiceId(_id);
+        addImeiInvoice(data.imei, _id);
 
         let isUpdated = Pos_Invoice.update({_id: _id},
             {
@@ -416,6 +422,8 @@ Meteor.methods({
             })
 
             invoiceReact(id);
+            removeImeiByInvoiceId(id);
+
 
         }
         return isRemoved;
@@ -430,6 +438,10 @@ Meteor.methods({
 
         let invoiceNo = data && data.invoiceNo.length > 9 ? parseInt((data && data.invoiceNo || "0000000000000").substr(9, 13)) + 1 : parseInt(data && data.invoiceNo || "0") + 1;
         return invoiceNo + "";
+    },
+
+    queryPosImeiInvoiceByImei(val) {
+        return Pos_ImeiInvoice.findOne({name: val});
     },
     queryPosSaleOrderByCustomerId(customerId) {
         let data = Pos_SaleOrder.find({customerId: customerId, receiveStatus: {$ne: "Complete"}}).fetch();
@@ -482,3 +494,16 @@ let invoiceReact = function (id) {
         });
     }
 }
+
+
+let addImeiInvoice = function (imeiList, invoiceId) {
+    imeiList.forEach((obj) => {
+        let data = {};
+        data.name = obj.name;
+        data.invoiceId = invoiceId;
+        Pos_ImeiInvoice.insert(data);
+    })
+};
+let removeImeiByInvoiceId = function (invoiceId) {
+    return Pos_ImeiInvoice.remove({invoiceId: invoiceId});
+};
