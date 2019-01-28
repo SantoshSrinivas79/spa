@@ -149,6 +149,16 @@ Pos_Bill.schema = new SimpleSchema({
         type: String,
         decimal: true
     },
+    'item.$.imei': {
+        type: [Object],
+        optional: true,
+        blackbox: true
+    },
+    'item.$.numImei': {
+        type: Number,
+        optional: true,
+        defaultValue: 0
+    },
     discountType: {
         type: String,
         defaultValue: "Amount"
@@ -166,6 +176,11 @@ Pos_Bill.schema = new SimpleSchema({
     transactionType: {
         type: String,
         optional: true
+    },
+    imei: {
+        type: [Object],
+        optional: true,
+        blackbox: true
     },
     createdAt: {
         type: Date,

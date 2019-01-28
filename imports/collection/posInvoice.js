@@ -113,6 +113,11 @@ Pos_Invoice.schema = new SimpleSchema({
         optional: true,
         defaultValue: 0
     },
+    imei: {
+        type: [Object],
+        optional: true,
+        blackbox: true
+    },
     rolesArea: {
         type: String,
         index: true,

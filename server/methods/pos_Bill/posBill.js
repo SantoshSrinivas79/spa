@@ -8,7 +8,7 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {formatCurrency, getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency";
 import {WB_waterBillingSetup} from "../../../imports/collection/waterBillingSetup";
 import numeral from "numeral";
-import {Acc_JournalReact} from "../../../imports/collection/accJournal";
+import {Pos_ImeiBill} from "../../../imports/collection/posImeiBill";
 
 Meteor.methods({
     queryPosBill({q, filter, options = {limit: 10, skip: 0}}) {
@@ -104,6 +104,9 @@ Meteor.methods({
 
         return data;
     },
+    queryPosImeiBillByImei(val) {
+        return Pos_ImeiBill.findOne({name: val});
+    },
     queryPosBillByIdShow(id) {
         let data = Pos_Bill.findOne({_id: id});
         data.billNo = data && data.billNo.length > 9 ? parseInt((data && data.billNo || "0000000000000").substr(9, 13)) : parseInt(data && data.billNo || "0");
@@ -178,11 +181,14 @@ Meteor.methods({
             })
 
             billReact(id);
+
+            addImeiBill(data.imei, id);
         }
 
 
         return id;
     },
+
     updatePosBill(data, _id) {
         data.transactionType = (data.netTotal - data.paid) > 0 ? "Bill" : "Purchase Receipt";
         data.billNo = data.rolesArea + "-" + moment(data.billDate).format("YYYY") + pad(data.billNo, 6);
@@ -195,6 +201,12 @@ Meteor.methods({
 
             return obj;
         });
+
+        if (data.imei && data.imei.length > 0) {
+            removeImeiByBillId(_id);
+            addImeiBill(data.imei, _id);
+        }
+
         let isUpdated = Pos_Bill.update({_id: _id},
             {
                 $set: data
@@ -321,3 +333,16 @@ let billReact = function (id) {
         });
     }
 }
+
+
+let addImeiBill = function (imeiList, billId) {
+    imeiList.forEach((obj) => {
+        let data = {};
+        data.name = obj.name;
+        data.billId = billId;
+        Pos_ImeiBill.insert(data);
+    })
+};
+let removeImeiByBillId = function (billId) {
+    return Pos_ImeiBill.remove({billId: billId});
+};

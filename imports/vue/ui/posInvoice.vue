@@ -2293,12 +2293,15 @@
                     return element.itemId === val || element.code === val;
                 });
                 if (isFound !== undefined) {
-                    this.$message({
+                    /*this.$message({
                         type: 'error',
                         message: 'Item already add!'
                     });
                     let s = new buzz.sound('/the-calling.mp3');
-                    s.play();
+                    s.play();*/
+
+                    isFound.qty = isFound.qty + 1;
+                    vm.posInvoiceData[isFound.itemId] = isFound;
                     return false;
                 }
                 vm.posInvoiceForm.isRetail = true;
