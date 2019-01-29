@@ -170,6 +170,17 @@ posReportCustomer.route('/posReceivePaymentDetailReport', {
     }
 
 });
+import '../../imports/ui/report/posSaleDetail/posSaleDetail';
+
+posReportCustomer.route('/posSaleDetailReport', {
+    name: 'pos.posSaleDetailReport',
+    title: "Sale Detail",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('pos_saleDetailReport');
+    }
+
+});
 
 import '../../imports/ui/report/posDebtSummary/posDebtSummary';
 

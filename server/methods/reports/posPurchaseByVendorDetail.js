@@ -106,7 +106,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                
 
@@ -179,7 +179,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                 
 
@@ -262,7 +262,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                 
 
@@ -336,7 +336,7 @@ Meteor.methods({
                     let ind = 1;
                     purchaseHTML += `
                     <tr>
-                            <th style="text-align: left !important;" colspan="9">${obj._id.itemName}</th>
+                            <th style="text-align: left !important;" colspan="9">${obj._id.itemName && obj._id.itemName.split(":")[1] || ""}</th>
                             <th>${formatCurrency(obj.total, companyDoc.baseCurrency)}</th>
                             <td></td>
                     </tr>
@@ -352,7 +352,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${ob.item.itemName}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${ob.item.desc || ""}</td>
                         
                     
@@ -434,7 +434,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                 
                                 <td>${o.qty}</td>
@@ -516,7 +516,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                 
                                 <td>${o.qty}</td>
@@ -599,7 +599,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                 
                                 <td>${o.qty}</td>
@@ -692,7 +692,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                 
                                 <td>${o.qty}</td>
@@ -772,7 +772,7 @@ Meteor.methods({
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName}</td>
+                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${o.desc || ""}</td>
                                 
                                 <td>${o.qty}</td>

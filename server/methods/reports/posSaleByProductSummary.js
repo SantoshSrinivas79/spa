@@ -97,7 +97,7 @@ Meteor.methods({
                     saleHTML += `
                     <tr>
                             <td style="text-align: center !important;">${ind}</td>
-                            <td style="text-align: left !important;">${obj._id.itemName}</td>
+                            <td style="text-align: left !important;">${obj._id.itemName && obj._id.itemName.split(":")[1] || ""}</td>
                             <td style="text-align: left !important;">${obj.totalQty}</td>
                             <td>${formatCurrency(obj.total, companyDoc.baseCurrency)}</td>
                     </tr>

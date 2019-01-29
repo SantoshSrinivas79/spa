@@ -50,7 +50,7 @@ Meteor.methods({
                             <td style="text-align: left !important;">${saleObj.invoiceDateName || ""}</td>
                             <td style="text-align: left !important;">${saleObj.invoiceNo || ""}</td>
                             <td style="text-align: left !important;">${obj.desc || ""}</td>
-                            <td style="text-align: left !important;">${obj.qty}</td>
+                            <td style="text-align: left !important;">${convertToString(obj.imei)}</td>
                             <td style="text-align: left !important;">${obj.price}</td>
                             <td>${formatCurrency(obj.amount, companyDoc.baseCurrency)}</td>
                     </tr>
@@ -88,7 +88,7 @@ Meteor.methods({
                             <td style="text-align: left !important;">${obj.itemName}</td>
                             <td style="text-align: left !important;">${purObj.billDateName || ""}</td>
                             <td style="text-align: left !important;">${purObj.billNo || ""}</td>
-                            <td style="text-align: left !important;">${obj.desc || ""}</td>
+                            <td style="text-align: left !important;">${convertToString(obj.imei)}</td>
                             <td style="text-align: left !important;">${obj.qty}</td>
                     </tr>
             
@@ -103,6 +103,16 @@ Meteor.methods({
         data.saleHTML = saleHTML;
         return data;
     }
-})
-;
+});
 
+let convertToString = function (arr) {
+    let list = "";
+    if (arr && arr.length > 0) {
+        arr.forEach((o) => {
+            list += `
+            <p>${o.name}</p>
+        `;
+        })
+    }
+    return list;
+}

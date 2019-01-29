@@ -7,8 +7,8 @@
             <el-row type="flex" justify="right">
                 <el-col :span="24">
                     <h4>
-                        <a class="cursor-pointer">
-                            <i class="fa fa-plus"></i> {{langConfig['title']}} {{posDashboardData.todayAndTime}}
+                        <a @click="gotoHome" class="cursor-pointer">
+                            <i class="fa fa-arrow-circle-left"></i> {{langConfig['title']}} {{posDashboardData.todayAndTime}}
                         </a>
                     </h4>
                 </el-col>
@@ -263,6 +263,9 @@
                     }
                 });
             }, 300),
+            gotoHome() {
+                FlowRouter.go('/');
+            }
         },
         created() {
             this.queryData();

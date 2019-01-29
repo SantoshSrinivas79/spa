@@ -61,7 +61,8 @@
       "tableLocation": "Table Location",
       "saleReceivePaymentByCustomerDetail": "Sale Receive Payment By Customer Detail",
       "invoiceByImei": "Invoice By Imei",
-      "dashBoard": "Dashboard"
+      "dashBoard": "Dashboard",
+      "saleDetail": "Sale Detail"
     },
     "customer": {
       "customerAdd": "Add Customer",

@@ -61,7 +61,8 @@
       "tableLocation": "ទីតាំងតុ",
       "saleReceivePaymentByCustomerDetail": "លក់និងទទួលប្រាក់ដោយអតិថិជនលម្អិត",
       "invoiceByImei": "លក់ដោយលេខកូដ",
-      "dashBoard": "សង្ខេប"
+      "dashBoard": "សង្ខេប",
+      "saleDetail": "លក់លម្អិត"
     },
     "customer": {
       "customerAdd": "បញ្ចូលពត័មានអតិថិជន",
