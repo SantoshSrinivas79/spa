@@ -502,6 +502,8 @@ let addImeiInvoice = function (imeiList, invoiceId) {
         data.name = obj.name;
         data.invoiceId = invoiceId;
         Pos_ImeiInvoice.insert(data);
+        Pos_ImeiBill.remove({name: obj.name});
+
     })
 };
 let removeImeiByInvoiceId = function (invoiceId) {
