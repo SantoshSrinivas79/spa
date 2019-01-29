@@ -71,6 +71,7 @@
       "add": "Add Product",
       "update": "Update Product",
       "address": "Address",
+      "rateType": "Rate Type",
       "status": "Status"
     },
     "penalty": {
@@ -216,6 +217,7 @@
       "rate": "ការប្រាក់ %",
       "description": "បរិយាយ",
       "address": "អាស័យដ្ឋាន",
+      "rateType": "ប្រភេទការប្រាក់",
       "status": "ស្ថានភាព"
     },
     "penalty": {

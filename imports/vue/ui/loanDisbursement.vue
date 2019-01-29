@@ -124,7 +124,7 @@
 
                     <el-form-item :label="langConfig['client']" prop="clientId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.methodType" :remote-method="customerOpt"
+                                   v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
                                    :placeholder="langConfig['client']">
                             <el-option
                                     v-for="item in clientOption"
@@ -164,6 +164,19 @@
 
                     <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
                         <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['currency']" prop="currencyId">
+                        <el-select style="display: block !important;" filterable clearable
+                                   v-model="loanDisbursementForm.currencyId"
+                                   :placeholder="langConfig['currency']">
+                            <el-option
+                                    v-for="item in currencyOption"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    :disabled="item.disabled">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
                         <el-date-picker
@@ -214,7 +227,7 @@
                     </el-form-item>
                     <el-form-item :label="langConfig['client']" prop="clientId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.methodType" :remote-method="customerOpt"
+                                   v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
                                    :placeholder="langConfig['client']">
                             <el-option
                                     v-for="item in clientOption"
@@ -254,6 +267,19 @@
 
                     <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
                         <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['currency']" prop="currencyId">
+                        <el-select style="display: block !important;" filterable clearable
+                                   v-model="loanDisbursementForm.currencyId"
+                                   :placeholder="langConfig['currency']">
+                            <el-option
+                                    v-for="item in currencyOption"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    :disabled="item.disabled">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
                         <el-date-picker
@@ -376,7 +402,11 @@
                     }],
                 },
                 clientOption: [],
-                currencyOption: [],
+                currencyOption: [
+                    {label: "USD", value: "USD"},
+                    {label: "KHR", value: "KHR"},
+                    {label: "THB", value: "THB"},
+                ],
                 productOption: [],
                 creditOfficerOption: [],
                 skip: 0
@@ -423,7 +453,7 @@
             customerOpt(query) {
                 if (!!query) {
                     setTimeout(() => {
-                        Meteor.call('queryLoanCustomerOption', query, (err, result) => {
+                        Meteor.call('queryPosCustomerOption', query, (err, result) => {
                             if (!err) {
                                 this.clientOption = result;
                             } else {
@@ -432,7 +462,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryLoanCustomerOption', "", (err, result) => {
+                    Meteor.call('queryPosCustomerOption', "", (err, result) => {
                         if (!err) {
                             this.clientOption = result;
                         } else {
@@ -494,6 +524,7 @@
                             currencyId: vm.loanDisbursementForm.currencyId,
                             loanAmount: vm.loanDisbursementForm.loanAmount,
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
+                            disbursementDateName: moment(vm.loanDisbursementForm.disbursementDate).format("DD/MM/YYYY"),
                             coId: vm.loanDisbursementForm.coId,
                             description: vm.loanDisbursementForm.description,
                             startPaidDate: vm.loanDisbursementForm.startPaidDate,
@@ -533,6 +564,7 @@
                             currencyId: vm.loanDisbursementForm.currencyId,
                             loanAmount: vm.loanDisbursementForm.loanAmount,
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
+                            disbursementDateName: moment(vm.loanDisbursementForm.disbursementDate).format("DD/MM/YYYY"),
                             coId: vm.loanDisbursementForm.coId,
                             description: vm.loanDisbursementForm.description,
                             startPaidDate: vm.loanDisbursementForm.startPaidDate,

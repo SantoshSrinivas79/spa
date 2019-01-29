@@ -52,6 +52,10 @@
                             :label="langConfig['rate']">
                     </el-table-column>
                     <el-table-column
+                            prop="rateType"
+                            :label="langConfig['rateType']">
+                    </el-table-column>
+                    <el-table-column
                             prop="currencyId"
                             :label="langConfig['currency']">
                     </el-table-column>
@@ -142,6 +146,19 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item :label="langConfig['rateType']" prop="rateType">
+                        <el-select style="display: block !important;" filterable clearable
+                                   v-model="loanProductForm.rateType"
+                                   placeholder="">
+                            <el-option
+                                    v-for="item in rateTypeOption"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    :disabled="item.disabled">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item :label="langConfig['rate']" prop="rate">
                         <el-input v-model="loanProductForm.rate"></el-input>
                     </el-form-item>
@@ -154,6 +171,7 @@
                         >
                         </el-date-picker>
                     </el-form-item>
+
                     <el-form-item :label="langConfig['penalty']" prop="penaltyId">
                         <el-select style="display: block !important;" filterable clearable
                                    v-model="loanProductForm.penaltyId"
@@ -228,6 +246,19 @@
                                    placeholder="">
                             <el-option
                                     v-for="item in currencyOption"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    :disabled="item.disabled">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['rateType']" prop="rateType">
+                        <el-select style="display: block !important;" filterable clearable
+                                   v-model="loanProductForm.rateType"
+                                   placeholder="">
+                            <el-option
+                                    v-for="item in rateTypeOption"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -350,6 +381,7 @@
                     penaltyId: "",
                     penaltyClosingId: "",
                     description: "",
+                    rateType: "",
                     status: false,
                     _id: ""
                 },
@@ -364,6 +396,12 @@
                         required: true,
                         type: 'string',
                         message: 'Please choose Penalty',
+                        trigger: 'change'
+                    }],
+                    rateType: [{
+                        required: true,
+                        type: 'string',
+                        message: 'Please choose Rate Type',
                         trigger: 'change'
                     }],
                     penaltyClosingId: [{
@@ -387,6 +425,11 @@
                     {label: "THB", value: "THB"},
                 ],
                 penaltyOption: [],
+                rateTypeOption: [
+                    {label: "Weekly", value: "Weekly"},
+                    {label: "Monthly", value: "Monthly"},
+                    {label: "Yearly", value: "Yearly"},
+                ],
                 penaltyClosingOption: [],
                 skip: 0
             }
@@ -455,6 +498,7 @@
                             penaltyId: vm.loanProductForm.penaltyId,
                             penaltyClosingId: vm.loanProductForm.penaltyClosingId,
                             description: vm.loanProductForm.description,
+                            rateType: vm.loanProductForm.rateType,
                             rolesArea: Session.get('area')
 
                         };
@@ -495,6 +539,7 @@
                             penaltyId: vm.loanProductForm.penaltyId,
                             penaltyClosingId: vm.loanProductForm.penaltyClosingId,
                             description: vm.loanProductForm.description,
+                            rateType: vm.loanProductForm.rateType,
                             rolesArea: Session.get('area')
                         };
 

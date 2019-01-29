@@ -32,6 +32,7 @@ import {Pos_Table} from "../../imports/collection/posTable";
 import {Loan_Penalty} from "../../imports/collection/loanPenalty";
 import {Loan_PenaltyClosing} from "../../imports/collection/loanPenaltyClosing";
 import {Loan_CreditOfficer} from "../../imports/collection/loanCreditOfficer";
+import {Loan_Product} from "../../imports/collection/loanProduct";
 
 Meteor.methods({
 

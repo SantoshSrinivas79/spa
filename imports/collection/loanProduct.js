@@ -10,6 +10,10 @@ Loan_Product.schema = new SimpleSchema({
         decimal: true,
         label: "Rate",
     },
+    rateType: {
+        type: "String",
+        label: "Rate Type"
+    },
     productDate: {
         type: Date,
         label: "Product Date",

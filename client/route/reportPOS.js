@@ -37,7 +37,7 @@ let posReportVendor = FlowRouter.group({
     name: 'posReport',
     title: "Home",
     triggersEnter: [function (context, redirect) {
-        if (!CheckRoles({roles: ['admin', 'super', 'reportVendor']})) {
+        if (!CheckRoles({roles: ['super', 'reportVendor']})) {
             redirect('wb.home');
         }
 
@@ -59,7 +59,7 @@ let posReportCustomer = FlowRouter.group({
     name: 'posReport',
     title: "Home",
     triggersEnter: [function (context, redirect) {
-        if (!CheckRoles({roles: ['admin', 'super', 'reportCustomer']})) {
+        if (!CheckRoles({roles: ['super', 'reportCustomer']})) {
             redirect('wb.home');
         }
 

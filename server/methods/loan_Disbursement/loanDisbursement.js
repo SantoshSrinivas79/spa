@@ -1,5 +1,6 @@
 import {Loan_Disbursement} from '../../../imports/collection/loanDisbursement';
 import {Loan_DisbursementReact} from '../../../imports/collection/loanDisbursement';
+import {Loan_Product} from "../../../imports/collection/loanProduct";
 
 
 Meteor.methods({
@@ -56,8 +57,11 @@ Meteor.methods({
     insertLoanDisbursement(data) {
         data.dobName = moment(data.dob).format("DD/MM/YYYY");
         data.startDateName = moment(data.startDate).format("DD/MM/YYYY");
-        let isInserted = Loan_Disbursement.insert(data);
 
+        let productDoc = Loan_Product.findOne({_id: data.productId});
+
+
+        let isInserted = Loan_Disbursement.insert(data);
         if (isInserted) {
             disbursementReact(isInserted);
         }
@@ -101,4 +105,8 @@ let disbursementReact = function (id) {
             id: id
         });
     }
+}
+
+let generateSchedulePayment = function (disbursementDoc) {
+
 }
