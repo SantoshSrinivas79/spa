@@ -247,12 +247,26 @@
             indexMethod(index) {
                 return index + 1;
             },
-            productOpt() {
-                let selector = {};
-                // selector.productType = "Inventory";
-                Meteor.call('queryItemOption', selector, (err, result) => {
-                    this.productOption = result;
-                })
+            productOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryItemOption', query, (err, result) => {
+                            if (!err) {
+                                this.productOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryItemOption', "", (err, result) => {
+                        if (!err) {
+                            this.productOption = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
             },
             tableOpt() {
                 Meteor.call('queryTableOption', (err, result) => {

@@ -121,9 +121,10 @@
                         >
                         </el-date-picker>
                     </el-form-item>
+
                     <el-form-item :label="langConfig['client']" prop="clientId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.methodType"
+                                   v-model="loanDisbursementForm.methodType" :remote-method="customerOpt"
                                    :placeholder="langConfig['client']">
                             <el-option
                                     v-for="item in clientOption"
@@ -136,7 +137,7 @@
                     </el-form-item>
                     <el-form-item :label="langConfig['product']" prop="productId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.productId"
+                                   v-model="loanDisbursementForm.productId" :remote-method="productOpt"
                                    :placeholder="langConfig['product']">
                             <el-option
                                     v-for="item in productOption"
@@ -149,7 +150,7 @@
                     </el-form-item>
                     <el-form-item :label="langConfig['creditOfficer']" prop="coId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.coId"
+                                   v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
                                    :placeholder="langConfig['creditOfficer']">
                             <el-option
                                     v-for="item in creditOfficerOption"
@@ -163,6 +164,15 @@
 
                     <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
                         <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
+                        <el-date-picker
+                                v-model="loanDisbursementForm.startPaidDate"
+                                type="date"
+                                style="width: 100%;"
+                                placeholder="Pick a day"
+                        >
+                        </el-date-picker>
                     </el-form-item>
                     <el-form-item :label="langConfig['description']" prop="description">
                         <el-input v-model="loanDisbursementForm.description"></el-input>
@@ -204,7 +214,7 @@
                     </el-form-item>
                     <el-form-item :label="langConfig['client']" prop="clientId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.methodType"
+                                   v-model="loanDisbursementForm.methodType" :remote-method="customerOpt"
                                    :placeholder="langConfig['client']">
                             <el-option
                                     v-for="item in clientOption"
@@ -217,7 +227,7 @@
                     </el-form-item>
                     <el-form-item :label="langConfig['product']" prop="productId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.productId"
+                                   v-model="loanDisbursementForm.productId" :remote-method="productOpt"
                                    :placeholder="langConfig['product']">
                             <el-option
                                     v-for="item in productOption"
@@ -230,7 +240,7 @@
                     </el-form-item>
                     <el-form-item :label="langConfig['creditOfficer']" prop="coId">
                         <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.coId"
+                                   v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
                                    :placeholder="langConfig['creditOfficer']">
                             <el-option
                                     v-for="item in creditOfficerOption"
@@ -244,6 +254,15 @@
 
                     <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
                         <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
+                        <el-date-picker
+                                v-model="loanDisbursementForm.startPaidDate"
+                                type="date"
+                                style="width: 100%;"
+                                placeholder="Pick a day"
+                        >
+                        </el-date-picker>
                     </el-form-item>
                     <el-form-item :label="langConfig['description']" prop="description">
                         <el-input v-model="loanDisbursementForm.description"></el-input>
@@ -316,6 +335,7 @@
                     status: "Active",
                     description: "",
                     feeAmount: 0,
+                    startPaidDate: "",
                     _id: ""
                 },
                 rules: {
@@ -399,6 +419,70 @@
                     this.isSearching = false;
                 });
             }, 300),
+
+            customerOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryLoanCustomerOption', query, (err, result) => {
+                            if (!err) {
+                                this.clientOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryLoanCustomerOption', "", (err, result) => {
+                        if (!err) {
+                            this.clientOption = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+            },
+            creditOfficerOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryLoanCreditOfficerOption', query, (err, result) => {
+                            if (!err) {
+                                this.creditOfficerOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryLoanCreditOfficerOption', "", (err, result) => {
+                        if (!err) {
+                            this.creditOfficerOption = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+            },
+            productOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryLoanProductOption', query, (err, result) => {
+                            if (!err) {
+                                this.productOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryLoanProductOption', "", (err, result) => {
+                        if (!err) {
+                            this.productOption = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+            },
             saveLoanDisbursement(event) {
                 event.preventDefault();
                 let vm = this;
@@ -412,6 +496,7 @@
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
                             coId: vm.loanDisbursementForm.coId,
                             description: vm.loanDisbursementForm.description,
+                            startPaidDate: vm.loanDisbursementForm.startPaidDate,
                             rolesArea: Session.get('area')
 
                         };
@@ -450,6 +535,7 @@
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
                             coId: vm.loanDisbursementForm.coId,
                             description: vm.loanDisbursementForm.description,
+                            startPaidDate: vm.loanDisbursementForm.startPaidDate,
                             rolesArea: Session.get('area')
                         };
 
@@ -540,6 +626,9 @@
         created() {
             this.isSearching = true;
             this.queryData();
+            this.customerOpt();
+            this.productOpt();
+            this.creditOfficerOpt();
             Meteor.subscribe('Loan_DisbursementReact');
 
         },

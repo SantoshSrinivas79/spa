@@ -149,7 +149,7 @@
                 </el-form-item>
                 <el-form-item :label="langConfig['product']" prop="productId">
                     <el-select style="display: block !important;" filterable clearable
-                               v-model="posConvertInventoryForm.productId"
+                               v-model="posConvertInventoryForm.productId" :remote-method="productOpt"
                                :placeholder="langConfig['product']">
                         <el-option
                                 v-for="item in productOption"
@@ -179,7 +179,7 @@
                         <template slot-scope="scope">
 
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="scope.row.productId"
+                                       v-model="scope.row.productId" :remote-method="productOpt"
                                        :placeholder="langConfig['product']"
                                        @change="handleEditConvert(scope.$index, scope.row)"
                             >
@@ -227,9 +227,11 @@
 
                 <hr style="margin-top: 0px !important;">
                 <el-row class="pull-right">
-                    <el-button @click="dialogAddPosConvertInventory = false, cancel()">{{langConfig['cancel']}} <i>(ESC)</i>
+                    <el-button @click="dialogAddPosConvertInventory = false, cancel()">{{langConfig['cancel']}}
+                        <i>(ESC)</i>
                     </el-button>
-                    <el-button type="primary" @click="savePosConvertInventory($event)">{{langConfig['save']}} <i>(Ctrl + Enter)</i>
+                    <el-button type="primary" @click="savePosConvertInventory($event)">{{langConfig['save']}} <i>(Ctrl +
+                        Enter)</i>
                     </el-button>
                 </el-row>
                 <br>
@@ -271,7 +273,7 @@
                 </el-form-item>
                 <el-form-item :label="langConfig['product']" prop="productId">
                     <el-select style="display: block !important;" filterable clearable
-                               v-model="posConvertInventoryForm.productId"
+                               v-model="posConvertInventoryForm.productId" :remote-method="productOpt"
                                :placeholder="langConfig['product']">
                         <el-option
                                 v-for="item in productOption"
@@ -301,7 +303,7 @@
                         <template slot-scope="scope">
 
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="scope.row.productId"
+                                       v-model="scope.row.productId" :remote-method="productOpt"
                                        :placeholder="langConfig['product']"
                                        @change="handleEditConvert(scope.$index, scope.row)"
                             >
@@ -351,7 +353,8 @@
                 <el-row class="pull-right">
                     <el-button @click="dialogUpdatePosConvertInventory = false ,cancel()">{{langConfig['cancel']}} <i>(ESC)</i>
                     </el-button>
-                    <el-button type="primary" @click="updatePosConvertInventory">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button type="primary" @click="updatePosConvertInventory">{{langConfig['save']}} <i>(Ctrl +
+                        Enter)</i></el-button>
                 </el-row>
                 <br>
             </el-form>
@@ -470,12 +473,26 @@
                     this.isSearching = false;
                 });
             }, 300),
-            productOpt() {
-                let selector = {};
-                // selector.productType = "Inventory";
-                Meteor.call('queryItemOption', selector, (err, result) => {
-                    this.productOption = result;
-                })
+            productOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryItemOption', query, (err, result) => {
+                            if (!err) {
+                                this.productOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryItemOption', "", (err, result) => {
+                        if (!err) {
+                            this.productOption = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
             },
             locationOpt() {
                 let selector = {};

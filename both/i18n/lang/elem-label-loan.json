@@ -139,7 +139,8 @@
       "loanAmount": "Loan Amount",
       "disbursementDate": "Disbursement Date",
       "add": "Add Disbursement",
-      "update": "Update Disbursement"
+      "update": "Update Disbursement",
+      "startPaidDate": "Start Paid Date"
     }
   },
   {
@@ -283,7 +284,8 @@
       "creditOfficer": "មន្រ្តីឥណទាន",
       "description": "បរិយាយ",
       "loanAmount": "ទឹកប្រាក់",
-      "disbursementDate": "ថ្ងៃខ្ចី"
+      "disbursementDate": "ថ្ងៃខ្ចី",
+      "startPaidDate": "ថ្ងៃចាប់ផ្តើមបង់"
     }
   }
 ]

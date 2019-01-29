@@ -31,6 +31,7 @@ import {Pos_TableLocation} from "../../imports/collection/posTableLocation";
 import {Pos_Table} from "../../imports/collection/posTable";
 import {Loan_Penalty} from "../../imports/collection/loanPenalty";
 import {Loan_PenaltyClosing} from "../../imports/collection/loanPenaltyClosing";
+import {Loan_CreditOfficer} from "../../imports/collection/loanCreditOfficer";
 
 Meteor.methods({
 
@@ -42,7 +43,7 @@ Meteor.methods({
         });
         return list;
     }
-    ,queryLoanPenaltyClosingOption(selector) {
+    , queryLoanPenaltyClosingOption(selector) {
         let list = [];
 
         Loan_PenaltyClosing.find(selector).fetch().forEach(function (obj) {
@@ -140,9 +141,18 @@ Meteor.methods({
         });
         return list;
     },
-    queryItemOption(selector) {
+    queryItemOption(q) {
         let list = [];
-        Pos_Product.find(selector, {sort: {code: 1}}).fetch().forEach(function (obj) {
+        let selector = {};
+        if (q != "") {
+            q = q.replace(/[/\\]/g, '');
+            let reg = new RegExp(q, 'mi');
+            selector.$or = [
+                {name: {$regex: reg}},
+                {_id: q}
+            ];
+        }
+        Pos_Product.find(selector, {sort: {code: 1}, limit: 300}).fetch().forEach(function (obj) {
             list.push({label: obj.code + " : " + obj.name, value: obj._id});
         });
         return list;
@@ -464,6 +474,31 @@ Meteor.methods({
             ];
         }
         return Pos_Customer.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
+    }
+    , queryLoanProductOption(q) {
+        let selector = {};
+        if (q != "") {
+            q = q.replace(/[/\\]/g, '');
+            let reg = new RegExp(q, 'mi');
+            selector.$or = [
+                {name: {$regex: reg}},
+                {_id: q}
+            ];
+        }
+        return Loan_Product.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
+    }
+    ,
+    queryLoanCreditOfficerOption(q) {
+        let selector = {};
+        if (q != "") {
+            q = q.replace(/[/\\]/g, '');
+            let reg = new RegExp(q, 'mi');
+            selector.$or = [
+                {name: {$regex: reg}},
+                {_id: q}
+            ];
+        }
+        return Loan_CreditOfficer.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
     }
     ,
     queryPosCustomerOptionUnPaid(q) {

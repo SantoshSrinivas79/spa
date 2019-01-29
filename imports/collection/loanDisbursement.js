@@ -31,6 +31,10 @@ Loan_Disbursement.schema = new SimpleSchema({
         type: String,
         label: "Disbursement Date",
     },
+    startPaidDate: {
+        type: Date,
+        label: "Start Paid Date",
+    },
     coId: {
         type: String,
         label: "Credit Officer",

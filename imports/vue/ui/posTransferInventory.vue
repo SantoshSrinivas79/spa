@@ -138,7 +138,7 @@
                                     <el-form-item label="">
 
                                         <el-select style="display: block !important;"
-                                                   filterable clearable
+                                                   filterable clearable :remote-method="itemOpt"
                                                    v-model="posTransferInventoryForm.itemId" :disabled="disableItem"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
@@ -340,7 +340,7 @@
                                     <el-form-item label="">
 
                                         <el-select style="display: block !important;"
-                                                   filterable clearable
+                                                   filterable clearable :remote-method="itemOpt"
                                                    v-model="posTransferInventoryForm.itemId" :disabled="disableItem"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
@@ -844,12 +844,26 @@
                     this.isSearching = false;
                 });
             }, 300),
-            itemOpt() {
-                let selector = {};
-                selector.productType = "Inventory";
-                Meteor.call('queryItemOption', selector, (err, result) => {
-                    this.itemOption = result;
-                })
+            itemOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryItemOption', query, (err, result) => {
+                            if (!err) {
+                                this.itemOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryItemOption', "", (err, result) => {
+                        if (!err) {
+                            this.itemOption = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
             },
             locationOpt() {
                 Meteor.call('queryLocationOption', (err, result) => {
