@@ -1333,7 +1333,9 @@
                             } else {
                                 if (e.keyCode === 13) {
                                     this.posBillForm.code = this.takeBarcode;
-                                    this.addToPosBillData(null);
+                                    if (this.takeBarcode !== "") {
+                                        vm.addToPosBillData(null);
+                                    }
                                     this.timeStamp = [];
                                     this.takeBarcode = ''
                                 }
@@ -1781,7 +1783,7 @@
                     return false;
                 }
                 let isFound = vm.posBillData.find(function (element) {
-                    return element.itemId === val || element.code === val;
+                    return element.itemId === val || element.code === val || element.barcode === val;
                 });
                 if (isFound !== undefined) {
                     /*this.$message({
@@ -1792,7 +1794,16 @@
                     s.play();*/
 
                     isFound.qty = isFound.qty + 1;
+                    isFound.amount = isFound.qty * isFound.cost;
                     vm.posBillData[isFound.itemId] = isFound;
+
+                    this.$message({
+                        type: 'success',
+                        message: 'បន្ថែមចំនួនបានជោគជ័យ!'
+                    });
+                    this.getTotal();
+                    vm.posBillForm.itemId = "";
+                    vm.posBillForm.code = "";
                     return false;
                 }
                 Meteor.call("queryPosProductById", val, (err, data) => {
@@ -1801,6 +1812,7 @@
                             itemId: data._id,
                             itemName: data.code + " : " + data.name,
                             code: data.code,
+                            barcode: data.barcode || "",
                             cost: vm.$_numeral(data.cost).value(),
                             qty: vm.$_numeral(1).value(),
                             amount: formatCurrency(data.cost),
@@ -1970,6 +1982,13 @@
                 let vm = this;
                 if (vm.imeiInput !== "") {
 
+                    if ( this.rowDoc && vm.imeiShow.length >= this.rowDoc.qty) {
+                        vm.$message({
+                            type: 'error',
+                            message: 'បញ្ចូលគ្រប់ហើយ!!!!!!!'
+                        });
+                        return false;
+                    }
                     let isFindImei = vm.imei.find((obj) => {
                         return obj.name === vm.imeiInput;
                     })
@@ -2021,6 +2040,7 @@
                     this.rowDoc.desc = this.rowDoc.desc + " " + o.name;
 
                 })
+                this.rowDoc.numImei = this.imeiShow.length;
                 this.updatePosBillDetail(this.rowDoc, this.indexRow);
 
             },

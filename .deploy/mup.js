@@ -12,7 +12,7 @@ module.exports = {
 
     meteor: {
         // TODO: change app name and path
-        name: 'nana',
+        name: 'rpitsb',
         //name: 'pos',
         path: '../.',
 
@@ -27,11 +27,11 @@ module.exports = {
         env: {
             // TODO: Change to your app's url
             // If you are using ssl, it needs to start with https://
-            PORT: 4555,
+            PORT: 7777,
             //PORT: 3636,
             ROOT_URL: 'http://139.162.31.153',
-            MONGO_URL: 'mongodb://localhost/nana',
-            //MONGO_URL: 'mongodb://localhost/led',
+            MONGO_URL: 'mongodb://localhost/rpitsb',
+            //MONGO_URL: 'mongodb://localhost/pos',
             TZ: 'Asia/Bangkok',
         },
 

@@ -8,7 +8,7 @@
                 <el-col :span="8">
                     <h4>
                         <a class="cursor-pointer"
-                           @click="popupPosReceivePaymentAdd(),dialogAddPosReceivePayment= true,resetForm()"
+                           @click="popupPosReceivePaymentAdd(),resetForm()"
                         >
                             <i class="fa fa-plus"></i> {{langConfig['receivePayment']}}
                         </a>
@@ -637,6 +637,7 @@
 
     import compoLang from '../../../both/i18n/lang/elem-label'
     import {Pos_ReceivePaymentReact} from "../../collection/posReceivePayment";
+    import {Manage_Module} from "../../collection/manageModule";
 
     export default {
         meteor: {
@@ -747,6 +748,7 @@
 
                 locationOption: [],
                 disabledCustomer: true,
+                validateReceivePayment: false,
                 pickerDateOptions: {
                     shortcuts: [{
                         text: 'Last week',
@@ -1312,21 +1314,72 @@
 
             },
             popupPosReceivePaymentAdd() {
-                this.resetForm();
-                this.itemOpt();
                 let vm = this;
-                $(".el-dialog__title").text(this.langConfig['add']);
+                if (this.validateReceivePayment === true && this.validateReceivePayment !== undefined) {
+                    this.$prompt('Please input Password', 'Tip', {
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Cancel',
+                        inputType: "password",
+                        inputErrorMessage: 'Invalid Password'
+                    }).then(({value}) => {
+                        let wb = WB_waterBillingSetup.findOne();
+                        if (value === wb.password) {
+                            this.$message({
+                                type: 'success',
+                                message: 'Your Password is Correct'
+                            });
 
-                this.customerOpt();
-                this.termOpt();
+                            vm.dialogAddPosReceivePayment = true;
+                            vm.resetForm();
+                            vm.itemOpt();
+                            $(".el-dialog__title").text(this.langConfig['add']);
+                            vm.customerOpt();
+                            vm.termOpt();
 
-                Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
-                    if (re !== undefined) {
-                        vm.closeDate = re.closeDate;
-                    } else {
-                        vm.closeDate = "";
-                    }
-                })
+                            Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
+                                if (re !== undefined) {
+                                    vm.closeDate = re.closeDate;
+                                } else {
+                                    vm.closeDate = "";
+                                }
+                            })
+
+
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: 'Invalid Password !!!'
+                            });
+                            return false;
+
+                        }
+
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: 'Input canceled'
+                        });
+                    });
+
+
+                } else {
+                    vm.dialogAddPosReceivePayment = true;
+                    vm.resetForm();
+                    vm.itemOpt();
+                    $(".el-dialog__title").text(this.langConfig['add']);
+
+                    vm.customerOpt();
+                    vm.termOpt();
+
+                    Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
+                        if (re !== undefined) {
+                            vm.closeDate = re.closeDate;
+                        } else {
+                            vm.closeDate = "";
+                        }
+                    })
+                }
+
             },
             updatePosReceivePaymentDetail(row, index, type) {
                 let vm = this;
@@ -1575,7 +1628,8 @@
             this.getTotal();
             this.locationOpt();
             Meteor.subscribe('Pos_ReceivePaymentReact');
-
+            let ma = Manage_Module.findOne();
+            this.validateReceivePayment = ma.validateReceivePayment;
         },
         computed: {
             langConfig() {

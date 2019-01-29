@@ -134,6 +134,7 @@ Meteor.methods({
         let selector = {};
         selector.$or = [
             {_id: val},
+            {barcode: val},
             {code: val + ""}
         ];
         let data = Pos_Product.findOne(selector);

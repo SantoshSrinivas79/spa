@@ -61,6 +61,13 @@
                         </el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
+                <el-form-item label="Validate Receive Payment" prop="validateReceivePayment">
+                    <el-switch
+                            v-model="manageModule.validateReceivePayment"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
 
 
                 <hr style="margin-top: 0px !important;">
@@ -82,6 +89,7 @@
                 manageModule: {
                     name: "",
                     parentName: "",
+                    validateReceivePayment: false,
                     rolesBranch: [],
                     rolesArea: [],
                     module: [],
@@ -142,6 +150,7 @@
                             rolesBranch: vm.manageModule.rolesBranch,
                             rolesArea: vm.manageModule.rolesArea,
                             module: vm.manageModule.module,
+                            validateReceivePayment: vm.manageModule.validateReceivePayment,
                             feature: vm.manageModule.feature,
                             _id: vm.manageModule._id
                         };

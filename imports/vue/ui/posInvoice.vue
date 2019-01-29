@@ -1806,6 +1806,7 @@
                 }, 200)*/
             },
             barcodeScanInvoice(e) {
+                let vm = this;
                 if ((this.dialogAddPosInvoice === true || this.dialogUpdatePosInvoice === true) && this.dialogAddImei === false) {
                     let scannerSensitivity = 100;
                     if (e.keyCode !== 13 && !isNaN(e.key)) {
@@ -1819,7 +1820,9 @@
                         } else {
                             if (e.keyCode === 13) {
                                 this.posInvoiceForm.code = this.takeBarcode;
-                                this.addToPosInvoiceData(null);
+                                if (this.takeBarcode !== "") {
+                                    vm.addToPosInvoiceData(null);
+                                }
                                 this.timeStamp = [];
                                 this.takeBarcode = ''
                             }
@@ -2413,7 +2416,7 @@
                 }
 
                 let isFound = vm.posInvoiceData.find(function (element) {
-                    return element.itemId === val || element.code === val;
+                    return element.itemId === val || element.code === val || element.barcode === val;
                 });
                 if (isFound !== undefined) {
                     /*this.$message({
@@ -2424,7 +2427,15 @@
                     s.play();*/
 
                     isFound.qty = isFound.qty + 1;
+                    isFound.amount = isFound.qty * isFound.price;
                     vm.posInvoiceData[isFound.itemId] = isFound;
+                    this.$message({
+                        type: 'success',
+                        message: 'បន្ថែមចំនួនបានជោគជ័យ!'
+                    });
+                    this.getTotal();
+                    vm.posInvoiceForm.itemId = "";
+                    vm.posInvoiceForm.code = "";
                     return false;
                 }
                 vm.posInvoiceForm.isRetail = true;
@@ -2436,6 +2447,7 @@
                                     itemId: data._id,
                                     itemName: data.code + " : " + data.name,
                                     code: data.code,
+                                    barcode: data.barcode || "",
                                     unit1: 1,
                                     unit2: 1,
                                     totalUnit: 1,
@@ -2719,42 +2731,58 @@
             addImei() {
                 let vm = this;
                 if (vm.imeiInput !== "") {
-
-                    let isFindImei = vm.imei.find((obj) => {
-                        return obj.name === vm.imeiInput;
-                    })
-                    if (isFindImei) {
+                    if (this.rowDoc && vm.imeiShow.length >= this.rowDoc.qty) {
                         vm.$message({
                             type: 'error',
-                            message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                            message: 'បញ្ចូលគ្រប់ហើយ!!!!!!!'
                         });
-                    } else {
-                        Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
-                            if (result) {
+                        return false;
+                    }
+                    Meteor.call("queryPosImeiBillByImei", vm.imeiInput, (err, result) => {
+                        if (result) {
+                            let isFindImei = vm.imei.find((obj) => {
+                                return obj.name === vm.imeiInput;
+                            })
+                            if (isFindImei) {
                                 vm.$message({
                                     type: 'error',
                                     message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
                                 });
                             } else {
-                                vm.imei.push({name: vm.imeiInput, itemId: vm.itemId});
-                                vm.imeiShow.push({name: vm.imeiInput, itemId: vm.itemId});
+                                Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
+                                    if (result) {
+                                        vm.$message({
+                                            type: 'error',
+                                            message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                        });
+                                    } else {
+                                        vm.imei.push({name: vm.imeiInput, itemId: vm.itemId});
+                                        vm.imeiShow.push({name: vm.imeiInput, itemId: vm.itemId});
 
-                                vm.imeiInput = "";
-                                vm.rowDoc.desc = "";
-                                vm.imeiShow.forEach((o) => {
-                                    vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
+                                        vm.imeiInput = "";
+                                        vm.rowDoc.desc = "";
+                                        vm.imeiShow.forEach((o) => {
+                                            vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
+                                        })
+                                        vm.rowDoc.imei = vm.imeiShow;
+                                        vm.rowDoc.numImei = vm.imeiShow.length;
+                                        vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
+
+                                        vm.$message({
+                                            message: `បញ្ចូល ${vm.imeiInput} បានជោគជ័យ`,
+                                            type: 'success'
+                                        });
+                                    }
                                 })
-                                vm.rowDoc.imei = vm.imeiShow;
-                                vm.rowDoc.numImei = vm.imeiShow.length;
-                                vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
-
-                                vm.$message({
-                                    message: `បញ្ចូល ${vm.imeiInput} បានជោគជ័យ`,
-                                    type: 'success'
-                                });
                             }
-                        })
-                    }
+                        } else {
+                            vm.$message({
+                                type: 'error',
+                                message: 'មិនមាន Imei នេះទេ!!!!!!!'
+                            });
+                        }
+                    })
+
                 }
 
 
@@ -2771,6 +2799,7 @@
                     this.rowDoc.desc = this.rowDoc.desc + " " + o.name;
 
                 })
+                this.rowDoc.numImei = this.imeiShow.length;
                 this.updatePosInvoiceDetail(this.rowDoc, this.indexRow);
 
             },

@@ -654,7 +654,8 @@
       "productType": "Product Type",
       "minimumStock": "Minimum Stock",
       "unit": "Unit",
-      "image": "Photo"
+      "image": "Photo",
+      "barcode": "Barcode"
     },
     "agent": {
       "searchHere": "Search Here ...",
@@ -1418,7 +1419,8 @@
       "productType": "ប្រភេទទំនិញ",
       "minimumStock": "ស្តុកតិចបំផុត",
       "unit": "ឯកតា",
-      "image": "រូបភាព"
+      "image": "រូបភាព",
+      "barcode": "លេខកូដ"
     },
     "agent": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",

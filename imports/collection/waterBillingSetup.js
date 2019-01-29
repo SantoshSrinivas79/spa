@@ -46,6 +46,10 @@ WB_waterBillingSetup.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    password: {
+        type: String,
+        optional: true
+    },
     depreciationPerTime: {
         type: Number,
         optional: true
@@ -66,6 +70,7 @@ WB_waterBillingSetup.schema = new SimpleSchema({
             }
         }
     },
+
     makeIn: {
         type: String,
         optional: true,

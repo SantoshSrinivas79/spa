@@ -189,6 +189,9 @@
                                         <el-switch v-model="form.validateStock">
                                         </el-switch>
                                     </el-form-item>
+                                    <el-form-item label="Password">
+                                        <el-input v-model="form.password" type="password"></el-input>
+                                    </el-form-item>
                                 </el-col>
                             </el-row>
 
@@ -297,6 +300,7 @@
                     integratedPosAccount: false,
                     depreciationType: "",
                     depreciationPerTime: 12,
+                    password: "",
                     validateStock: false
                 },
                 rules: {
@@ -399,7 +403,8 @@
                             director: '',
                             province: '',
                             khAddress: "",
-                            validateStock: ""
+                            validateStock: "",
+                            password: ""
                         };
                         this.$message({
                             message: 'Successfully',

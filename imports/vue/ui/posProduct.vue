@@ -241,6 +241,10 @@
                 </el-row>
 
 
+                <el-form-item :label="langConfig['barcode']" prop="barcode">
+                    <el-input type="text" v-model="posProductForm.barcode"></el-input>
+                </el-form-item>
+
                 <el-form-item :label="langConfig['memo']" prop="description">
                     <el-input type="textarea" v-model="posProductForm.description"></el-input>
                 </el-form-item>
@@ -394,6 +398,10 @@
                     </el-col>
                 </el-row>
 
+                <el-form-item :label="langConfig['barcode']" prop="barcode">
+                    <el-input type="text" v-model="posProductForm.barcode"></el-input>
+                </el-form-item>
+
                 <el-form-item :label="langConfig['memo']" prop="description">
                     <el-input type="textarea" v-model="posProductForm.description"></el-input>
                 </el-form-item>
@@ -535,6 +543,7 @@
                     cost: 0,
                     _id: "",
                     minimumStock: "",
+                    barcode: "",
                     unitId: ""
                 },
                 rules: {
@@ -667,6 +676,7 @@
                                         description: vm.posProductForm.description,
                                         minimumStock: vm.posProductForm.minimumStock,
                                         unitId: vm.posProductForm.unitId,
+                                        barcode: vm.posProductForm.barcode,
                                         imageId: imageId,
                                         imagePath: imagePath
 
@@ -711,6 +721,7 @@
                                 isTaxable: vm.posProductForm.isTaxable,
                                 description: vm.posProductForm.description,
                                 minimumStock: vm.posProductForm.minimumStock,
+                                barcode: vm.posProductForm.barcode,
                                 unitId: vm.posProductForm.unitId
 
                             };
@@ -779,6 +790,8 @@
                                         description: vm.posProductForm.description,
                                         minimumStock: vm.posProductForm.minimumStock,
                                         unitId: vm.posProductForm.unitId,
+                                        barcode: vm.posProductForm.barcode,
+
                                         imageId: imageId,
                                         imagePath: imagePath
                                     };
@@ -831,6 +844,7 @@
                                 qtyOnHand: vm.posProductForm.qtyOnHand,
                                 isTaxable: vm.posProductForm.isTaxable,
                                 description: vm.posProductForm.description,
+                                barcode: vm.posProductForm.barcode,
                                 minimumStock: vm.posProductForm.minimumStock,
                                 unitId: vm.posProductForm.unitId
                             };

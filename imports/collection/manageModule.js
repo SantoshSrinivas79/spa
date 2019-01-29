@@ -24,6 +24,10 @@ Manage_Module.schema = new SimpleSchema({
         type: String,
         label: "Name"
     },
+    validateReceivePayment: {
+        type: Boolean,
+        defaultValue: false
+    },
     createdAt: {
         type: Date,
         optional: true,

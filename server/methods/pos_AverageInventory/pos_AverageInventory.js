@@ -778,9 +778,10 @@ Meteor.methods({
             locationId: locationId,
         }, {sort: {createdAt: -1}});
         if (data) {
-            let productDoc = Pos_Product.findOne({_id: id}, {name: 1, code: 1})
+            let productDoc = Pos_Product.findOne({_id: id}, {name: 1, code: 1, barcode: 1})
             data.name = productDoc && productDoc.name || "";
             data.code = productDoc && productDoc.code || "";
+            data.barcode = productDoc && productDoc.barcode || "";
             data.itemId = productDoc && productDoc._id || "";
         }
         return data && data.qtyEnding > 0 ? data : false;
