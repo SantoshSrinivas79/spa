@@ -58,6 +58,10 @@ Loan_Penalty.schema = new SimpleSchema({
                 return Meteor.userId();
             }
         }
+    },rolesArea: {
+        type: String,
+        label: "Role Area",
+        index: true
     }
 });
 

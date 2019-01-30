@@ -1,39 +1,61 @@
-export const Loan_CreditOfficer = new Mongo.Collection('loan_creditOfficer');
+export const Loan_RepaymentSchedule = new Mongo.Collection('loan_repaymentSchedule');
 
-Loan_CreditOfficer.schema = new SimpleSchema({
-    dob: {
-        type: Date,
-        label: "Date of Birth",
-    },
-    dobName: {
+Loan_RepaymentSchedule.schema = new SimpleSchema({
+    loanId: {
         type: String,
-        label: "Date of Birth",
+        label: "Client",
     },
-    startDate: {
-        type: Date,
-        label: "Start Date",
-    },
-    startDateName: {
+    clientId: {
         type: String,
-        label: "Start Date",
+        label: "Client",
     },
-
-    status: {
+    productId: {
+        type: String,
+        label: "Product",
+    },
+    currencyId: {
+        type: String,
+        label: "Currency",
+    },
+    installment: {
+        type: Number
+    },
+    amount: {
+        type: Number,
+        decimal: true
+    },
+    principle: {
+        type: Number,
+        decimal: true
+    },
+    interest: {
+        type: Number,
+        decimal: true
+    },
+    date: {
+        type: Date,
+        label: "RepaymentSchedule Date",
+    },
+    dateName: {
+        type: String,
+        label: "RepaymentSchedule Date",
+    },
+    isPaid: {
         type: Boolean,
-        defaultValue: false,
+        defaultValue: false
     },
-    name: {
-        type: String,
-        label: "Name",
+    isAllowClosing: {
+        type: Boolean,
+        defaultValue: false
     },
-    phoneNumber: {
-        type: String,
-        label: "Phone Number",
+    balanceUnpaid: {
+        type: Number,
+        decimal: true
     },
-    address: {
-        type: String,
-        label: "Address",
-        optional: true
+    paid: {
+        type: [Object],
+        optional: true,
+        blackbox: true
     },
     createdAt: {
         type: Date,
@@ -74,17 +96,17 @@ Loan_CreditOfficer.schema = new SimpleSchema({
                 return Meteor.userId();
             }
         }
-    },rolesArea: {
+    }, rolesArea: {
         type: String,
         label: "Role Area",
         index: true
     }
 });
 
-Loan_CreditOfficer.attachSchema(Loan_CreditOfficer.schema);
+Loan_RepaymentSchedule.attachSchema(Loan_RepaymentSchedule.schema);
 
-export const Loan_CreditOfficerReact = new Mongo.Collection('loan_creditOfficerReact');
-Loan_CreditOfficerReact.schema = new SimpleSchema({
+export const Loan_RepaymentScheduleReact = new Mongo.Collection('loan_repaymentScheduleReact');
+Loan_RepaymentScheduleReact.schema = new SimpleSchema({
     createdAt: {
         type: Date,
         optional: true,
@@ -118,6 +140,7 @@ Loan_CreditOfficerReact.schema = new SimpleSchema({
     updatedUser: {
         type: String,
         optional: true,
+
         autoValue() {
             if (this.isUpdate) {
                 return Meteor.userId();
@@ -129,4 +152,4 @@ Loan_CreditOfficerReact.schema = new SimpleSchema({
     }
 });
 
-Loan_CreditOfficerReact.attachSchema(Loan_CreditOfficerReact.schema);
+Loan_RepaymentScheduleReact.attachSchema(Loan_RepaymentScheduleReact.schema);

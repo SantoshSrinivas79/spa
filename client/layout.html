@@ -641,6 +641,30 @@
                                                         {{/if}}
 
                                                     {{/if}}
+                                                    {{#if loanLayout}}
+                                                        {{#if isShowReportRole}}
+                                                            <li class="col-sm-4">
+                                                                <ul>
+
+                                                                    <a href="#" class="title-head">
+                                                                        <i class="fa fa-file"></i> <span>{{_
+                                                                            "loan.sidebarMenu.client"}}</span>
+                                                                    </a>
+                                                                    <li><a href="{{pathFor
+                                                                            'loan.loanRepaymentScheduleReport'}}"
+                                                                           class="title-body">
+                                                                        <i class="fa fa-dollar"></i> {{_
+                                                                            "loan.sidebarMenu.repaymentSchedule"}}
+                                                                    </a>
+                                                                    </li>
+                                                                    <hr>
+
+                                                                </ul>
+                                                            </li>
+
+                                                        {{/if}}
+
+                                                    {{/if}}
                                                 {{/if}}
 
 

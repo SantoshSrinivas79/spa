@@ -134,7 +134,9 @@
       "product": "Product",
       "penalty": "Penalty",
       "penaltyClosing": "Penalty Closing",
-      "disbursement": "Disbursement"
+      "disbursement": "Disbursement",
+      "repaymentSchedule": "Repayment Schedule",
+      "client": "Client"
     }
   },
   "global": {

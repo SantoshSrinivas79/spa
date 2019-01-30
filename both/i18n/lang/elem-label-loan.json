@@ -141,7 +141,11 @@
       "disbursementDate": "Disbursement Date",
       "add": "Add Disbursement",
       "update": "Update Disbursement",
-      "startPaidDate": "Start Paid Date"
+      "startPaidDate": "Start Paid Date",
+      "productType": "Product Type",
+      "installment": "Installment",
+      "feeAmount": "Fee",
+      "paymentNumber": "Payment Number"
     }
   },
   {
@@ -287,7 +291,11 @@
       "description": "បរិយាយ",
       "loanAmount": "ទឹកប្រាក់",
       "disbursementDate": "ថ្ងៃខ្ចី",
-      "startPaidDate": "ថ្ងៃចាប់ផ្តើមបង់"
+      "startPaidDate": "ថ្ងៃចាប់ផ្តើមបង់",
+      "productType": "ប្រភេទកម្ចី",
+      "installment": "ចំនួនដងត្រូវបង់",
+      "feeAmount": "តម្លៃរដ្ឋបាល",
+      "paymentNumber": "ចំនួនដងបង់រួច"
     }
   }
 ]

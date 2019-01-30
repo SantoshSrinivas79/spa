@@ -1,7 +1,11 @@
 import {Loan_Disbursement} from '../../../imports/collection/loanDisbursement';
 import {Loan_DisbursementReact} from '../../../imports/collection/loanDisbursement';
 import {Loan_Product} from "../../../imports/collection/loanProduct";
-
+import {Loan_Config} from "../../../imports/collection/loanConfig";
+import {roundCurrency} from "../../../imports/api/methods/roundCurrency";
+import math from "mathjs";
+import {Loan_PenaltyClosing} from "../../../imports/collection/loanPenaltyClosing";
+import {Loan_RepaymentSchedule} from "../../../imports/collection/loanRepaymentSchedule";
 
 Meteor.methods({
     queryLoanDisbursement({q, filter, options = {limit: 10, skip: 0}}) {
@@ -40,6 +44,35 @@ Meteor.methods({
                 {
                     $skip: options.skip
                 },
+                {
+                    $lookup: {
+                        from: "loan_product",
+                        localField: "productId",
+                        foreignField: "_id",
+                        as: "productDoc"
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$productDoc",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "pos_customer",
+                        localField: "clientId",
+                        foreignField: "_id",
+                        as: "clientDoc"
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$clientDoc",
+                        preserveNullAndEmptyArrays: true
+                    }
+                }
+
 
             ]);
             if (loanDisbursements.length > 0) {
@@ -59,11 +92,16 @@ Meteor.methods({
         data.startDateName = moment(data.startDate).format("DD/MM/YYYY");
 
         let productDoc = Loan_Product.findOne({_id: data.productId});
+        let configDoc = Loan_Config.findOne({});
+        let projectInterest = calculateProjectInterest(data, productDoc, configDoc);
 
 
+        data.projectInterest = projectInterest;
         let isInserted = Loan_Disbursement.insert(data);
         if (isInserted) {
             disbursementReact(isInserted);
+            generateSchedulePayment(data, productDoc, configDoc, isInserted);
+
         }
         return isInserted;
     },
@@ -72,12 +110,18 @@ Meteor.methods({
         data.dobName = moment(data.dob).format("DD/MM/YYYY");
         data.startDateName = moment(data.startDate).format("DD/MM/YYYY");
 
+        let productDoc = Loan_Product.findOne({_id: data.productId});
+        let configDoc = Loan_Config.findOne({});
+        let projectInterest = calculateProjectInterest(data, productDoc, configDoc);
+        data.projectInterest = projectInterest;
         let isUpdated = Loan_Disbursement.update({_id: data._id},
             {
                 $set: data
             });
         if (isUpdated) {
             disbursementReact(id);
+            removeRepaymentSchedule(data._id, data.clientId);
+            generateSchedulePayment(data, productDoc, configDoc, projectInterest, id);
         }
         return isUpdated;
     },
@@ -107,6 +151,80 @@ let disbursementReact = function (id) {
     }
 }
 
-let generateSchedulePayment = function (disbursementDoc) {
+let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, projectInterest, id) {
+    if (configDoc.methodType === "Straight Line") {
+        let amount = (disbursementDoc.loanAmount + projectInterest) / disbursementDoc.installment;
+        let principle = disbursementDoc.loanAmount / disbursementDoc.installment;
+        let penaltyClosingDoc = Loan_PenaltyClosing.findOne({_id: productDoc.penaltyClosingId});
+        let installmentAllowClosing = math.round(disbursementDoc.installment * (penaltyClosingDoc.installmentTermLessThan / 100), 0);
+        let list = [];
+        let paidDate = disbursementDoc.startPaidDate;
 
+
+        for (let i = 1; i <= disbursementDoc.installment; i++) {
+            let repaymentScheduleDoc = {};
+
+            if (i === 1) {
+                repaymentScheduleDoc.installment = i;
+                repaymentScheduleDoc.date = moment(paidDate).startOf("day").add(12, "hours").toDate();
+                repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");
+                repaymentScheduleDoc.amount = (disbursementDoc.loanAmount + projectInterest) - (math.round(amount, 0) * (disbursementDoc.installment - 1));
+                repaymentScheduleDoc.principle = disbursementDoc.loanAmount - (roundCurrency(principle, disbursementDoc.currencyId, disbursementDoc.rolesArea) * (disbursementDoc.installment - 1));
+                repaymentScheduleDoc.interest = roundCurrency(repaymentScheduleDoc.amount - repaymentScheduleDoc.principle, disbursementDoc.currencyId, disbursementDoc.rolesArea);
+                repaymentScheduleDoc.isPaid = false;
+                repaymentScheduleDoc.isAllowClosing = i > installmentAllowClosing;
+
+                repaymentScheduleDoc.loanId = id;
+                repaymentScheduleDoc.clientId = disbursementDoc.clientId;
+                repaymentScheduleDoc.productId = disbursementDoc.productId;
+                repaymentScheduleDoc.currencyId = disbursementDoc.currencyId;
+                repaymentScheduleDoc.rolesArea = disbursementDoc.rolesArea;
+                repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.amount;
+
+
+            } else {
+                repaymentScheduleDoc.installment = i;
+                repaymentScheduleDoc.date = moment(paidDate).startOf("day").add(12, "hours").toDate();
+                repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");
+                repaymentScheduleDoc.amount = math.round(amount, 0);
+                repaymentScheduleDoc.principle = roundCurrency(principle, disbursementDoc.currencyId, disbursementDoc.rolesArea);
+                repaymentScheduleDoc.interest = repaymentScheduleDoc.amount - repaymentScheduleDoc.principle;
+                repaymentScheduleDoc.isPaid = false;
+                repaymentScheduleDoc.isAllowClosing = i > installmentAllowClosing;
+
+
+                repaymentScheduleDoc.loanId = id;
+                repaymentScheduleDoc.clientId = disbursementDoc.clientId;
+                repaymentScheduleDoc.productId = disbursementDoc.productId;
+                repaymentScheduleDoc.currencyId = disbursementDoc.currencyId;
+                repaymentScheduleDoc.rolesArea = disbursementDoc.rolesArea;
+
+                repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.amount;
+
+
+            }
+            if (productDoc.rateType === "Monthly") {
+                paidDate = moment(paidDate).add(1, "month").toDate();
+            }
+
+            Loan_RepaymentSchedule.insert(repaymentScheduleDoc);
+        }
+
+    }
+
+
+}
+let calculateProjectInterest = function (disbursementDoc, productDoc, configDoc) {
+    let projectInterest = 0;
+
+    if (configDoc.methodType === "Straight Line") {
+        projectInterest = disbursementDoc.loanAmount * (productDoc.rate / 100) * disbursementDoc.installment;
+    }
+
+
+    return projectInterest;
+}
+
+let removeRepaymentSchedule = function (loanId, clientId) {
+    return Loan_RepaymentSchedule.remove({loanId: loanId, clientId: clientId});
 }

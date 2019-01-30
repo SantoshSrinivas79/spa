@@ -23,6 +23,9 @@ Loan_Disbursement.schema = new SimpleSchema({
         decimal: true,
         label: "Interest",
     },
+    installment: {
+        type: Number
+    },
     disbursementDate: {
         type: Date,
         label: "Disbursement Date",
@@ -55,6 +58,13 @@ Loan_Disbursement.schema = new SimpleSchema({
         defaultValue: 0
     },
     feeAmount: {
+        type: Number,
+        decimal: true,
+        label: "Fee Amount",
+        optional: true,
+        defaultValue: 0
+    },
+    paidFeeAmount: {
         type: Number,
         decimal: true,
         label: "Fee Amount",
@@ -101,6 +111,10 @@ Loan_Disbursement.schema = new SimpleSchema({
                 return Meteor.userId();
             }
         }
+    },rolesArea: {
+        type: String,
+        label: "Role Area",
+        index: true
     }
 });
 

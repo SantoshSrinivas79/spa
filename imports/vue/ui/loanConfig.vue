@@ -59,9 +59,10 @@
                     >
                         <template slot-scope="scope">
                             <el-button-group>
-                                <el-button type="danger" class="cursor-pointer" icon="el-icon-delete" size="small"
+                                <el-button type="danger" disabled class="cursor-pointer" icon="el-icon-delete"
+                                           size="small"
                                            @click="removeLoanConfig(scope.$index,scope.row,loanConfigData)"
-                                           :disabled="disabledRemove"></el-button>
+                                ></el-button>
                                 <el-button type="primary" icon="el-icon-edit" size="small" class="cursor-pointer"
                                            @click="findLoanConfigById(scope),dialogUpdateLoanConfig= true"
                                            :disabled="disabledUpdate"></el-button>

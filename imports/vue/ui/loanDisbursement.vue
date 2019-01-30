@@ -48,7 +48,7 @@
                             :label="langConfig['client']">
                     </el-table-column>
                     <el-table-column
-                            prop="disbursementDate"
+                            prop="disbursementDateName"
                             :label="langConfig['disbursementDate']">
                     </el-table-column>
                     <el-table-column
@@ -61,7 +61,11 @@
                     </el-table-column>
                     <el-table-column
                             prop="productDoc.name"
-                            :label="langConfig['productName']">
+                            :label="langConfig['product']">
+                    </el-table-column>
+                    <el-table-column
+                            prop="paymentNumber"
+                            :label="langConfig['paymentNumber']">
                     </el-table-column>
 
                     <el-table-column
@@ -105,93 +109,99 @@
         <el-dialog
                 :title="langConfig['add']"
                 :visible.sync="dialogAddLoanDisbursement"
-                width="40%">
+                width="80%">
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
             <el-form :model="loanDisbursementForm" :rules="rules" ref="loanDisbursementFormAdd" label-width="120px"
                      class="loanDisbursementForm">
 
                 <el-row>
+                    <el-col :span="12">
+                        <el-form-item :label="langConfig['disbursementDate']" prop="disbursementDate">
+                            <el-date-picker
+                                    v-model="loanDisbursementForm.disbursementDate"
+                                    type="date"
+                                    style="width: 100%;"
+                                    placeholder="Pick a day"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
 
-                    <el-form-item :label="langConfig['disbursementDate']" prop="disbursementDate">
-                        <el-date-picker
-                                v-model="loanDisbursementForm.disbursementDate"
-                                type="date"
-                                style="width: 100%;"
-                                placeholder="Pick a day"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
-
-                    <el-form-item :label="langConfig['client']" prop="clientId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
-                                   :placeholder="langConfig['client']">
-                            <el-option
-                                    v-for="item in clientOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['product']" prop="productId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.productId" :remote-method="productOpt"
-                                   :placeholder="langConfig['product']">
-                            <el-option
-                                    v-for="item in productOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['creditOfficer']" prop="coId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
-                                   :placeholder="langConfig['creditOfficer']">
-                            <el-option
-                                    v-for="item in creditOfficerOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
-                        <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['currency']" prop="currencyId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.currencyId"
-                                   :placeholder="langConfig['currency']">
-                            <el-option
-                                    v-for="item in currencyOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
-                        <el-date-picker
-                                v-model="loanDisbursementForm.startPaidDate"
-                                type="date"
-                                style="width: 100%;"
-                                placeholder="Pick a day"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['description']" prop="description">
-                        <el-input v-model="loanDisbursementForm.description"></el-input>
-                    </el-form-item>
-
-
+                        <el-form-item :label="langConfig['client']" prop="clientId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
+                                       :placeholder="langConfig['client']">
+                                <el-option
+                                        v-for="item in clientOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['product']" prop="productId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.productId" :remote-method="productOpt"
+                                       :placeholder="langConfig['product']">
+                                <el-option
+                                        v-for="item in productOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['creditOfficer']" prop="coId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
+                                       :placeholder="langConfig['creditOfficer']">
+                                <el-option
+                                        v-for="item in creditOfficerOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['feeAmount']" prop="feeAmount">
+                            <el-input v-model="loanDisbursementForm.feeAmount"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
+                            <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['currency']" prop="currencyId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.currencyId"
+                                       :placeholder="langConfig['currency']">
+                                <el-option
+                                        v-for="item in currencyOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['installment']" prop="installment">
+                            <el-input v-model="loanDisbursementForm.installment"></el-input>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
+                            <el-date-picker
+                                    v-model="loanDisbursementForm.startPaidDate"
+                                    type="date"
+                                    style="width: 100%;"
+                                    placeholder="Pick a day"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['description']" prop="description">
+                            <el-input type="textarea" v-model="loanDisbursementForm.description"></el-input>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
 
                 <hr style="margin-top: 0px !important;">
@@ -211,88 +221,100 @@
         <el-dialog
                 :title="langConfig['update']"
                 :visible.sync="dialogUpdateLoanDisbursement"
-                width="40%">
+                width="80%">
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
             <el-form :model="loanDisbursementForm" :rules="rules" ref="loanDisbursementFormUpdate" label-width="120px"
                      class="loanDisbursementForm">
                 <el-row>
-                    <el-form-item :label="langConfig['disbursementDate']" prop="disbursementDate">
-                        <el-date-picker
-                                v-model="loanDisbursementForm.disbursementDate"
-                                type="date"
-                                style="width: 100%;"
-                                placeholder="Pick a day"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['client']" prop="clientId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
-                                   :placeholder="langConfig['client']">
-                            <el-option
-                                    v-for="item in clientOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['product']" prop="productId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.productId" :remote-method="productOpt"
-                                   :placeholder="langConfig['product']">
-                            <el-option
-                                    v-for="item in productOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['creditOfficer']" prop="coId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
-                                   :placeholder="langConfig['creditOfficer']">
-                            <el-option
-                                    v-for="item in creditOfficerOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                    <el-col :span="12">
+                        <el-form-item :label="langConfig['disbursementDate']" prop="disbursementDate">
+                            <el-date-picker
+                                    v-model="loanDisbursementForm.disbursementDate"
+                                    type="date"
+                                    style="width: 100%;"
+                                    placeholder="Pick a day"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['client']" prop="clientId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
+                                       :placeholder="langConfig['client']">
+                                <el-option
+                                        v-for="item in clientOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['product']" prop="productId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.productId" :remote-method="productOpt"
+                                       :placeholder="langConfig['product']">
+                                <el-option
+                                        v-for="item in productOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
 
-                    <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
-                        <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['currency']" prop="currencyId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanDisbursementForm.currencyId"
-                                   :placeholder="langConfig['currency']">
-                            <el-option
-                                    v-for="item in currencyOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
-                        <el-date-picker
-                                v-model="loanDisbursementForm.startPaidDate"
-                                type="date"
-                                style="width: 100%;"
-                                placeholder="Pick a day"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item :label="langConfig['description']" prop="description">
-                        <el-input v-model="loanDisbursementForm.description"></el-input>
-                    </el-form-item>
+                        <el-form-item :label="langConfig['creditOfficer']" prop="coId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
+                                       :placeholder="langConfig['creditOfficer']">
+                                <el-option
+                                        v-for="item in creditOfficerOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+
+                        <el-form-item :label="langConfig['feeAmount']" prop="feeAmount">
+                            <el-input v-model="loanDisbursementForm.feeAmount"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
+                            <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['currency']" prop="currencyId">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.currencyId"
+                                       :placeholder="langConfig['currency']">
+                                <el-option
+                                        v-for="item in currencyOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['installment']" prop="installment">
+                            <el-input v-model="loanDisbursementForm.installment"></el-input>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
+                            <el-date-picker
+                                    v-model="loanDisbursementForm.startPaidDate"
+                                    type="date"
+                                    style="width: 100%;"
+                                    placeholder="Pick a day"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['description']" prop="description">
+                            <el-input type="textarea" v-model="loanDisbursementForm.description"></el-input>
+                        </el-form-item>
+                    </el-col>
+
 
                     <input type="hidden" v-model="loanDisbursementForm._id"/>
                 </el-row>
@@ -362,6 +384,7 @@
                     description: "",
                     feeAmount: 0,
                     startPaidDate: "",
+                    installment: 0,
                     _id: ""
                 },
                 rules: {
@@ -389,9 +412,25 @@
                         message: 'Please choose credit officer',
                         trigger: 'change'
                     }],
+                    productType: [{
+                        required: true,
+                        type: 'string',
+                        message: 'Please choose Product Type',
+                        trigger: 'change'
+                    }],
                     loanAmount: [{
                         required: true,
                         message: 'Please input Amount',
+                        trigger: 'blur'
+                    }],
+                    feeAmount: [{
+                        required: true,
+                        message: 'Please input Fee Amount',
+                        trigger: 'blur'
+                    }],
+                    installment: [{
+                        required: true,
+                        message: 'Please input installment',
                         trigger: 'blur'
                     }],
                     disbursementDate: [{
@@ -400,12 +439,23 @@
                         message: 'Please input Disbursement Date',
                         trigger: 'blur'
                     }],
+                    startPaidDate: [{
+                        type: 'date',
+                        required: true,
+                        message: 'Please input Start Paid Date',
+                        trigger: 'blur'
+                    }],
                 },
                 clientOption: [],
                 currencyOption: [
                     {label: "USD", value: "USD"},
                     {label: "KHR", value: "KHR"},
                     {label: "THB", value: "THB"},
+                ],
+                productTypeOption: [
+                    {label: "Weekly", value: "Weekly"},
+                    {label: "Monthly", value: "Monthly"},
+                    {label: "Yearly", value: "Yearly"},
                 ],
                 productOption: [],
                 creditOfficerOption: [],
@@ -526,7 +576,9 @@
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
                             disbursementDateName: moment(vm.loanDisbursementForm.disbursementDate).format("DD/MM/YYYY"),
                             coId: vm.loanDisbursementForm.coId,
+                            installment: vm.loanDisbursementForm.installment,
                             description: vm.loanDisbursementForm.description,
+                            feeAmount: vm.loanDisbursementForm.feeAmount,
                             startPaidDate: vm.loanDisbursementForm.startPaidDate,
                             rolesArea: Session.get('area')
 
@@ -566,7 +618,9 @@
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
                             disbursementDateName: moment(vm.loanDisbursementForm.disbursementDate).format("DD/MM/YYYY"),
                             coId: vm.loanDisbursementForm.coId,
+                            installment: vm.loanDisbursementForm.installment,
                             description: vm.loanDisbursementForm.description,
+                            feeAmount: vm.loanDisbursementForm.feeAmount,
                             startPaidDate: vm.loanDisbursementForm.startPaidDate,
                             rolesArea: Session.get('area')
                         };

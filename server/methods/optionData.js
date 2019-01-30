@@ -486,7 +486,10 @@ Meteor.methods({
                 {_id: q}
             ];
         }
-        return Loan_Product.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
+        return Loan_Product.find(selector, {limit: 100}).fetch().map(obj => ({
+            label: obj.name + " : " + obj.rateType,
+            value: obj._id
+        }));
     }
     ,
     queryLoanCreditOfficerOption(q) {
@@ -499,7 +502,10 @@ Meteor.methods({
                 {_id: q}
             ];
         }
-        return Loan_CreditOfficer.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
+        return Loan_CreditOfficer.find(selector, {limit: 100}).fetch().map(obj => ({
+            label: obj.name,
+            value: obj._id
+        }));
     }
     ,
     queryPosCustomerOptionUnPaid(q) {
