@@ -28,6 +28,10 @@ Manage_Module.schema = new SimpleSchema({
         type: Boolean,
         defaultValue: false
     },
+    validateImei: {
+        type: Boolean,
+        defaultValue: false
+    },
     createdAt: {
         type: Date,
         optional: true,

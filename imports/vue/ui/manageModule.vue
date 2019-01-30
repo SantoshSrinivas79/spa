@@ -68,6 +68,13 @@
                             inactive-color="#ff4949">
                     </el-switch>
                 </el-form-item>
+ <el-form-item label="Validate Imei" prop="validateImei">
+                    <el-switch
+                            v-model="manageModule.validateImei"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
 
 
                 <hr style="margin-top: 0px !important;">
@@ -90,6 +97,7 @@
                     name: "",
                     parentName: "",
                     validateReceivePayment: false,
+                    validateImei: false,
                     rolesBranch: [],
                     rolesArea: [],
                     module: [],
@@ -151,6 +159,7 @@
                             rolesArea: vm.manageModule.rolesArea,
                             module: vm.manageModule.module,
                             validateReceivePayment: vm.manageModule.validateReceivePayment,
+                            validateImei: vm.manageModule.validateImei,
                             feature: vm.manageModule.feature,
                             _id: vm.manageModule._id
                         };

@@ -1503,6 +1503,7 @@
                 typeDiscount: "",
                 fullScreen: true,
                 phoneShop: false,
+                validateImei: false,
                 posInvoiceForm: {
                     itemId: "",
                     itemName: "",
@@ -2738,51 +2739,89 @@
                         });
                         return false;
                     }
-                    Meteor.call("queryPosImeiBillByImei", vm.imeiInput, (err, result) => {
-                        if (result) {
-                            let isFindImei = vm.imei.find((obj) => {
-                                return obj.name === vm.imeiInput;
-                            })
-                            if (isFindImei) {
+
+                    if (this.validateImei === true) {
+                        Meteor.call("queryPosImeiBillByImei", vm.imeiInput, (err, result) => {
+                            if (result) {
+                                let isFindImei = vm.imei.find((obj) => {
+                                    return obj.name === vm.imeiInput;
+                                })
+                                if (isFindImei) {
+                                    vm.$message({
+                                        type: 'error',
+                                        message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                    });
+                                } else {
+                                    Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
+                                        if (result) {
+                                            vm.$message({
+                                                type: 'error',
+                                                message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                            });
+                                        } else {
+                                            vm.imei.push({name: vm.imeiInput, itemId: vm.itemId});
+                                            vm.imeiShow.push({name: vm.imeiInput, itemId: vm.itemId});
+
+                                            vm.imeiInput = "";
+                                            vm.rowDoc.desc = "";
+                                            vm.imeiShow.forEach((o) => {
+                                                vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
+                                            })
+                                            vm.rowDoc.imei = vm.imeiShow;
+                                            vm.rowDoc.numImei = vm.imeiShow.length;
+                                            vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
+
+                                            vm.$message({
+                                                message: `បញ្ចូល ${vm.imeiInput} បានជោគជ័យ`,
+                                                type: 'success'
+                                            });
+                                        }
+                                    })
+                                }
+                            } else {
                                 vm.$message({
                                     type: 'error',
-                                    message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                    message: 'មិនមាន Imei នេះទេ!!!!!!!'
                                 });
-                            } else {
-                                Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
-                                    if (result) {
-                                        vm.$message({
-                                            type: 'error',
-                                            message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
-                                        });
-                                    } else {
-                                        vm.imei.push({name: vm.imeiInput, itemId: vm.itemId});
-                                        vm.imeiShow.push({name: vm.imeiInput, itemId: vm.itemId});
-
-                                        vm.imeiInput = "";
-                                        vm.rowDoc.desc = "";
-                                        vm.imeiShow.forEach((o) => {
-                                            vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
-                                        })
-                                        vm.rowDoc.imei = vm.imeiShow;
-                                        vm.rowDoc.numImei = vm.imeiShow.length;
-                                        vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
-
-                                        vm.$message({
-                                            message: `បញ្ចូល ${vm.imeiInput} បានជោគជ័យ`,
-                                            type: 'success'
-                                        });
-                                    }
-                                })
                             }
-                        } else {
+                        })
+                    } else {
+                        let isFindImei = vm.imei.find((obj) => {
+                            return obj.name === vm.imeiInput;
+                        })
+                        if (isFindImei) {
                             vm.$message({
                                 type: 'error',
-                                message: 'មិនមាន Imei នេះទេ!!!!!!!'
+                                message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
                             });
-                        }
-                    })
+                        } else {
+                            Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
+                                if (result) {
+                                    vm.$message({
+                                        type: 'error',
+                                        message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                    });
+                                } else {
+                                    vm.imei.push({name: vm.imeiInput, itemId: vm.itemId});
+                                    vm.imeiShow.push({name: vm.imeiInput, itemId: vm.itemId});
 
+                                    vm.imeiInput = "";
+                                    vm.rowDoc.desc = "";
+                                    vm.imeiShow.forEach((o) => {
+                                        vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
+                                    })
+                                    vm.rowDoc.imei = vm.imeiShow;
+                                    vm.rowDoc.numImei = vm.imeiShow.length;
+                                    vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
+
+                                    vm.$message({
+                                        message: `បញ្ចូល ${vm.imeiInput} បានជោគជ័យ`,
+                                        type: 'success'
+                                    });
+                                }
+                            })
+                        }
+                    }
                 }
 
 
@@ -2833,6 +2872,7 @@
             let ma = Manage_Module.findOne();
             if (ma && ma.feature) {
                 this.phoneShop = ma.feature.indexOf("Phone Shop") > -1 ? true : false;
+                this.validateImei = ma.validateImei;
             }
 
         },
