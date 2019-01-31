@@ -33,6 +33,8 @@ import {Loan_Penalty} from "../../imports/collection/loanPenalty";
 import {Loan_PenaltyClosing} from "../../imports/collection/loanPenaltyClosing";
 import {Loan_CreditOfficer} from "../../imports/collection/loanCreditOfficer";
 import {Loan_Product} from "../../imports/collection/loanProduct";
+import {Loan_Disbursement} from "../../imports/collection/loanDisbursement";
+import {formatCurrency} from "../../imports/api/methods/roundCurrency";
 
 Meteor.methods({
 
@@ -475,6 +477,44 @@ Meteor.methods({
             ];
         }
         return Pos_Customer.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
+    },
+    queryLoanDisbursementOption(q) {
+        let selector = {};
+        if (q != "") {
+            q = q.replace(/[/\\]/g, '');
+            let reg = new RegExp(q, 'mi');
+
+            let clientList = Pos_Customer.find({name: {$regex: reg}}).map((obj) => obj._id);
+            selector.$or = [
+                {disbursementDateName: {$regex: reg}},
+                {_id: q},
+                {clientId: {$in: clientList}}
+            ];
+            selector.status = "Active";
+        }
+        return Loan_Disbursement.aggregate([
+            {$match: selector},
+            {
+
+                $lookup: {
+                    from: "pos_customer",
+                    localField: "clientId",
+                    foreignField: "_id",
+                    as: "clientDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$clientDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {$limit: 300}
+
+        ]).map(obj => ({
+            label: obj._id + " | Dis Date : " + obj.disbursementDateName + " | Client : " + obj.clientDoc.name + " | Amount : " + formatCurrency(obj.loanAmount),
+            value: obj._id
+        }));
     }
     , queryLoanProductOption(q) {
         let selector = {};

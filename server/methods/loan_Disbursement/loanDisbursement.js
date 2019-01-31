@@ -159,7 +159,7 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, 
         let installmentAllowClosing = math.round(disbursementDoc.installment * (penaltyClosingDoc.installmentTermLessThan / 100), 0);
         let list = [];
         let paidDate = disbursementDoc.startPaidDate;
-
+        let numDay = moment(disbursementDoc.startPaidDate).diff(disbursementDoc.disbursementDate, 'days');
 
         for (let i = 1; i <= disbursementDoc.installment; i++) {
             let repaymentScheduleDoc = {};
@@ -180,6 +180,7 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, 
                 repaymentScheduleDoc.currencyId = disbursementDoc.currencyId;
                 repaymentScheduleDoc.rolesArea = disbursementDoc.rolesArea;
                 repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.amount;
+                repaymentScheduleDoc.dayRange = numDay;
 
 
             } else {
@@ -200,10 +201,12 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, 
                 repaymentScheduleDoc.rolesArea = disbursementDoc.rolesArea;
 
                 repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.amount;
+                repaymentScheduleDoc.dayRange = numDay;
 
 
             }
             if (productDoc.rateType === "Monthly") {
+                numDay = moment(moment(paidDate).add(1, "month").toDate()).diff(paidDate, 'days');
                 paidDate = moment(paidDate).add(1, "month").toDate();
             }
 

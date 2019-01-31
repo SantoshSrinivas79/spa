@@ -16,7 +16,7 @@
                             </div>
                             <el-form :label-loanition="labelPosition">
                                 <el-row type="flex" class="row-bg" justify="center">
-                                    <el-col>
+                                    <el-col :span="6">
                                         <el-form-item :label="langConfig['branch']">
                                             <el-select filterable v-model="params.branch"
                                                        :placeholder="langConfig['all']" clearable
@@ -29,7 +29,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col>
+                                    <el-col :span="6">
                                         <el-form-item :label="langConfig['area']">
                                             <el-select filterable v-model="params.area" clearable
                                                        :placeholder="langConfig['all']"
@@ -43,9 +43,9 @@
                                         </el-form-item>
 
                                     </el-col>
-                                    <el-col>
+                                    <el-col :span="12">
                                         <el-form-item :label="langConfig['client']">
-                                            <el-select filterable v-model="params.clientId" clearable
+                                            <el-select filterable v-model="params.disbursementId" clearable
                                                        :placeholder="langConfig['all']" :remote-method="clientOpt"
                                                        style="width: 95%">
                                                 <el-option
@@ -55,7 +55,6 @@
                                                 </el-option>
                                             </el-select>
                                         </el-form-item>
-
                                     </el-col>
 
                                 </el-row>
@@ -101,15 +100,51 @@
                               <div class="col-lg-3"></div>
                           </div>
                           <div class="row">
-                                                                <span style="float: left !important;">{{langConfig['no']}}:.........</span>
+                              <div style="width: 30% !important; float:right">
+                                  ចំនួនប្រាក់ខ្ចី : {{currencyHeader}}
+                              </div>
+                              <div style="width: 30% !important;float:right">
+                                  ថ្ងៃខ្ចី : {{currencyHeader}}
+                              </div>
+                              <div style="width: 40% !important;">
+                                  លេខគណនីឥណទាន: {{dateHeader}}
+                              </div>
+
 
                           </div>
                           <div class="row">
-                              <div style="widows: 50% !important; float:right">
-                                  {{langConfig['currency']}}: {{currencyHeader}}
+                              <div style="width: 30% !important; float:right">
+                                  សងប្រាក់រៀងរាល់: {{currencyHeader}}
                               </div>
-                              <div style="width: 50% !important;">
-                                  {{langConfig['date']}}: {{dateHeader}}
+                              <div style="width: 30% !important;float:right">
+                                  ចំនួនដងត្រូវសង: {{currencyHeader}}
+                              </div>
+                              <div style="width: 40% !important;">
+                                  ឈ្មោះអ្នកខ្ចី : {{dateHeader}}
+                              </div>
+
+                          </div>
+                          <div class="row">
+                              <div style="width: 30% !important; float:right">
+                                  អត្រាការប្រាក់: {{currencyHeader}}
+                              </div>
+                              <div style="width: 30% !important;float:right">
+                                  កាលបរិច្ឆេទសងបញ្ចប់: {{currencyHeader}}
+                              </div>
+                              <div style="width: 40% !important;">
+                                  មន្រ្តីឥណទាន : {{dateHeader}}
+                              </div>
+
+                          </div>
+                          <div class="row">
+                              <div style="width: 30% !important; float:right">
+                                  ចំនួនថ្ងៃខ្ចីសរុប: {{currencyHeader}}
+                              </div>
+                              <div style="width: 30% !important;float:right">
+                                  ចំនួនដងនៃការខ្ចី: {{currencyHeader}}
+                              </div>
+                              <div style="width: 40% !important;">
+                                  ទូរស័ព្ទ : {{dateHeader}}
                               </div>
 
                           </div>
@@ -162,8 +197,7 @@
                 params: {
                     branch: '',
                     area: '',
-                    date: null,
-                    locationId: ""
+                    disbursementId: ""
                 },
                 rolesArea: '',
                 activeName: '1',
@@ -231,7 +265,7 @@
                 if (!!query) {
                     setTimeout(() => {
                         let lists = [];
-                        Meteor.call('queryPosCustomerOption', query, (err, result) => {
+                        Meteor.call('queryLoanDisbursementOption', query, (err, result) => {
                             if (!err) {
                                 this.clientOptions = result;
                             } else {
@@ -240,7 +274,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOption', "", (err, result) => {
+                    Meteor.call('queryLoanDisbursementOption', "", (err, result) => {
                         if (!err) {
                             this.clientOptions = result;
                         } else {
@@ -252,9 +286,8 @@
             handleRun() {
                 this.loading = true;
                 Meteor.call('loanRepaymentScheduleReport', this.params, this.langConfig, (err, result) => {
-
                     if (result) {
-                        this.repaymentScheduleHtml = result.repaymentScheduleHTML;
+                        this.repaymentScheduleHtml = result.repaymentScheduleHtml;
                         this.dateHeader = result.dateHeader;
                         this.currencyHeader = result.currencyHeader;
                     }
@@ -267,7 +300,8 @@
         computed: {
             dataExist() {
                 // return this.loanSaleData.length > 0;
-            }, langConfig() {
+            },
+            langConfig() {
                 let data = compoLangReport.filter(config => config.lang === this.langSessionReport)[0]['repaymentSchedule'];
                 return data;
             }

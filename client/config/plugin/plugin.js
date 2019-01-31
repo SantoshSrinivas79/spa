@@ -11,7 +11,7 @@ import Cleave from 'cleave.js';
 import Croppa from 'vue-croppa';
 import bodymovin from 'bodymovin';
 import $ from 'jQuery';
-import  VueMeteorTracker from "vue-meteor-tracker";
+import VueMeteorTracker from "vue-meteor-tracker";
 
 GoogleMapsLoader.KEY = 'AIzaSyDOld0lTG5Ku15U-p-kyhohZXmZra2rG1k';
 
@@ -313,6 +313,36 @@ Vue.filter('switchMonth', (val) => {
             break;
         case "12":
             str = 'Dec';
+            break;
+    }
+    return str;
+});
+
+Vue.filter('switchDay', (val) => {
+    let day = moment(date).format("DDD");
+    let str;
+    switch (day) {
+        case "Mon":
+            str = 'ច័ន្ទ';
+            break;
+        case "Tue":
+            str = 'អង្គារ៍';
+            break;
+
+        case "Wed":
+            str = 'ពុធ';
+            break;
+        case "Thu":
+            str = 'ព្រហស្បត្តិ៍';
+            break;
+        case "Fri":
+            str = 'សុក្រ';
+            break;
+        case "Sat":
+            str = 'សៅរ៍';
+            break;
+        case "Sun":
+            str = 'អាទិត្យ';
             break;
     }
     return str;

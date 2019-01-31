@@ -40,6 +40,9 @@ Loan_RepaymentSchedule.schema = new SimpleSchema({
         type: String,
         label: "RepaymentSchedule Date",
     },
+    dayRange: {
+        type: Number
+    },
     isPaid: {
         type: Boolean,
         defaultValue: false

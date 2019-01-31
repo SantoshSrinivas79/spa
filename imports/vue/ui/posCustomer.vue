@@ -126,6 +126,16 @@
                         <el-form-item :label="langConfig['khCompanyName']" prop="khName">
                             <el-input v-model="posCustomerForm.khName"></el-input>
                         </el-form-item>
+                        <el-form-item :label="langConfig['dob']" prop="dob">
+                            <el-date-picker
+                                    v-model="posCustomerForm.dob"
+                                    type="date"
+                                    style="width: 100%;"
+                                    placeholder="Pick a day"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+
                         <el-form-item :label="langConfig['address']" prop="address">
                             <el-input v-model="posCustomerForm.address"></el-input>
                         </el-form-item>
@@ -133,9 +143,6 @@
                             <el-input v-model="posCustomerForm.email"></el-input>
                         </el-form-item>
 
-                        <el-form-item :label="langConfig['phoneNumber']" prop="phoneNumber">
-                            <el-input v-model="posCustomerForm.phoneNumber"></el-input>
-                        </el-form-item>
 
                     </el-col>
                     <el-col :span="12">
@@ -160,6 +167,9 @@
                         <el-form-item :label="langConfig['nationId']" prop="nationId">
                             <el-input v-model="posCustomerForm.nationId"></el-input>
                         </el-form-item>
+                        <el-form-item :label="langConfig['phoneNumber']" prop="phoneNumber">
+                            <el-input v-model="posCustomerForm.phoneNumber"></el-input>
+                        </el-form-item>
                         <el-form-item :label="langConfig['note']" prop="note">
                             <el-input type="textarea" v-model="posCustomerForm.note"></el-input>
                         </el-form-item>
@@ -172,7 +182,8 @@
                     <el-button @click="dialogAddPosCustomer = false, cancel()"
                     >{{langConfig['cancel']}} <i>(ESC)</i>
                     </el-button>
-                    <el-button type="primary" @click="savePosCustomer($event)">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button type="primary" @click="savePosCustomer($event)">{{langConfig['save']}} <i>(Ctrl +
+                        Enter)</i></el-button>
                 </el-row>
                 <br>
             </el-form>
@@ -195,6 +206,16 @@
                         <el-form-item :label="langConfig['khCompanyName']" prop="khName">
                             <el-input v-model="posCustomerForm.khName"></el-input>
                         </el-form-item>
+                        <el-form-item :label="langConfig['dob']" prop="dob">
+                            <el-date-picker
+                                    v-model="posCustomerForm.dob"
+                                    type="date"
+                                    style="width: 100%;"
+                                    placeholder="Pick a day"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+
                         <el-form-item :label="langConfig['address']" prop="address">
                             <el-input v-model="posCustomerForm.address"></el-input>
                         </el-form-item>
@@ -202,9 +223,7 @@
                             <el-input v-model="posCustomerForm.email"></el-input>
                         </el-form-item>
 
-                        <el-form-item :label="langConfig['phoneNumber']" prop="phoneNumber">
-                            <el-input v-model="posCustomerForm.phoneNumber"></el-input>
-                        </el-form-item>
+
                     </el-col>
                     <el-col :span="12">
                         <el-form-item :label="langConfig['term']" prop="termId">
@@ -227,6 +246,9 @@
                         <el-form-item :label="langConfig['nationId']" prop="nationId">
                             <el-input v-model="posCustomerForm.nationId"></el-input>
                         </el-form-item>
+                        <el-form-item :label="langConfig['phoneNumber']" prop="phoneNumber">
+                            <el-input v-model="posCustomerForm.phoneNumber"></el-input>
+                        </el-form-item>
                         <el-form-item :label="langConfig['note']" prop="note">
                             <el-input type="textarea" v-model="posCustomerForm.note"></el-input>
                         </el-form-item>
@@ -239,8 +261,10 @@
 
                 <hr style="margin-top: 0px !important;">
                 <el-row class="pull-right">
-                    <el-button @click="dialogUpdatePosCustomer = false ,cancel()">{{langConfig['cancel']}} <i>(ESC)</i></el-button>
-                    <el-button type="primary" @click="updatePosCustomer">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button @click="dialogUpdatePosCustomer = false ,cancel()">{{langConfig['cancel']}} <i>(ESC)</i>
+                    </el-button>
+                    <el-button type="primary" @click="updatePosCustomer">{{langConfig['save']}} <i>(Ctrl + Enter)</i>
+                    </el-button>
                 </el-row>
                 <br>
             </el-form>
@@ -294,7 +318,8 @@
                     termId: "",
                     openingBalance: "",
                     note: "",
-                    nationId:"",
+                    dob: "",
+                    nationId: "",
                     _id: ""
                 },
                 rules: {
@@ -369,6 +394,7 @@
                             termId: vm.posCustomerForm.termId,
                             openingBalance: vm.posCustomerForm.openingBalance,
                             note: vm.posCustomerForm.note,
+                            dob: vm.posCustomerForm.dob,
                             nationId: vm.posCustomerForm.nationId,
                             rolesArea: Session.get('area')
                         };
@@ -409,6 +435,7 @@
                             termId: vm.posCustomerForm.termId,
                             openingBalance: vm.posCustomerForm.openingBalance,
                             note: vm.posCustomerForm.note,
+                            dob: vm.posCustomerForm.dob,
                             nationId: vm.posCustomerForm.nationId,
                             rolesArea: Session.get('area')
                         };

@@ -18,6 +18,11 @@ Pos_Customer.schema = new SimpleSchema({
         label: "Address",
         optional: true
     },
+    dob: {
+        type: Date,
+        label: "Date Of Birth",
+        optional: true
+    },
     email: {
         type: String,
         optional: true

@@ -29,7 +29,8 @@
       "term": "Term",
       "openingBalance": "Opening Balance",
       "note": "Note",
-      "nationId": "Nation Id"
+      "nationId": "Nation Id",
+      "dob": "Date Of Birth"
     },
     "invoice": {
       "searchHere": "Search Here ...",
@@ -805,7 +806,8 @@
       "term": "លក្ខខ័ណ្ឌ",
       "openingBalance": "សមតុល្យដើមគ្រា",
       "note": "កំណត់សំគាល់",
-      "nationId": "លេខអត្តសញ្ញាណប័ណ្ណ"
+      "nationId": "លេខអត្តសញ្ញាណប័ណ្ណ",
+      "dob": "ថ្ងៃខែឆ្នាំកំណើត"
     },
     "invoice": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",
