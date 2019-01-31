@@ -525,7 +525,7 @@
                     </el-col>
                     <el-col :span="11" class="pull-right">
 
-                        <el-button type="success" @click="savePosInvoice(true,$event,true)"><i class="fa fa-print"></i>&nbsp; {{langConfig['saveAndPrint']}}</el-button>
+                        <el-button type="success" @click="savePosInvoice(true,$event,true)"><i class="fa fa-print"></i>&nbsp; {{langConfig['saveAndPrint']}} ( + )</el-button>
 
                         <el-button type="warning" @click="savePosInvoice(false,$event,false)"><i
                                 class="el-icon-circle-check"> </i>&nbsp; {{langConfig['saveAndNew']}} <i>(Ctrl + Alt + Enter)</i></el-button>
@@ -1504,6 +1504,7 @@
                 fullScreen: true,
                 phoneShop: false,
                 validateImei: false,
+                isMiniInvoice: false,
                 posInvoiceForm: {
                     itemId: "",
                     itemName: "",
@@ -1641,6 +1642,7 @@
                     this.$jQuery('body').on('keyup', elem, this.barcodeScanInvoice);
                 })
             }
+
         },
         watch: {
             currentSize(val) {
@@ -1813,6 +1815,12 @@
                     if (e.keyCode !== 13 && !isNaN(e.key)) {
                         this.takeBarcode += e.key;
                     }
+                    if (e.keyCode === 107 && !e.ctrlKey && !e.altKey) {
+                        e.preventDefault();
+                        vm.savePosInvoice(true, e, true);
+
+                    }
+
                     this.timeStamp.push(Date.now());
                     if (this.timeStamp.length > 1) {
                         if (this.timeStamp[1] - this.timeStamp[0] >= scannerSensitivity) {
@@ -1828,6 +1836,13 @@
                                 this.takeBarcode = ''
                             }
                         }
+                    }
+                } else {
+                    if (e.keyCode === 107 && !e.ctrlKey && !e.altKey) {
+                        e.preventDefault();
+                        this.popupPosInvoiceAdd();
+                        this.dialogAddPosInvoice = true;
+                        this.resetForm();
                     }
                 }
             },
@@ -1958,7 +1973,11 @@
                         Meteor.call("insertPosInvoice", posInvoiceDoc, (err, result) => {
                             if (!err) {
                                 if (isPrint) {
-                                    FlowRouter.go('/pos-data/posInvoice/print?inv=' + result);
+                                    if (vm.isMiniInvoice === true) {
+                                        FlowRouter.go('/pos-data/posInvoiceSmall/print?inv=' + result);
+                                    } else {
+                                        FlowRouter.go('/pos-data/posInvoice/print?inv=' + result);
+                                    }
                                 } else {
                                     vm.$message({
                                         duration: 1000,
@@ -2725,7 +2744,11 @@
                 if (data.transactionType === "Invoice Sale Order") {
                     FlowRouter.go('/pos-data/posInvoiceReceiveItem/print?inv=' + data._id);
                 } else {
-                    FlowRouter.go('/pos-data/posInvoice/print?inv=' + data._id);
+                    if (this.isMiniInvoice === true) {
+                        FlowRouter.go('/pos-data/posInvoiceSmall/print?inv=' + data._id);
+                    } else {
+                        FlowRouter.go('/pos-data/posInvoice/print?inv=' + data._id);
+                    }
                 }
 
             },
@@ -2873,6 +2896,7 @@
             if (ma && ma.feature) {
                 this.phoneShop = ma.feature.indexOf("Phone Shop") > -1 ? true : false;
                 this.validateImei = ma.validateImei;
+                this.isMiniInvoice = ma.isMiniInvoice;
             }
 
         },

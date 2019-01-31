@@ -32,6 +32,10 @@ Manage_Module.schema = new SimpleSchema({
         type: Boolean,
         defaultValue: false
     },
+    isMiniInvoice: {
+        type: Boolean,
+        defaultValue: false
+    },
     createdAt: {
         type: Date,
         optional: true,

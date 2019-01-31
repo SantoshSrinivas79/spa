@@ -58,7 +58,7 @@
     import PageSmall from '/imports/vue/ui/report/page/PageSmall.vue';
     import {GenerateFile} from '/imports/api/mixins/file-saver-fn.js';
     import compoLangReport from '../../../../both/i18n/lang/elem-label-report';
-
+    import {Manage_Module} from '../../../collection/manageModule';
     export default {
         mixins: [GenerateFile],
         mounted() {
@@ -90,6 +90,7 @@
 
                 checkAll: false,
                 isIndeterminate: true,
+                isMiniInvoice: true
 
             };
         },
@@ -107,6 +108,13 @@
                     this.waterBillingSetup = result;
                 }
             })
+
+
+            let ma = Manage_Module.findOne();
+            if (ma && ma.feature) {
+                this.isMiniInvoice = ma.isMiniInvoice;
+            }
+
             this.handleRun(FlowRouter.query.get('inv'));
         },
         methods: {
@@ -134,7 +142,12 @@
                 if (vm.printInvoiceSmallHtml != "" && vm.onLoad === true) {
                     setTimeout(function () {
                         window.print();
-                        FlowRouter.go('/pos-sale/posSaleCoffee');
+
+                        if (vm.isMiniInvoice === true) {
+                            FlowRouter.go('/pos-sale/posInvoice');
+                        } else {
+                            FlowRouter.go('/pos-sale/posSaleCoffee');
+                        }
                         vm.printInvoiceSmallHtml = "";
                         vm.$message({
                             duration: 1000,

@@ -61,20 +61,35 @@
                         </el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
-                <el-form-item label="Validate Receive Payment" prop="validateReceivePayment">
-                    <el-switch
-                            v-model="manageModule.validateReceivePayment"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949">
-                    </el-switch>
-                </el-form-item>
- <el-form-item label="Validate Imei" prop="validateImei">
-                    <el-switch
-                            v-model="manageModule.validateImei"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949">
-                    </el-switch>
-                </el-form-item>
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="Validate Receive Payment" prop="validateReceivePayment">
+                            <el-switch
+                                    v-model="manageModule.validateReceivePayment"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                            </el-switch>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="Validate Imei" prop="validateImei">
+                            <el-switch
+                                    v-model="manageModule.validateImei"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                            </el-switch>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="Is Mini Invoice" prop="isMiniInvoice">
+                            <el-switch
+                                    v-model="manageModule.isMiniInvoice"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                            </el-switch>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
 
 
                 <hr style="margin-top: 0px !important;">
@@ -102,6 +117,7 @@
                     rolesArea: [],
                     module: [],
                     feature: [],
+                    isMiniInvoice: false,
                     _id: ""
                 },
                 rules: {
@@ -161,6 +177,7 @@
                             validateReceivePayment: vm.manageModule.validateReceivePayment,
                             validateImei: vm.manageModule.validateImei,
                             feature: vm.manageModule.feature,
+                            isMiniInvoice: vm.manageModule.isMiniInvoice,
                             _id: vm.manageModule._id
                         };
 
