@@ -1,6 +1,7 @@
 import {Mongo} from 'meteor/mongo';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 import {TAPi18n} from 'meteor/tap:i18n';
+import {Manage_Module} from "./manageModule";
 
 // Lib
 
@@ -75,16 +76,7 @@ export const UserSchema = new SimpleSchema({
             // multiple: true,
             type: 'select-checkbox-inline',
             options() {
-                return [
-                    {label: 'Teacher', value: 'teacher'},
-                    {label: 'Student', value: 'student'},
-                    {label: 'Class Board', value: 'board'},
-                    {label: 'Register', value: 'register'},
-                    {label: 'Payment', value: 'payment'},
-                    {label: 'Report Customer', value: 'reportCustomer'},
-                    {label: 'Report Vendor', value: 'reportVendor'},
-                    {label: 'Purchase', value: 'purchase'},
-                    {label: 'Sale', value: 'sale'},
+                let list = [
                     {label: 'Admin', value: 'admin'},
                     {label: 'Control User', value: 'controlUser'},
                     {label: 'Setting', value: 'setting'},
@@ -95,6 +87,29 @@ export const UserSchema = new SimpleSchema({
 
 
                 ]
+                let manageModule = Manage_Module.findOne({});
+                manageModule.module.forEach((obj) => {
+                    if (obj === "POS") {
+                        list.push({label: 'Report Customer', value: 'reportCustomer'});
+                        list.push({label: 'Report Vendor', value: 'reportVendor'});
+                        list.push({label: 'Purchase', value: 'purchase'});
+                        list.push({label: 'Sale', value: 'sale'});
+
+                    } else if (obj === "Accounting") {
+
+                    } else if (obj === "Loan") {
+
+                    } else if (obj === "School") {
+                        list.push({label: 'Teacher', value: 'teacher'});
+                        list.push({label: 'Student', value: 'student'});
+                        list.push({label: 'Class Board', value: 'board'});
+                        list.push({label: 'Register', value: 'register'});
+                        list.push({label: 'Payment', value: 'payment'});
+
+                    }
+                })
+
+                return list;
             }
         }
     },
