@@ -76,28 +76,24 @@ export const UserSchema = new SimpleSchema({
             type: 'select-checkbox-inline',
             options() {
                 return [
-                    ,
-                    {label: 'Director', value: 'director'},
-                    {label: 'Department', value: 'department'},
                     {label: 'Teacher', value: 'teacher'},
                     {label: 'Student', value: 'student'},
-                    {label: 'Administration', value: 'administration'},
                     {label: 'Class Board', value: 'board'},
                     {label: 'Register', value: 'register'},
-                    {label: 'Admin', value: 'admin'},
-
-                    {label: 'Control User', value: 'controlUser'},
-                    {label: 'Setting', value: 'setting'},
-                    {label: 'Data', value: 'data'},
-                    {label: 'Report', value: 'report'},
                     {label: 'Payment', value: 'payment'},
-
                     {label: 'Report Customer', value: 'reportCustomer'},
                     {label: 'Report Vendor', value: 'reportVendor'},
                     {label: 'Purchase', value: 'purchase'},
                     {label: 'Sale', value: 'sale'},
+                    {label: 'Admin', value: 'admin'},
+                    {label: 'Control User', value: 'controlUser'},
+                    {label: 'Setting', value: 'setting'},
+                    {label: 'Data', value: 'data'},
+                    {label: 'Report', value: 'report'},
                     {label: 'Remove', value: 'remove'},
                     {label: 'Update', value: 'update'}
+
+
                 ]
             }
         }

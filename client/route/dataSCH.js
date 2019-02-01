@@ -51,7 +51,7 @@ let schAdmin = FlowRouter.group({
     prefix: '/sch-data',
     name: 'schData',
     triggersEnter: [function (context, redirect) {
-        if (!CheckRoles({roles: ['super', 'admin']})) {
+        if (!CheckRoles({roles: ['super', 'admin', "teacher"]})) {
             redirect('wb.home');
         }
         if (!CheckRoles({roles: ['remove', 'super']})) {
@@ -71,7 +71,7 @@ let schRegister = FlowRouter.group({
     prefix: '/sch-data',
     name: 'schData',
     triggersEnter: [function (context, redirect) {
-        if (!CheckRoles({roles: ['super', 'register']})) {
+        if (!CheckRoles({roles: ['super', 'register', "student"]})) {
             redirect('wb.home');
         }
         if (!CheckRoles({roles: ['remove', 'super']})) {
@@ -90,7 +90,7 @@ let schBoard = FlowRouter.group({
     prefix: '/sch-data',
     name: 'schData',
     triggersEnter: [function (context, redirect) {
-        if (!CheckRoles({roles: ['super', 'board']})) {
+        if (!CheckRoles({roles: ['super', 'board', "student"]})) {
             redirect('wb.home');
         }
         if (!CheckRoles({roles: ['remove', 'super']})) {

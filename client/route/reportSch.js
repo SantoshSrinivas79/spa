@@ -54,12 +54,34 @@ let schReportAdmin = FlowRouter.group({
     }]
 });
 
-let schReportDirector = FlowRouter.group({
+let schReportTeacher = FlowRouter.group({
     prefix: '/sch-report',
     name: 'schReport',
     title: "Home",
     triggersEnter: [function (context, redirect) {
-        if (!CheckRoles({roles: ['admin', 'super', 'director']})) {
+        if (!CheckRoles({roles: ['super', 'teacher']})) {
+            redirect('wb.home');
+        }
+
+        if (!CheckRoles({roles: ['remove', 'super']})) {
+            Session.set("canRemove", true);
+        } else {
+            Session.set("canRemove", false);
+        }
+        if (!CheckRoles({roles: ['update', 'super']})) {
+            Session.set("canUpdate", true);
+        } else {
+            Session.set("canUpdate", false);
+        }
+    }]
+});
+
+let schReportPayment = FlowRouter.group({
+    prefix: '/sch-report',
+    name: 'schReport',
+    title: "Home",
+    triggersEnter: [function (context, redirect) {
+        if (!CheckRoles({roles: ['super', 'payment']})) {
             redirect('wb.home');
         }
 
@@ -102,7 +124,7 @@ schReport.route('/schRegisterReport', {
 });
 import '../../imports/ui/report/schPayment/schPayment';
 
-schReportAdmin.route('/schPaymentReport', {
+schReportPayment.route('/schPaymentReport', {
     name: 'sch.schPaymentReport',
     title: "Payment Report",
     parent: 'wb.home',
@@ -113,7 +135,7 @@ schReportAdmin.route('/schPaymentReport', {
 });
 import '../../imports/ui/report/schDebtSummary/schDebtSummary';
 
-schReportAdmin.route('/schDebtSummaryReport', {
+schReportPayment.route('/schDebtSummaryReport', {
     name: 'sch.schDebtSummaryReport',
     title: "Debt Summary Report",
     parent: 'wb.home',
@@ -124,7 +146,7 @@ schReportAdmin.route('/schDebtSummaryReport', {
 });
 import '../../imports/ui/report/schDebtDetail/schDebtDetail';
 
-schReportAdmin.route('/schDebtDetailReport', {
+schReportPayment.route('/schDebtDetailReport', {
     name: 'sch.schDebtDetailReport',
     title: "Debt Detail Report",
     parent: 'wb.home',
@@ -206,7 +228,7 @@ schReportAdmin.route('/schBusDebtSummaryReport', {
 
 import '../../imports/ui/report/schTeacherActivity/schTeacherActivity';
 
-schReportDirector.route('/schTeacherActivityReport', {
+schReportTeacher.route('/schTeacherActivityReport', {
     name: 'sch.schTeacherActivityReport',
     title: "Teacher Activity Report",
     parent: 'wb.home',
@@ -218,7 +240,7 @@ schReportDirector.route('/schTeacherActivityReport', {
 
 import '../../imports/ui/report/schTeacherSalary/schTeacherSalary';
 
-schReportDirector.route('/schTeacherSalaryReport', {
+schReportTeacher.route('/schTeacherSalaryReport', {
     name: 'sch.schTeacherSalaryReport',
     title: "Teacher Salary Report",
     parent: 'wb.home',
@@ -230,7 +252,7 @@ schReportDirector.route('/schTeacherSalaryReport', {
 
 import '../../imports/ui/report/schTeacherByLevel/schTeacherByLevel';
 
-schReportDirector.route('/schTeacherByLevelReport', {
+schReportTeacher.route('/schTeacherByLevelReport', {
     name: 'sch.schTeacherByLevelReport',
     title: "Teacher ByLevel Report",
     parent: 'wb.home',
@@ -241,7 +263,7 @@ schReportDirector.route('/schTeacherByLevelReport', {
 });
 import '../../imports/ui/report/schTeacherDevelopment/schTeacherDevelopment';
 
-schReportDirector.route('/schTeacherDevelopmentReport', {
+schReportTeacher.route('/schTeacherDevelopmentReport', {
     name: 'sch.schTeacherDevelopmentReport',
     title: "Teacher Development Report",
     parent: 'wb.home',
@@ -253,7 +275,7 @@ schReportDirector.route('/schTeacherDevelopmentReport', {
 
 import '../../imports/ui/report/schTeacherLevelSalary/schTeacherLevelSalary';
 
-schReportDirector.route('/schTeacherLevelSalaryReport', {
+schReportTeacher.route('/schTeacherLevelSalaryReport', {
     name: 'sch.schTeacherLevelSalaryReport',
     title: "Teacher LevelSalary Report",
     parent: 'wb.home',

@@ -92,13 +92,13 @@ Template.MainLayout.helpers({
     isShowReportRole() {
         return CheckRoles({roles: ['admin', 'super', 'report', 'reportVendor', 'reportCustomer']});
     },
-    syncedBy() {
-        return Meteor.users.findOne({_id: this.userId});
+    isPaymentReportRole() {
+        return CheckRoles({roles: ['super', 'payment']});
     },
-    isRead() {
-        let isRead = this.readBy && this.readBy.find(x => x === Meteor.userId());
-        return !!isRead;
+    isTeacherReportRole() {
+        return CheckRoles({roles: ['super', 'teacher']});
     },
+
     createdAt() {
         return moment(this.createdAt).format('DD/MM/YYYY HH:mm');
     },
@@ -146,6 +146,7 @@ Template.MainLayout.helpers({
             ob.score = (ma.feature.indexOf("Score") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.teacher = (ma.feature.indexOf("Teacher") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.student = (ma.feature.indexOf("Student") > -1 ? true : false) || CheckRoles({roles: ['super']});
+            ob.super = CheckRoles({roles: ['super']});
 
             ob.inventory = (ma.feature.indexOf("Inventory") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.order = (ma.feature.indexOf("Order") > -1 ? true : false) || CheckRoles({roles: ['super']});
@@ -188,6 +189,15 @@ Template.sidebar.helpers({
     isAdminSettingAndSuper() {
         return CheckRoles({roles: ['admin', 'super', 'setting']})
     },
+    isPaymentRole() {
+        return CheckRoles({roles: ['super', 'payment']});
+    },
+    isTeacherRole() {
+        return CheckRoles({roles: ['super', 'teacher']});
+    },
+    isStudentRole() {
+        return CheckRoles({roles: ['super', 'student']});
+    },
 
     manageModule() {
         let ob = {};
@@ -198,6 +208,7 @@ Template.sidebar.helpers({
             ob.score = (ma.feature.indexOf("Score") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.teacher = (ma.feature.indexOf("Teacher") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.student = (ma.feature.indexOf("Student") > -1 ? true : false) || CheckRoles({roles: ['super']});
+            ob.super = CheckRoles({roles: ['super']});
 
             ob.inventory = (ma.feature.indexOf("Inventory") > -1 ? true : false) || CheckRoles({roles: ['super']});
             ob.order = (ma.feature.indexOf("Order") > -1 ? true : false) || CheckRoles({roles: ['super']});

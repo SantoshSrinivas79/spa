@@ -204,7 +204,9 @@ editTmpl.onRendered(function () {
     this.autorun(() => {
         if (this.requestMethodReady.get()) {
             Meteor.setTimeout(function () {
-                $('[name="rolesBranch"]').select2();
+                /*if ($('[name="rolesBranch"]')) {
+                    $('[name="rolesBranch"]').select2();
+                }*/
             }, 500);
         }
     });

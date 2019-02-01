@@ -116,12 +116,12 @@
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if schLayout}}
-                                                        {{#if isShowSettingRole}}
+                                                        {{#if isShowReportRole}}
                                                             Report
                                                         {{/if}}
                                                     {{/if}}
                                                     {{#if loanLayout}}
-                                                        {{#if isShowSettingRole}}
+                                                        {{#if isShowReportRole}}
                                                             Report
                                                         {{/if}}
                                                     {{/if}}
@@ -161,7 +161,6 @@
                                                             {{#if manageModule.student}}
                                                                 <li class="col-sm-4">
                                                                     <ul>
-
                                                                         <a href="#" class="title-head">
                                                                             <i class="fa fa-graduation-cap"></i>
                                                                             <span>{{_
@@ -174,27 +173,31 @@
                                                                                 "sch.sidebarMenu.register"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schPaymentReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.payment"}}
-                                                                        </a>
-                                                                        </li>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schDebtSummaryReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.debtSummary"}}
-                                                                        </a>
-                                                                        </li>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schDebtDetailReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.debtDetail"}}
-                                                                        </a>
-                                                                        </li>
+
+                                                                        {{#if isPaymentReportRole}}
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schPaymentReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.payment"}}
+                                                                            </a>
+                                                                            </li>
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schDebtSummaryReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.debtSummary"}}
+                                                                            </a>
+                                                                            </li>
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schDebtDetailReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.debtDetail"}}
+                                                                            </a>
+                                                                            </li>
+                                                                        {{/if}}
+
 
                                                                         <hr>
 
@@ -270,46 +273,49 @@
                                                                     {{/if}}
 
                                                                     {{#if manageModule.teacher}}
-                                                                        <a href="#" class="title-head">
-                                                                            <i class="fa fa-user"></i> <span>{{_
-                                                                                "sch.sidebarMenu.teacher"}}</span>
-                                                                        </a>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schTeacherActivityReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.teacherActivity"}}
-                                                                        </a>
-                                                                        </li>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schTeacherSalaryReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.teacherSalary"}}
-                                                                        </a>
-                                                                        </li>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schTeacherByLevelReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.teacherByLevel"}}
-                                                                        </a>
-                                                                        </li>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schTeacherDevelopmentReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.teacherDevelopment"}}
-                                                                        </a>
-                                                                        </li>
-                                                                        <li><a href="{{pathFor
-                                                                                'sch.schTeacherLevelSalaryReport'}}"
-                                                                               class="title-body">
-                                                                            <i class="fa fa-dollar"></i> {{_
-                                                                                "sch.sidebarMenu.teacherLevelSalary"}}
-                                                                        </a>
-                                                                        </li>
-                                                                        <hr>
+                                                                        {{#if isTeacherReportRole}}
+
+                                                                            <a href="#" class="title-head">
+                                                                                <i class="fa fa-user"></i> <span>{{_
+                                                                                    "sch.sidebarMenu.teacher"}}</span>
+                                                                            </a>
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schTeacherActivityReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.teacherActivity"}}
+                                                                            </a>
+                                                                            </li>
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schTeacherSalaryReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.teacherSalary"}}
+                                                                            </a>
+                                                                            </li>
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schTeacherByLevelReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.teacherByLevel"}}
+                                                                            </a>
+                                                                            </li>
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schTeacherDevelopmentReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.teacherDevelopment"}}
+                                                                            </a>
+                                                                            </li>
+                                                                            <li><a href="{{pathFor
+                                                                                    'sch.schTeacherLevelSalaryReport'}}"
+                                                                                   class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "sch.sidebarMenu.teacherLevelSalary"}}
+                                                                            </a>
+                                                                            </li>
+                                                                            <hr>
+                                                                        {{/if}}
                                                                     {{/if}}
 
                                                                 </ul>
@@ -1202,38 +1208,49 @@
             {{#if schLayout}}
                 <ul class="sidebar-menu tree animated-padding animated fadeInLeft" data-widget="tree">
                     {{#if manageModule.student}}
+                        {{#if isStudentRole}}
+
+                            <a href="#" class="title-head">
+                                <i style="color: white !important;" class="fa fa-graduation-cap"></i> <span
+                                    style="color: white;">{{_
+                                    "sch.sidebarMenu.student"}}</span>
+                                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                            </a>
+
+                            <li><a href="{{pathFor 'sch.student'}}" class="title-body"><i class="fa fa-graduation-cap"
+                                                                                          aria-hidden="true"></i> {{_
+                                    "sch.sidebarMenu.student"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.register'}}" class="title-body"><i class="fa fa-registered"
+                                                                                           aria-hidden="true"></i> {{_
+                                    "sch.sidebarMenu.register"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.class'}}" class="title-body"><i class="fa fa-cube"
+                                                                                        aria-hidden="true"></i> {{_
+                                    "sch.sidebarMenu.class"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.classBoard'}}" class="title-body">
+
+                                <i class="el-icon-menu"
+                                   aria-hidden="true"></i> {{_
+                                    "sch.sidebarMenu.classBoard"}}</a>
+                            </li>
+                        {{/if}}
+                    {{/if}}
+                    {{#if isPaymentRole}}
+
                         <a href="#" class="title-head">
-                            <i style="color: white !important;" class="fa fa-graduation-cap"></i> <span
+                            <i style="color: white !important;" class="fa fa-shopping-cart"></i> <span
                                 style="color: white;">{{_
-                                "sch.sidebarMenu.student"}}</span>
+                                "sch.sidebarMenu.payment"}}</span>
                             <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                         </a>
-
-                        <li><a href="{{pathFor 'sch.student'}}" class="title-body"><i class="fa fa-graduation-cap"
-                                                                                      aria-hidden="true"></i> {{_
-                                "sch.sidebarMenu.student"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.register'}}" class="title-body"><i class="fa fa-registered"
-                                                                                       aria-hidden="true"></i> {{_
-                                "sch.sidebarMenu.register"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.classBoard'}}" class="title-body">
-
-                            <i class="el-icon-menu"
-                               aria-hidden="true"></i> {{_
-                                "sch.sidebarMenu.classBoard"}}</a>
-                        </li>
                         <li><a href="{{pathFor 'sch.payment'}}" class="title-body"><i class="fa fa-shopping-cart"
                                                                                       aria-hidden="true"></i> {{_
                                 "sch.sidebarMenu.payment"}}</a>
                         </li>
                     {{/if}}
-                    <!-- <hr>
-                    <a href="#" class="title-head">
-                        <i style="color: white !important;" class="fa fa-user"></i> <span style="color: white;">{{_
-                            "sch.sidebarMenu.teacher"}}</span>
-                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-                    </a>-->
+
 
                     {{#if manageModule.bus}}
                         <hr>
@@ -1255,28 +1272,26 @@
 
                     {{/if}}
 
-
-                    <hr>
-                    <a href="#" class="title-head">
-                        <i style="color: white !important;" class="fa fa-database"></i> <span style="color: white;">{{_
-                            "sch.sidebarMenu.data"}}</span>
-                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-                    </a>
-                    <li><a href="{{pathFor 'sch.teacher'}}" class="title-body"><i class="fa fa-user"
-                                                                                  aria-hidden="true"></i> {{_
-                            "sch.sidebarMenu.teacher"}}</a>
-                    </li>
-                    {{#if manageModule.student}}
-                        <li><a href="{{pathFor 'sch.class'}}" class="title-body"><i class="fa fa-cube"
-                                                                                    aria-hidden="true"></i> {{_
-                                "sch.sidebarMenu.class"}}</a>
-                        </li>
-                    {{/if}}
                     {{#if manageModule.teacher}}
-                        <li><a href="{{pathFor 'sch.teacherActivity'}}" class="title-body"><i class="fa fa-plane"
-                                                                                              aria-hidden="true"></i> {{_
-                                "sch.sidebarMenu.teacherActivity"}}</a>
-                        </li>
+                        {{#if isTeacherRole}}
+
+                            <hr>
+                            <a href="#" class="title-head">
+                                <i style="color: white !important;" class="fa fa-users"></i> <span
+                                    style="color: white;">{{_
+                                    "sch.sidebarMenu.teacher"}}</span>
+                                <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                            </a>
+                            <li><a href="{{pathFor 'sch.teacher'}}" class="title-body"><i class="fa fa-user"
+                                                                                          aria-hidden="true"></i> {{_
+                                    "sch.sidebarMenu.teacher"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.teacherActivity'}}" class="title-body"><i class="fa fa-plane"
+                                                                                                  aria-hidden="true"></i> {{_
+                                    "sch.sidebarMenu.teacherActivity"}}</a>
+                            </li>
+
+                        {{/if}}
                     {{/if}}
                     <hr>
                     <a href="#" class="title-head">
@@ -1285,44 +1300,64 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     {{#if manageModule.student}}
-                        <li><a href="{{pathFor 'sch.time'}}" class="title-body"><i class="fa fa-calendar"></i> {{_
-                                "sch.sidebarMenu.time"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.program'}}" class="title-body"><i class="fa fa-tasks"></i> {{_
-                                "sch.sidebarMenu.program"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.faculty'}}" class="title-body"><i class="fa fa-industry"></i> {{_
-                                "sch.sidebarMenu.faculty"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.major'}}" class="title-body"><i class="fa fa-ravelry"></i> {{_
-                                "sch.sidebarMenu.major"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.level'}}" class="title-body"><i class="fa fa-level-up"></i> {{_
-                                "sch.sidebarMenu.level"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.promotion'}}" class="title-body"><i class="fa fa-gift"></i> {{_
-                                "sch.sidebarMenu.promotion"}}</a>
-                        </li>
+                        {{#if isStudentRole}}
+
+                            <li><a href="{{pathFor 'sch.time'}}" class="title-body"><i class="fa fa-calendar"></i> {{_
+                                    "sch.sidebarMenu.time"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.program'}}" class="title-body"><i class="fa fa-tasks"></i> {{_
+                                    "sch.sidebarMenu.program"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.faculty'}}" class="title-body"><i
+                                    class="fa fa-industry"></i> {{_
+                                    "sch.sidebarMenu.faculty"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.major'}}" class="title-body"><i class="fa fa-ravelry"></i> {{_
+                                    "sch.sidebarMenu.major"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.level'}}" class="title-body"><i class="fa fa-level-up"></i> {{_
+                                    "sch.sidebarMenu.level"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.promotion'}}" class="title-body"><i class="fa fa-gift"></i> {{_
+                                    "sch.sidebarMenu.promotion"}}</a>
+                            </li>
+                        {{/if}}
                     {{/if}}
                     {{#if manageModule.trascript}}
-                        <li><a href="{{pathFor 'sch.subject'}}" class="title-body"><i class="fa fa-book"></i> {{_
-                                "sch.sidebarMenu.subject"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.ciriculumn'}}" class="title-body"><i class="el-icon-time"></i> {{_
-                                "sch.sidebarMenu.ciriculumn"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.mention'}}" class="title-body"><i class="fa fa-star"></i> {{_
-                                "sch.sidebarMenu.mention"}}</a>
-                        </li>
+                        {{#if isStudentRole}}
+
+                            <li><a href="{{pathFor 'sch.subject'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                                    "sch.sidebarMenu.subject"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.ciriculumn'}}" class="title-body"><i
+                                    class="el-icon-time"></i> {{_
+                                    "sch.sidebarMenu.ciriculumn"}}</a>
+                            </li>
+
+                            {{#if isStudentRole}}
+
+                                <li><a href="{{pathFor 'sch.mention'}}" class="title-body"><i
+                                        class="fa fa-star"></i> {{_
+                                        "sch.sidebarMenu.mention"}}</a>
+                                </li>
+                            {{/if}}
+                        {{/if}}
                     {{/if}}
+
                     {{#if manageModule.teacher}}
-                        <li><a href="{{pathFor 'sch.position'}}" class="title-body"><i class="fa fa-podcast"></i> {{_
-                                "sch.sidebarMenu.position"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.activity'}}" class="title-body"><i class="fa fa-support"></i> {{_
-                                "sch.sidebarMenu.activity"}}</a>
-                        </li>
+                        {{#if isTeacherRole}}
+
+                            <li><a href="{{pathFor 'sch.position'}}" class="title-body"><i
+                                    class="fa fa-podcast"></i> {{_
+                                    "sch.sidebarMenu.position"}}</a>
+                            </li>
+                            <li><a href="{{pathFor 'sch.activity'}}" class="title-body"><i
+                                    class="fa fa-support"></i> {{_
+                                    "sch.sidebarMenu.activity"}}</a>
+                            </li>
+                        {{/if}}
                     {{/if}}
+
                     {{#if manageModule.bus}}
                         <hr>
                         <li><a href="{{pathFor 'sch.busStop'}}" class="title-body"><i class="fa fa-map-marker"></i> {{_
@@ -1333,9 +1368,10 @@
                         </li>
                     {{/if}}
                     <hr>
-                    <li><a href="{{pathFor 'wb.waterBillingSetup'}}">
-                        <i class="fa fa-cog"></i> Setup</a></li>
-
+                    {{#if manageModule.super}}
+                        <li><a href="{{pathFor 'wb.waterBillingSetup'}}">
+                            <i class="fa fa-cog"></i> Setup</a></li>
+                    {{/if}}
                 </ul>
             {{/if}}
             </body>
