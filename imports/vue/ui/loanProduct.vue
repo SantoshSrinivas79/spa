@@ -56,10 +56,6 @@
                             :label="langConfig['rateType']">
                     </el-table-column>
                     <el-table-column
-                            prop="currencyId"
-                            :label="langConfig['currency']">
-                    </el-table-column>
-                    <el-table-column
                             prop="productDateName"
                             :label="langConfig['productDate']">
                     </el-table-column>
@@ -133,19 +129,6 @@
                     <el-form-item :label="langConfig['name']" prop="name">
                         <el-input v-model="loanProductForm.name"></el-input>
                     </el-form-item>
-                    <el-form-item :label="langConfig['currency']" prop="currencyId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanProductForm.currencyId"
-                                   placeholder="">
-                            <el-option
-                                    v-for="item in currencyOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item :label="langConfig['rateType']" prop="rateType">
                         <el-select style="display: block !important;" filterable clearable
                                    v-model="loanProductForm.rateType"
@@ -160,7 +143,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="langConfig['rate']" prop="rate">
-                        <el-input v-model="loanProductForm.rate"></el-input>
+                        <el-input v-model.number="loanProductForm.rate" type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['productDate']" prop="productDate">
                         <el-date-picker
@@ -240,19 +223,6 @@
                     <el-form-item :label="langConfig['name']" prop="name">
                         <el-input v-model="loanProductForm.name"></el-input>
                     </el-form-item>
-                    <el-form-item :label="langConfig['currency']" prop="currencyId">
-                        <el-select style="display: block !important;" filterable clearable
-                                   v-model="loanProductForm.currencyId"
-                                   placeholder="">
-                            <el-option
-                                    v-for="item in currencyOption"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                    :disabled="item.disabled">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item :label="langConfig['rateType']" prop="rateType">
                         <el-select style="display: block !important;" filterable clearable
                                    v-model="loanProductForm.rateType"
@@ -267,7 +237,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="langConfig['rate']" prop="rate">
-                        <el-input v-model="loanProductForm.rate"></el-input>
+                        <el-input v-model.number="loanProductForm.rate" type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['productDate']" prop="productDate">
                         <el-date-picker
@@ -375,7 +345,6 @@
 
                 loanProductForm: {
                     name: "",
-                    currencyId: "",
                     rate: "",
                     productDate: "",
                     penaltyId: "",
@@ -386,12 +355,7 @@
                     _id: ""
                 },
                 rules: {
-                    currencyId: [{
-                        required: true,
-                        type: 'string',
-                        message: 'Please choose currency',
-                        trigger: 'change'
-                    }],
+
                     penaltyId: [{
                         required: true,
                         type: 'string',
@@ -491,7 +455,6 @@
                     if (valid) {
                         let loanProductDoc = {
                             name: vm.loanProductForm.name,
-                            currencyId: vm.loanProductForm.currencyId,
                             rate: vm.loanProductForm.rate,
                             productDate: vm.loanProductForm.productDate,
                             status: vm.loanProductForm.status,
@@ -532,7 +495,6 @@
                         let loanProductDoc = {
                             _id: vm.loanProductForm._id,
                             name: vm.loanProductForm.name,
-                            currencyId: vm.loanProductForm.currencyId,
                             rate: vm.loanProductForm.rate,
                             productDate: vm.loanProductForm.productDate,
                             status: vm.loanProductForm.status,

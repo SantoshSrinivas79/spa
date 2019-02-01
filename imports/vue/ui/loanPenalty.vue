@@ -119,10 +119,10 @@
                     </el-form-item>
 
                     <el-form-item :label="langConfig['amount']" prop="amount">
-                        <el-input v-model="loanPenaltyForm.amount"></el-input>
+                        <el-input v-model.number="loanPenaltyForm.amount" type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['graceDay']" prop="graceDay">
-                        <el-input v-model="loanPenaltyForm.graceDay"></el-input>
+                        <el-input v-model.number="loanPenaltyForm.graceDay" type="number"></el-input>
                     </el-form-item>
 
 
@@ -162,10 +162,10 @@
                     </el-form-item>
 
                     <el-form-item :label="langConfig['amount']" prop="amount">
-                        <el-input v-model="loanPenaltyForm.amount"></el-input>
+                        <el-input v-model.number="loanPenaltyForm.amount" type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['graceDay']" prop="graceDay">
-                        <el-input v-model="loanPenaltyForm.graceDay"></el-input>
+                        <el-input v-model.number="loanPenaltyForm.graceDay" type="number"></el-input>
                     </el-form-item>
 
                     <input type="hidden" v-model="loanPenaltyForm._id"/>

@@ -45,6 +45,11 @@ Pos_Customer.schema = new SimpleSchema({
         defaultValue: 0,
         optional: true
     },
+    loanCycle: {
+        type: Number,
+        defaultValue: 0,
+        optional: true
+    },
     note: {
         type: String,
         optional: true

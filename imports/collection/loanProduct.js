@@ -1,10 +1,6 @@
 export const Loan_Product = new Mongo.Collection('loan_product');
 
 Loan_Product.schema = new SimpleSchema({
-    currencyId: {
-        type: String,
-        label: "Currency",
-    },
     rate: {
         type: Number,
         decimal: true,

@@ -1,6 +1,6 @@
 <!--suppress ALL -->
 <template>
-    <div class="loanRepaymentSchedule-report">
+    <div class="loanDisbursement-report">
         <a4>
             <div slot="header" class="no-print">
                 <el-row type="flex" class="row-bg" justify="center">
@@ -14,10 +14,9 @@
                                            size="small">{{langConfig['run']}}
                                 </el-button>
                             </div>
-                            <el-form :model="params" :label-loanition="labelPosition" :rules="rules"
-                                     ref="loanRepaymentSchedule-report">
+                            <el-form :label-loanition="labelPosition">
                                 <el-row type="flex" class="row-bg" justify="center">
-                                    <el-col :span="6">
+                                    <el-col>
                                         <el-form-item :label="langConfig['branch']">
                                             <el-select filterable v-model="params.branch"
                                                        :placeholder="langConfig['all']" clearable
@@ -30,7 +29,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
-                                    <el-col :span="6">
+                                    <el-col>
                                         <el-form-item :label="langConfig['area']">
                                             <el-select filterable v-model="params.area" clearable
                                                        :placeholder="langConfig['all']"
@@ -44,17 +43,43 @@
                                         </el-form-item>
 
                                     </el-col>
-                                    <el-col :span="12">
-                                        <el-form-item :label="langConfig['client']" prop="disbursementId">
-                                            <el-select filterable v-model="params.disbursementId" clearable
-                                                       :placeholder="langConfig['all']" :remote-method="clientOpt"
+                                    <el-col>
+                                        <el-form-item :label="langConfig['creditOfficer']">
+                                            <el-select filterable v-model="params.creditOfficerId" clearable
+                                                       :placeholder="langConfig['all']"
+                                                       :remote-method="fetchCreditOfficer"
                                                        style="width: 95%">
                                                 <el-option
-                                                        v-for="item in clientOptions"
+                                                        v-for="item in creditOfficerOptions"
                                                         :label="item.label"
                                                         :value="item.value" :key="item._id">
                                                 </el-option>
                                             </el-select>
+                                        </el-form-item>
+
+                                    </el-col>
+                                    <el-col>
+                                        <el-form-item label="Exchange">
+                                            <el-select filterable v-model="params.exchangeId"
+                                                       placeholder="Select One" style="width: 95%">
+                                                <el-option
+                                                        v-for="item in exchangeOptions"
+                                                        :label="item.label"
+                                                        :value="item.value" :key="item._id">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col>
+                                        <el-form-item :label="langConfig['dateRange']">
+                                            <el-date-picker
+                                                    align="right" style="width: 95%"
+                                                    v-model="params.date"
+                                                    type="daterange"
+                                                    :picker-options="pickerDateOptions"
+                                                    :placeholder="langConfig['pickDateRange']"
+                                            >
+                                            </el-date-picker>
                                         </el-form-item>
                                     </el-col>
 
@@ -62,10 +87,13 @@
                             </el-form>
 
                         </el-card>
+
                     </el-col>
                 </el-row>
             </div>
             <span slot="content" style="margin: 0px !important;">
+
+
                 <table class="table table-report-block-summary table-bordered">
                       <caption>
 
@@ -101,66 +129,45 @@
                               <div class="col-lg-3"></div>
                           </div>
                           <div class="row">
-                              <div style="width: 25% !important; float:right">
-                                  ចំនួនប្រាក់ខ្ចី : {{disbursementDoc.loanAmount | numFormat}}
-                              </div>
-                              <div style="width: 25% !important;float:right">
-                                  ថ្ងៃខ្ចី : {{disbursementDoc.disbursementDateName}}
-                              </div>
-                              <div style="width: 50% !important;">
-                                  លេខគណនីឥណទាន: {{disbursementDoc.loanAcc}}
-                              </div>
-
+                                                                <span style="float: left !important;">{{langConfig['no']}}:.........</span>
 
                           </div>
                           <div class="row">
-
-                               <div style="width: 25% !important; float:right">
-                                  អត្រាការប្រាក់: {{productDoc.rate}}%
-                              </div>
-
-
-
-                              <div style="width: 25% !important;float:right">
-                                  ចំនួនដងត្រូវសង: {{disbursementDoc.installment}}
-                              </div>
-
-                              <div style="width: 50% !important;">
-                                  ឈ្មោះអ្នកខ្ចី : {{clientDoc.name}}
-                              </div>
-
-
-                          </div>
-                          <div class="row">
-                              <div style="width: 25% !important;float: right">
-                                  លើកទី : {{clientDoc.loanCycle || ""}}
-                              </div>
-                              <div style="width: 25% !important;float: right">
-                                  ទូរស័ព្ទ : {{clientDoc.phoneNumber || ""}}
+                              <div style="widows: 50% !important; float:right">
+                                  {{langConfig['currency']}}: {{currencyHeader}}
                               </div>
                               <div style="width: 50% !important;">
-                                  មន្រ្តីឥណទាន : {{creditOfficerDoc.name || ""}}
+                                  {{langConfig['date']}}: {{dateHeader}}
                               </div>
 
                           </div>
-
-
-
                       </caption>
 
                 <thead style="margin-top: 5px">
                     <tr>
                         <th>{{langConfig['no']}}</th>
-                        <th>{{langConfig['paidDate']}}</th>
-                        <th>{{langConfig['numDay']}}</th>
-                        <th>{{langConfig['principle']}}</th>
-                        <th>{{langConfig['interest']}}</th>
-                        <th>{{langConfig['total']}}</th>
+                        <th>{{langConfig['loanAccount']}}</th>
+                        <th>{{langConfig['clientName']}}</th>
+                        <th>{{langConfig['creditOfficerName']}}</th>
+                        <th>{{langConfig['productName']}}</th>
+                        <th>{{langConfig['currency']}}</th>
+                        <th>{{langConfig['accType']}}</th>
+                        <th>{{langConfig['disbursementDate']}}</th>
+                        <th>{{langConfig['maturityDate']}}</th>
+                        <th>{{langConfig['installment']}}</th>
+                        <th>{{langConfig['rate']}}</th>
+                        <th>{{langConfig['cycle']}}</th>
+                        <th>{{langConfig['address']}}</th>
+                        <th>{{langConfig['loanAmount']}}</th>
+                        <th>{{langConfig['projectInterest']}}</th>
+                        <th>{{langConfig['fee']}}</th>
+                        <th>{{langConfig['totalDue']}}</th>
                     </tr>
                 </thead>
-                <tbody style="margin-bottom: 5px;" v-html="repaymentScheduleHtml">
+                <tbody style="margin-bottom: 5px;" v-html="disbursementHtml">
 
                 </tbody>
+
 
             </table>
                  <div class="row" style="width: 100% !important;">
@@ -195,15 +202,19 @@
                 params: {
                     branch: '',
                     area: '',
-                    disbursementId: ""
+                    date: null,
+                    creditOfficerId: "",
+                    exchangeId: ""
+
                 },
                 rolesArea: '',
                 activeName: '1',
-                repaymentScheduleHtml: "",
+                disbursementHtml: "",
                 labelPosition: 'top',
                 branchOptions: [],
                 areaOptions: [],
-                clientOptions: [],
+                creditOfficerOptions: [],
+                exchangeOptions: [],
 
 
                 waterBillingSetup: {
@@ -218,13 +229,45 @@
                 isIndeterminate: true,
                 dateHeader: "",
                 currencyHeader: "",
-                rules: {
-                    disbursementId: [{required: true, message: 'Please input Disbursement', trigger: 'change'}],
+                pickerDateOptions: {
+                    shortcuts: [{
+                        text: 'Last week',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: 'Last month',
+                        onClick(picker) {
+                            const end = moment().add(-1, "month").endOf("month").toDate();
+                            const start = moment().add(-1, "month").startOf("month").toDate();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: 'Last 3 months',
+                        onClick(picker) {
+                            const end = moment().add(-1, "month").endOf("month").toDate();
+                            const start = moment().add(-4, "month").startOf("month").toDate();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: 'This month',
+                        onClick(picker) {
+                            const end = moment().endOf("month").toDate();
+                            const start = moment().startOf("month").toDate();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: 'Today',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
                 },
-                disbursementDoc: {},
-                clientDoc: {},
-                productDoc: {},
-                creditOfficerDoc: {},
             };
         },
         meteor: {
@@ -248,7 +291,8 @@
                 }
             })
             this.fetchBranch();
-            this.clientOpt();
+            this.fetchExchange();
+            this.fetchCreditOfficer();
         },
         methods: {
 
@@ -266,22 +310,28 @@
                     }
                 })
             },
-            clientOpt(query) {
+            fetchExchange() {
+                Meteor.call('queryExchangeOptionReport', (err, result) => {
+                    if (result) {
+                        this.exchangeOptions = result;
+                    }
+                });
+            },
+            fetchCreditOfficer(query) {
                 if (!!query) {
                     setTimeout(() => {
-                        let lists = [];
-                        Meteor.call('queryLoanDisbursementOption', query, (err, result) => {
+                        Meteor.call('queryLoanCreditOfficerOption', query, (err, result) => {
                             if (!err) {
-                                this.clientOptions = result;
+                                this.creditOfficerOptions = result;
                             } else {
                                 console.log(err.message);
                             }
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryLoanDisbursementOption', "", (err, result) => {
+                    Meteor.call('queryLoanCreditOfficerOption', "", (err, result) => {
                         if (!err) {
-                            this.clientOptions = result;
+                            this.creditOfficerOptions = result;
                         } else {
                             console.log(err.message);
                         }
@@ -290,25 +340,20 @@
             },
             handleRun() {
                 this.loading = true;
-                this.$refs["loanRepaymentSchedule-report"].validate((valid) => {
-                    if (valid) {
-                        Meteor.call('loanRepaymentScheduleReport', this.params, this.langConfig, (err, result) => {
-                            if (result) {
-                                this.repaymentScheduleHtml = result.repaymentScheduleHtml;
-                                this.dateHeader = result.dateHeader;
-                                this.currencyHeader = result.currencyHeader;
 
-                                this.disbursementDoc = result.disbursementDoc;
-                                this.clientDoc = result.clientDoc;
-                                this.productDoc = result.productDoc;
-                                this.creditOfficerDoc = result.creditOfficerDoc;
-                            }
-                            this.loading = false;
-                        });
-                    } else {
-                        this.loading = false;
+                if (this.params.date == "" || this.params.date == undefined) {
+                    alertify.error("Date can't not empty!!");
+                    this.loading = false;
+                    return false;
+                }
+                Meteor.call('loanDisbursementReport', this.params, this.langConfig, (err, result) => {
+                    if (result) {
+                        this.disbursementHtml = result.disbursementHTML;
+                        this.dateHeader = result.dateHeader;
+                        this.currencyHeader = result.currencyHeader;
                     }
-                })
+                    this.loading = false;
+                });
             }
         },
         computed: {
@@ -316,7 +361,7 @@
                 // return this.loanSaleData.length > 0;
             },
             langConfig() {
-                let data = compoLangReport.filter(config => config.lang === this.langSessionReport)[0]['repaymentSchedule'];
+                let data = compoLangReport.filter(config => config.lang === this.langSessionReport)[0]['disbursement'];
                 return data;
             }
         },

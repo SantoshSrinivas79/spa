@@ -166,12 +166,12 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="langConfig['feeAmount']" prop="feeAmount">
-                            <el-input v-model="loanDisbursementForm.feeAmount"></el-input>
+                            <el-input v-model.number="loanDisbursementForm.feeAmount" type='number'></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
-                            <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                            <el-input v-model.number="loanDisbursementForm.loanAmount" type='number'></el-input>
                         </el-form-item>
                         <el-form-item :label="langConfig['currency']" prop="currencyId">
                             <el-select style="display: block !important;" filterable clearable
@@ -187,7 +187,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="langConfig['installment']" prop="installment">
-                            <el-input v-model="loanDisbursementForm.installment"></el-input>
+                            <el-input v-model.number="loanDisbursementForm.installment" type='number'></el-input>
                         </el-form-item>
                         <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
                             <el-date-picker
@@ -278,12 +278,12 @@
                         </el-form-item>
 
                         <el-form-item :label="langConfig['feeAmount']" prop="feeAmount">
-                            <el-input v-model="loanDisbursementForm.feeAmount"></el-input>
+                            <el-input v-model.number="loanDisbursementForm.feeAmount" type='number'></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item :label="langConfig['loanAmount']" prop="loanAmount">
-                            <el-input v-model="loanDisbursementForm.loanAmount"></el-input>
+                            <el-input v-model.number="loanDisbursementForm.loanAmount" type='number'></el-input>
                         </el-form-item>
                         <el-form-item :label="langConfig['currency']" prop="currencyId">
                             <el-select style="display: block !important;" filterable clearable
@@ -299,7 +299,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="langConfig['installment']" prop="installment">
-                            <el-input v-model="loanDisbursementForm.installment"></el-input>
+                            <el-input v-model.number="loanDisbursementForm.installment" type='number'></el-input>
                         </el-form-item>
                         <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
                             <el-date-picker
@@ -592,7 +592,8 @@
                                     type: 'success'
                                 });
                                 vm.dialogAddLoanDisbursement = false;
-                                vm.$refs["loanDisbursementFormAdd"].resetFields();
+                                vm.resetForm();
+
                             } else {
                                 vm.$message({
                                     duration: 1000,
@@ -634,7 +635,8 @@
                                 });
                                 vm.dialogUpdateLoanDisbursement = false;
 
-                                vm.$refs["loanDisbursementFormUpdate"].resetFields();
+                                vm.resetForm();
+
                             } else {
                                 vm.$message({
                                     duration: 1000,
@@ -642,6 +644,7 @@
                                     type: 'error'
                                 });
                             }
+
                         })
                     }
                 })
@@ -659,7 +662,7 @@
                             rows.splice(index, 1);
 
                             vm.$message({
-                                message: `${row.name}` + this.langConfig['removeSuccess'],
+                                message: this.langConfig['removeSuccess'],
                                 type: 'success'
                             });
 

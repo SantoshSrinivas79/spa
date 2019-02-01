@@ -912,7 +912,6 @@
                 }
             },
             "journalForm.method"(val) {
-                debugger;
                 if (val) {
                 }
             }

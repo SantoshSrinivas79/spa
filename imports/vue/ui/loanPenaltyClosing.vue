@@ -106,10 +106,12 @@
                         <el-input v-model="loanPenaltyClosingForm.name"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['installmentTermLessThan']" prop="installmentTermLessThan">
-                        <el-input v-model="loanPenaltyClosingForm.installmentTermLessThan"></el-input>
+                        <el-input v-model.number="loanPenaltyClosingForm.installmentTermLessThan"
+                                  type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['interestReminderCharge']" prop="interestReminderCharge">
-                        <el-input v-model="loanPenaltyClosingForm.interestReminderCharge"></el-input>
+                        <el-input v-model.number="loanPenaltyClosingForm.interestReminderCharge"
+                                  type="number"></el-input>
                     </el-form-item>
 
 
@@ -142,10 +144,12 @@
                         <el-input v-model="loanPenaltyClosingForm.name"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['installmentTermLessThan']" prop="installmentTermLessThan">
-                        <el-input v-model="loanPenaltyClosingForm.installmentTermLessThan"></el-input>
+                        <el-input v-model.number="loanPenaltyClosingForm.installmentTermLessThan"
+                                  type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['interestReminderCharge']" prop="interestReminderCharge">
-                        <el-input v-model="loanPenaltyClosingForm.interestReminderCharge"></el-input>
+                        <el-input v-model.number="loanPenaltyClosingForm.interestReminderCharge"
+                                  type="number"></el-input>
                     </el-form-item>
 
                     <input type="hidden" v-model="loanPenaltyClosingForm._id"/>

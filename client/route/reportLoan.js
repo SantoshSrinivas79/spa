@@ -34,12 +34,25 @@ let loanReport = FlowRouter.group({
 
 
 import '../../imports/ui/report/loanRepaymentSchedule/loanRepaymentSchedule';
+
 loanReport.route('/loanRepaymentScheduleReport', {
     name: 'loan.loanRepaymentScheduleReport',
     title: "Repayment Schedule",
     parent: 'wb.home',
     action: function (query, params) {
         _Main('loan_repaymentScheduleReport');
+    }
+
+});
+
+import '../../imports/ui/report/loanDisbursement/loanDisbursement';
+
+loanReport.route('/loanDisbursementReport', {
+    name: 'loan.loanDisbursementReport',
+    title: "Disbursement",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('loan_disbursementReport');
     }
 
 });

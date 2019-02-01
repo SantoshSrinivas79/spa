@@ -10,6 +10,10 @@ import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import moment from "moment";
+import {Loan_Product} from "../../../imports/collection/loanProduct";
+import {Pos_Customer} from "../../../imports/collection/posCustomer";
+import {Loan_Disbursement} from "../../../imports/collection/loanDisbursement";
+import {Loan_CreditOfficer} from "../../../imports/collection/loanCreditOfficer";
 
 Meteor.methods({
     loanRepaymentScheduleReport(params, translate) {
@@ -20,6 +24,7 @@ Meteor.methods({
         }
 
         let data = {};
+        parameter.loanId = params.disbursementId;
 
         let companyDoc = WB_waterBillingSetup.findOne({});
 
@@ -27,25 +32,53 @@ Meteor.methods({
         let repaymentScheduleList = Loan_RepaymentSchedule.find(parameter).fetch();
         data.currencyHeader = companyDoc.baseCurrency;
         let repaymentHTML = "";
-
+        let productId = "";
+        let clientId = "";
         if (repaymentScheduleList.length > 0) {
             repaymentScheduleList.forEach((obj) => {
-                repaymentHTML += `
+                if(obj.isAllowClosing===false){
+                    repaymentHTML += `
                     <tr>
-                            <td style="text-align: center !important;">${obj.installment}</td>
-                            <td style="text-align: left !important;">${switchDay(obj.date)} ${obj.dateName}</td>
+                            <td style="text-align: center !important;"><u>${obj.installment}</u></td>
+                            <td style="text-align: left !important;">${switchDay(obj.date)}   ${obj.dateName}</td>
                             <td style="text-align: left !important;">${obj.dayRange}</td>
-                            <td>${formatCurrency(obj.principle, companyDoc.baseCurrency)}</td>
-                            <td>${formatCurrency(obj.interest, companyDoc.baseCurrency)}</td>
-                            <td>${formatCurrency(obj.amount, companyDoc.baseCurrency)}</td>
+                            <td>${formatCurrency(obj.principle, obj.currencyId)}</td>
+                            <td>${formatCurrency(obj.interest, obj.currencyId)}</td>
+                            <td>${formatCurrency(obj.amount, obj.currencyId)}</td>
                     </tr>
             
             `;
+
+                }else {
+
+                    repaymentHTML += `
+                    <tr>
+                            <td style="text-align: center !important;">${obj.installment}</td>
+                            <td style="text-align: left !important;">${switchDay(obj.date)}   ${obj.dateName}</td>
+                            <td style="text-align: left !important;">${obj.dayRange}</td>
+                            <td>${formatCurrency(obj.principle, obj.currencyId)}</td>
+                            <td>${formatCurrency(obj.interest, obj.currencyId)}</td>
+                            <td>${formatCurrency(obj.amount, obj.currencyId)}</td>
+                    </tr>
+            
+            `;
+                }
+
+                productId = obj.productId;
+                clientId = obj.clientId;
             })
         }
 
+        let productDoc = Loan_Product.findOne({_id: productId});
+        let clientDoc = Pos_Customer.findOne({_id: clientId});
+        let disbursementDoc = Loan_Disbursement.findOne({_id: params.disbursementId});
+        let creditOfficerDoc = Loan_CreditOfficer.findOne({_id: disbursementDoc.coId});
 
         data.repaymentScheduleHtml = repaymentHTML;
+        data.productDoc = productDoc;
+        data.clientDoc = clientDoc;
+        data.disbursementDoc = disbursementDoc;
+        data.creditOfficerDoc = creditOfficerDoc;
         return data;
     }
 });

@@ -34,6 +34,10 @@ Loan_Disbursement.schema = new SimpleSchema({
         type: String,
         label: "Disbursement Date",
     },
+    maturityDate: {
+        type: Date,
+        label: "Maturity Date",
+    },
     startPaidDate: {
         type: Date,
         label: "Start Paid Date",
@@ -70,6 +74,11 @@ Loan_Disbursement.schema = new SimpleSchema({
         label: "Fee Amount",
         optional: true,
         defaultValue: 0
+    },
+    loanAcc: {
+        type: String,
+        optional: true,
+        index: true
     },
 
     createdAt: {
@@ -111,7 +120,7 @@ Loan_Disbursement.schema = new SimpleSchema({
                 return Meteor.userId();
             }
         }
-    },rolesArea: {
+    }, rolesArea: {
         type: String,
         label: "Role Area",
         index: true

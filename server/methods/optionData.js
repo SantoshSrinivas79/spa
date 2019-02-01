@@ -488,6 +488,7 @@ Meteor.methods({
             selector.$or = [
                 {disbursementDateName: {$regex: reg}},
                 {_id: q},
+                {loanAcc: q},
                 {clientId: {$in: clientList}}
             ];
             selector.status = "Active";
@@ -512,7 +513,7 @@ Meteor.methods({
             {$limit: 300}
 
         ]).map(obj => ({
-            label: obj._id + " | Dis Date : " + obj.disbursementDateName + " | Client : " + obj.clientDoc.name + " | Amount : " + formatCurrency(obj.loanAmount),
+            label: obj.loanAcc + " | Dis Date : " + obj.disbursementDateName + " | Client : " + obj.clientDoc.name + " | Amount : " + formatCurrency(obj.loanAmount),
             value: obj._id
         }));
     }
