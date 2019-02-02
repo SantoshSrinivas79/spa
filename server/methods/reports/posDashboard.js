@@ -235,7 +235,7 @@ Meteor.methods({
                 htmlInvoice += `
                     <tr>
                         <td style="text-align: center !important;">${inc}</td>
-                        <td style="text-align: left!important;">${obj._id.itemName.split(":")[1]}</td>
+                        <td style="text-align: left!important;">${obj._id.itemName && obj._id.itemName.split(":")[1] || ""}</td>
                         <td>${numeral(obj.totalQty).format("0,00")}</td>
                         <td>${numeral(obj.totalQtyReceiveItem).format("0,00")}</td>
                         <td>${numeral(obj.totalQty + obj.totalQtyReceiveItem).format("0,00")}</td>

@@ -136,7 +136,8 @@
       "penaltyClosing": "ពិន័យបង់ផ្តាច់មុនកាលកំណត់",
       "disbursement": "កម្ចីប្រាក់",
       "repaymentSchedule": "តារាងបង់ប្រាក់",
-      "client": "អតិថិជន"
+      "client": "អតិថិជន",
+      "repayment": "បង់ប្រាក់"
     }
   }
 }

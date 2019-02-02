@@ -136,7 +136,8 @@
       "penaltyClosing": "Penalty Closing",
       "disbursement": "Disbursement",
       "repaymentSchedule": "Repayment Schedule",
-      "client": "Client"
+      "client": "Client",
+      "repayment": "Repayment"
     }
   },
   "global": {

@@ -14,7 +14,8 @@
                                            size="small">{{langConfig['run']}}
                                 </el-button>
                             </div>
-                            <el-form :label-loanition="labelPosition">
+                            <el-form :model="params" :label-loanition="labelPosition" :rules="rules"
+                                     ref="loanDisbursement-report">
                                 <el-row type="flex" class="row-bg" justify="center">
                                     <el-col>
                                         <el-form-item :label="langConfig['branch']">
@@ -59,7 +60,7 @@
 
                                     </el-col>
                                     <el-col>
-                                        <el-form-item label="Exchange">
+                                        <el-form-item label="Exchange"  prop="exchangeId">
                                             <el-select filterable v-model="params.exchangeId"
                                                        placeholder="Select One" style="width: 95%">
                                                 <el-option
@@ -205,7 +206,6 @@
                     date: null,
                     creditOfficerId: "",
                     exchangeId: ""
-
                 },
                 rolesArea: '',
                 activeName: '1',
@@ -229,6 +229,10 @@
                 isIndeterminate: true,
                 dateHeader: "",
                 currencyHeader: "",
+
+                rules: {
+                    exchangeId: [{required: true, message: 'Please input Exchange', trigger: 'change'}]
+                },
                 pickerDateOptions: {
                     shortcuts: [{
                         text: 'Last week',
@@ -267,7 +271,7 @@
                             picker.$emit('pick', [start, end]);
                         }
                     }]
-                },
+                }
             };
         },
         meteor: {
@@ -346,14 +350,20 @@
                     this.loading = false;
                     return false;
                 }
-                Meteor.call('loanDisbursementReport', this.params, this.langConfig, (err, result) => {
-                    if (result) {
-                        this.disbursementHtml = result.disbursementHTML;
-                        this.dateHeader = result.dateHeader;
-                        this.currencyHeader = result.currencyHeader;
+                this.$refs["loanDisbursement-report"].validate((valid) => {
+                    if (valid) {
+                        Meteor.call('loanDisbursementReport', this.params, this.langConfig, (err, result) => {
+                            if (result) {
+                                this.disbursementHtml = result.disbursementHTML;
+                                this.dateHeader = result.dateHeader;
+                                this.currencyHeader = result.currencyHeader;
+                            }
+                            this.loading = false;
+                        });
+                    } else {
+                        this.loading = false;
                     }
-                    this.loading = false;
-                });
+                })
             }
         },
         computed: {

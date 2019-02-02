@@ -59,3 +59,15 @@ loanData.route('/loanDisbursement', {
         _Main('loan_disbursement');
     }
 });
+
+
+import "../../imports/ui/loan_repayment/loanRepayment";
+// Repayment
+loanData.route('/loanRepayment', {
+    name: 'loan.repayment',
+    parent: 'wb.homeData',
+    title: "Repayment",
+    action: function (query, params) {
+        _Main('loan_repayment');
+    }
+});
