@@ -9,7 +9,7 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {Acc_ChartAccountReact} from "../../../imports/collection/accChartAccount";
 
 Meteor.methods({
-    queryClosingEntry({q, filter, options = {limit: 10, skip: 0}}) {
+    queryClosingEntry({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -29,6 +29,7 @@ Meteor.methods({
                     }, {year: {$regex: reg, $options: 'mi'}}];
                 }
             }
+            selector.rolesArea = rolesArea;
             let closingEntry = Acc_ClosingEntry.find(selector, {sort: {closeDate: -1}}, {skip: options.skip}, {limit: options.limit}).fetch();
             if (closingEntry.length > 0) {
                 data.content = closingEntry;

@@ -5,13 +5,15 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {Sch_ActivityReact} from "../../../imports/collection/schActivity";
 
 Meteor.methods({
-    querySchBus({q, filter, options = {limit: 10, skip: 0}}) {
+    querySchBus({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countSchBus: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

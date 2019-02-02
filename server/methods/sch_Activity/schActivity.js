@@ -5,13 +5,15 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {Pos_VendorReact} from "../../../imports/collection/posVendor";
 
 Meteor.methods({
-    querySchActivity({q, filter, options = {limit: 10, skip: 0}}) {
+    querySchActivity({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countSchActivity: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

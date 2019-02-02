@@ -662,7 +662,7 @@
                 this.productData = pro;
             },
             tableOpt() {
-                Meteor.call('queryTableOption', (err, result) => {
+                Meteor.call('queryTableOption',Session.get("area"), (err, result) => {
                     this.tableOption = result;
                 })
             },
@@ -670,7 +670,7 @@
                 if (!!query) {
                     setTimeout(() => {
                         let lists = [];
-                        Meteor.call('queryPosCustomerOption', query, (err, result) => {
+                        Meteor.call('queryPosCustomerOption', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerOption = result;
                             } else {
@@ -679,7 +679,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOption', "", (err, result) => {
+                    Meteor.call('queryPosCustomerOption', "",Session.get("area"), (err, result) => {
                         if (!err) {
                             this.customerOption = result;
                         } else {
@@ -1002,7 +1002,7 @@
                 } else {
                     vm.posSaleRestaurantForm.balanceNotCut = formatCurrency(total);
                 }
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 vm.posSaleRestaurantForm.total = formatCurrencyLast(total, companyDoc.baseCurrency);
 
                 if (vm.posSaleRestaurantForm.discountType === "Amount") {

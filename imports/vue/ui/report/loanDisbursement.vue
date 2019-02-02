@@ -324,7 +324,7 @@
             fetchCreditOfficer(query) {
                 if (!!query) {
                     setTimeout(() => {
-                        Meteor.call('queryLoanCreditOfficerOption', query, (err, result) => {
+                        Meteor.call('queryLoanCreditOfficerOption', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.creditOfficerOptions = result;
                             } else {
@@ -333,7 +333,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryLoanCreditOfficerOption', "", (err, result) => {
+                    Meteor.call('queryLoanCreditOfficerOption', "", Session.get("area"),(err, result) => {
                         if (!err) {
                             this.creditOfficerOptions = result;
                         } else {

@@ -137,7 +137,8 @@
       "disbursement": "Disbursement",
       "repaymentSchedule": "Repayment Schedule",
       "client": "Client",
-      "repayment": "Repayment"
+      "repayment": "Repayment",
+      "repaymentForm": "Repayment Form"
     }
   },
   "global": {

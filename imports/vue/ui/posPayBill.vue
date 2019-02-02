@@ -732,6 +732,7 @@
                 Meteor.call('queryPayBill', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -768,7 +769,7 @@
                     setTimeout(() => {
                         let lists = [];
                         this.loading = false;
-                        Meteor.call('queryPosVendorOptionUnPaid', query, (err, result) => {
+                        Meteor.call('queryPosVendorOptionUnPaid', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.vendorOption = result;
                             } else {
@@ -777,7 +778,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosVendorOptionUnPaid', "", (err, result) => {
+                    Meteor.call('queryPosVendorOptionUnPaid', "",Session.get("area"), (err, result) => {
                         if (!err) {
                             this.vendorOption = result;
                         } else {
@@ -855,7 +856,7 @@
             removePayBill(index, row, rows) {
                 let vm = this;
 
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 if (companyDoc.integratedPosAccount) {
                     Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
                         if (re !== undefined) {
@@ -1073,7 +1074,7 @@
                         totalPaid += parseFloat(vm.$_numeral(obj.paid).value() || 0);
                     }
                 });
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 this.currencySymbol = getCurrencySymbolById(companyDoc.baseCurrency);
                 vm.posPayBillForm.totalNetAmount = formatCurrencyLast(totalNetAmount, companyDoc.baseCurrency);
                 vm.posPayBillForm.totalDiscount = formatCurrencyLast(totalDiscount, companyDoc.baseCurrency);

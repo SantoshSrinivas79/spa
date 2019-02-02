@@ -9,9 +9,9 @@ import {Pos_Product} from "../imports/collection/posProduct"
 import {LoginSetup} from "../imports/collection/loginSetup";
 import {Manage_Module} from "../imports/collection/manageModule";
 //Water Billing setup
-Meteor.publish('wb_waterBillingSetup', function (rolesArea) {
+Meteor.publish('wb_waterBillingSetup', function () {
     if (this.userId) {
-        return WB_waterBillingSetup.find({rolesArea});
+        return WB_waterBillingSetup.find({});
     }
     return this.ready();
 
@@ -30,7 +30,7 @@ Meteor.publish('manageModule', function () {
 //Exchange
 Meteor.publish('Acc_ExchangeActive', function (rolesArea) {
     if (this.userId) {
-        return Acc_Exchange.find({rolesArea, status: true});
+        return Acc_Exchange.find({status: true});
     }
     return this.ready();
 

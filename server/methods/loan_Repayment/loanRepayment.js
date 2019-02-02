@@ -10,13 +10,15 @@ import moment from "moment";
 import {Pos_Customer} from "../../../imports/collection/posCustomer";
 
 Meteor.methods({
-    queryLoanRepayment({q, filter, options = {limit: 10, skip: 0}}) {
+    queryLoanRepayment({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countLoanRepayment: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

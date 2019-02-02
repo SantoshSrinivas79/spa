@@ -380,6 +380,7 @@
                 Meteor.call('queryAccFixedAsset', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {

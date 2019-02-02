@@ -645,6 +645,7 @@
                 Meteor.call('querySchBusPayment', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -855,7 +856,7 @@
                     totalPaid += parseFloat(vm.$_numeral(obj.paid).value() || 0);
                     totalWaived += parseFloat(vm.$_numeral(obj.waived).value() || 0);
                 });
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 this.currencySymbol = getCurrencySymbolById(companyDoc.baseCurrency);
                 vm.schBusPaymentForm.totalAmount = formatCurrency(totalAmount, companyDoc.baseCurrency);
                 vm.schBusPaymentForm.totalWaived = formatCurrency(totalWaived, companyDoc.baseCurrency);

@@ -5,13 +5,15 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {Pos_ProductionReact} from "../../../imports/collection/posProduction";
 
 Meteor.methods({
-    queryPosProductionResult({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosProductionResult({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countPosProduction: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

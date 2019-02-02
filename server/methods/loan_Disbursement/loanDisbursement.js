@@ -10,13 +10,15 @@ import moment from "moment";
 import {Pos_Customer} from "../../../imports/collection/posCustomer";
 
 Meteor.methods({
-    queryLoanDisbursement({q, filter, options = {limit: 10, skip: 0}}) {
+    queryLoanDisbursement({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countLoanDisbursement: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {
@@ -102,7 +104,7 @@ Meteor.methods({
         data.projectInterest = projectInterest;
 
         if (productDoc.rateType === "Monthly") {
-            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add(data.installment-1, "month").toDate();
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add(data.installment - 1, "month").toDate();
         }
 
         let isInserted = Loan_Disbursement.insert(data);
@@ -125,7 +127,7 @@ Meteor.methods({
         data.projectInterest = projectInterest;
 
         if (productDoc.rateType === "Monthly") {
-            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add(data.installment-1, "month").toDate();
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add(data.installment - 1, "month").toDate();
         }
 
         let isUpdated = Loan_Disbursement.update({_id: data._id},

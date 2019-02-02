@@ -25,6 +25,7 @@ Meteor.methods({
                     }];
                 }
             }
+
             let exchanges = Acc_Exchange.aggregate([
                 {
                     $match: selector

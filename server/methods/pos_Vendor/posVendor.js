@@ -5,13 +5,16 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {Pos_UnitReact} from "../../../imports/collection/posUnit";
 
 Meteor.methods({
-    queryPosVendor({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosVendor({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countPosVendor: 0,
             };
             let selector = {};
+            selector.$or = [{rolesArea: rolesArea}, {_id: "001"}];
+
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

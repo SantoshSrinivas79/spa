@@ -270,7 +270,7 @@
                 if (!!query) {
                     setTimeout(() => {
                         let lists = [];
-                        Meteor.call('queryLoanDisbursementOption', query, (err, result) => {
+                        Meteor.call('queryLoanDisbursementOption', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.clientOptions = result;
                             } else {
@@ -279,7 +279,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryLoanDisbursementOption', "", (err, result) => {
+                    Meteor.call('queryLoanDisbursementOption', "",Session.get("area"), (err, result) => {
                         if (!err) {
                             this.clientOptions = result;
                         } else {

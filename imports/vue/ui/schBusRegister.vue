@@ -519,6 +519,7 @@
                 Meteor.call('querySchBusRegister', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -776,7 +777,7 @@
             this.queryData();
             this.busOpt();
             this.busStopOpt();
-            this.companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+            this.companyDoc = WB_waterBillingSetup.findOne({});
             this.sym = getCurrencySymbolById(this.companyDoc.baseCurrency);
             Meteor.subscribe('Sch_BusRegisterReact');
 

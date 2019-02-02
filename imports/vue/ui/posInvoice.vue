@@ -1854,6 +1854,7 @@
                 Meteor.call('queryPosInvoice', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1893,7 +1894,7 @@
                 if (!!query) {
                     setTimeout(() => {
                         let lists = [];
-                        Meteor.call('queryPosCustomerOption', query, (err, result) => {
+                        Meteor.call('queryPosCustomerOption', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerOption = result;
                             } else {
@@ -1902,7 +1903,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOption', "", (err, result) => {
+                    Meteor.call('queryPosCustomerOption', "",Session.get("area"), (err, result) => {
                         if (!err) {
                             this.customerOption = result;
                         } else {
@@ -2174,7 +2175,7 @@
             removePosInvoice(index, row, rows) {
                 let vm = this;
 
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 if (companyDoc.integratedPosAccount) {
                     Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
                         if (re !== undefined) {
@@ -2328,7 +2329,7 @@
                 let vm = this;
                 $(".el-dialog__title").text(this.langConfig['update']);
 
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 if (companyDoc.integratedPosAccount) {
                     Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
                         if (re !== undefined) {
@@ -2379,7 +2380,7 @@
             findPosInvoiceById(doc) {
                 let vm = this;
                 this.posInvoiceId = doc.row._id;
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 Meteor.call("queryPosInvoiceById", doc.row._id, (err, data) => {
                     vm.posInvoiceData = [];
                     if (data) {
@@ -2679,7 +2680,7 @@
                 } else {
                     vm.posInvoiceForm.balanceNotCut = formatCurrency(total);
                 }
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 this.currencySymbol = getCurrencySymbolById(companyDoc.baseCurrency);
                 vm.posInvoiceForm.total = formatCurrencyLast(total, companyDoc.baseCurrency);
 

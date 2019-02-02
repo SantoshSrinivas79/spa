@@ -5,13 +5,15 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {Pos_BillReact} from "../../../imports/collection/posBill";
 
 Meteor.methods({
-    queryPosTableLocation({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosTableLocation({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countPosTableLocation: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

@@ -835,6 +835,7 @@
                 Meteor.call('queryTransferInventory', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1007,7 +1008,7 @@
             findTransferInventoryById(doc) {
                 let vm = this;
                 this.posTransferInventoryId = doc.row._id;
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 Meteor.call("queryTransferInventoryById", doc.row._id, (err, data) => {
                     vm.posTransferInventoryData = [];
                     if (data) {
@@ -1168,7 +1169,7 @@
 
                 vm.disableLocationFrom = vm.posTransferInventoryData.length > 0 ? true : false;
 
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 this.currencySymbol = getCurrencySymbolById(companyDoc.baseCurrency);
                 vm.posTransferInventoryForm.total = formatCurrency(total, companyDoc.baseCurrency);
 

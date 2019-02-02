@@ -458,15 +458,17 @@ Meteor.methods({
         return list;
     }
     ,
-    queryPosVendorOption() {
+    queryPosVendorOption(rolesArea) {
         let list = [];
-        Pos_Vendor.find().fetch().forEach(function (obj) {
+        let selector = {};
+        selector.$or = [{rolesArea: rolesArea}, {_id: "001"}];
+        Pos_Vendor.find(selector).fetch().forEach(function (obj) {
             list.push({label: obj.name, value: obj._id});
         });
         return list;
     }
     ,
-    queryPosCustomerOption(q) {
+    queryPosCustomerOption(q, rolesArea) {
         let selector = {};
         if (q != "") {
             q = q.replace(/[/\\]/g, '');
@@ -476,9 +478,11 @@ Meteor.methods({
                 {_id: q}
             ];
         }
+        selector.$or = [{rolesArea: rolesArea}, {_id: "001"}];
+
         return Pos_Customer.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
     },
-    queryLoanDisbursementOption(q) {
+    queryLoanDisbursementOption(q, rolesArea) {
         let selector = {};
         if (q != "") {
             q = q.replace(/[/\\]/g, '');
@@ -491,8 +495,9 @@ Meteor.methods({
                 {loanAcc: q},
                 {clientId: {$in: clientList}}
             ];
-            selector.status = "Active";
         }
+        selector.status = "Active";
+        selector.rolesArea = rolesArea;
         return Loan_Disbursement.aggregate([
             {$match: selector},
             {
@@ -533,7 +538,7 @@ Meteor.methods({
         }));
     }
     ,
-    queryLoanCreditOfficerOption(q) {
+    queryLoanCreditOfficerOption(q, rolesArea) {
         let selector = {};
         if (q != "") {
             q = q.replace(/[/\\]/g, '');
@@ -543,19 +548,24 @@ Meteor.methods({
                 {_id: q}
             ];
         }
+        selector.rolesArea = rolesArea;
+
         return Loan_CreditOfficer.find(selector, {limit: 100}).fetch().map(obj => ({
             label: obj.name,
             value: obj._id
         }));
     }
     ,
-    queryPosCustomerOptionUnPaid(q) {
+    queryPosCustomerOptionUnPaid(q, rolesArea) {
         let selector = {};
         if (q != "") {
             q = q.replace(/[/\\]/g, '');
             let reg = new RegExp(q, 'mi');
             selector.name = {$regex: reg};
         }
+        selector.$or = [{rolesArea: rolesArea}, {_id: "001"}];
+
+
         return Pos_Customer.aggregate([
             {$match: selector},
             {
@@ -591,13 +601,16 @@ Meteor.methods({
 
         ]).map(obj => ({label: obj._id.name, value: obj._id.id}));
     },
-    queryPosCustomerSaleOrderOptionUnPaid(q) {
+    queryPosCustomerSaleOrderOptionUnPaid(q, rolesArea) {
         let selector = {};
         if (q != "") {
             q = q.replace(/[/\\]/g, '');
             let reg = new RegExp(q, 'mi');
             selector.name = {$regex: reg};
         }
+        selector.$or = [{rolesArea: rolesArea}, {_id: "001"}];
+
+
         return Pos_Customer.aggregate([
             {$match: selector},
             {
@@ -642,6 +655,8 @@ Meteor.methods({
             let reg = new RegExp(q, 'mi');
             selector.name = {$regex: reg};
         }
+        selector.$or = [{rolesArea: rolesArea}, {_id: "001"}];
+
         return Pos_Vendor.aggregate([
             {$match: selector},
             {
@@ -826,20 +841,20 @@ Meteor.methods({
         });
         return data;
     },
-    queryTableOption() {
+    queryTableOption(rolesArea) {
         let userId = Meteor.userId();
         if (userId) {
-            let data = Pos_Table.find({}).map((obj) => {
+            let data = Pos_Table.find({rolesArea: rolesArea}).map((obj) => {
                 return {label: obj.name, value: obj._id};
             });
             return data;
         }
         return [];
     },
-    queryTableLocationOption() {
+    queryTableLocationOption(rolesArea) {
         let userId = Meteor.userId();
         if (userId) {
-            let data = Pos_TableLocation.find({}).map((obj) => {
+            let data = Pos_TableLocation.find({rolesArea: rolesArea}).map((obj) => {
                 return {label: obj.name, value: obj._id};
             });
             data.unshift({label: "All", value: ""});

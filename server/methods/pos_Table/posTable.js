@@ -8,13 +8,15 @@ import {Pos_Customer} from "../../../imports/collection/posCustomer";
 import {Pos_TableLocation} from "../../../imports/collection/posTableLocation";
 
 Meteor.methods({
-    queryPosTable({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosTable({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countPosTable: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

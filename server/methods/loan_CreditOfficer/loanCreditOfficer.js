@@ -3,13 +3,15 @@ import {Loan_CreditOfficerReact} from '../../../imports/collection/loanCreditOff
 
 
 Meteor.methods({
-    queryLoanCreditOfficer({q, filter, options = {limit: 10, skip: 0}}) {
+    queryLoanCreditOfficer({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countLoanCreditOfficer: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {
@@ -67,7 +69,7 @@ Meteor.methods({
         let id = data._id;
         data.dobName = moment(data.dob).format("DD/MM/YYYY");
         data.startDateName = moment(data.startDate).format("DD/MM/YYYY");
-        
+
         let isUpdated = Loan_CreditOfficer.update({_id: data._id},
             {
                 $set: data

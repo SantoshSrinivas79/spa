@@ -14,13 +14,15 @@ import {Acc_FixedAssetReact} from "../../../imports/collection/accFixedAsset";
 
 
 Meteor.methods({
-    queryJournal({q, filter, options = {limit: 10, skip: 0}}) {
+    queryJournal({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countJournal: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

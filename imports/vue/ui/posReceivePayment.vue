@@ -1007,6 +1007,7 @@
                 Meteor.call('queryPosReceivePayment', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1048,7 +1049,7 @@
                     setTimeout(() => {
                         let lists = [];
                         this.loading = false;
-                        Meteor.call('queryPosCustomerOptionUnPaid', query, (err, result) => {
+                        Meteor.call('queryPosCustomerOptionUnPaid', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerOption = result;
                             } else {
@@ -1057,7 +1058,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOptionUnPaid', "", (err, result) => {
+                    Meteor.call('queryPosCustomerOptionUnPaid', "", Session.get("area"),(err, result) => {
                         if (!err) {
                             this.customerOption = result;
                         } else {
@@ -1072,7 +1073,7 @@
                     setTimeout(() => {
                         let lists = [];
                         this.loading = false;
-                        Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', query, (err, result) => {
+                        Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerSaleOrderOption = result;
                             } else {
@@ -1081,7 +1082,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', "", (err, result) => {
+                    Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', "",Session.get("area"), (err, result) => {
                         if (!err) {
                             this.customerSaleOrderOption = result;
                         } else {
@@ -1220,7 +1221,7 @@
                 let vm = this;
 
 
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 if (companyDoc.integratedPosAccount) {
                     Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
                         if (re !== undefined) {
@@ -1491,7 +1492,7 @@
                 if (type === undefined || type === "") {
                     vm.totalPaidInput = totalPaid;
                 }
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 this.currencySymbol = getCurrencySymbolById(companyDoc.baseCurrency);
                 vm.posReceivePaymentForm.totalNetAmount = formatCurrencyLast(totalNetAmount, companyDoc.baseCurrency);
                 vm.posReceivePaymentForm.totalDiscount = formatCurrencyLast(totalDiscount, companyDoc.baseCurrency);

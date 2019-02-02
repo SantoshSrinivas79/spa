@@ -886,7 +886,7 @@
                         totalWaived += parseFloat(vm.$_numeral(obj.waived).value() || 0);
                     }
                 });
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 this.currencySymbol = getCurrencySymbolById(companyDoc.baseCurrency);
                 vm.schPaymentForm.totalNetAmount = formatCurrency(totalNetAmount, companyDoc.baseCurrency);
                 vm.schPaymentForm.totalWaived = formatCurrency(totalWaived, companyDoc.baseCurrency);

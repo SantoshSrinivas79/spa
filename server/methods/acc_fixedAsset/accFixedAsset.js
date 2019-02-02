@@ -7,13 +7,15 @@ import {formatCurrency} from "../../../imports/api/methods/roundCurrency";
 import {Acc_ExchangeReact} from "../../../imports/collection/accExchange";
 
 Meteor.methods({
-    queryAccFixedAsset({q, filter, options = {limit: 10, skip: 0}}) {
+    queryAccFixedAsset({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countAccFixedAsset: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

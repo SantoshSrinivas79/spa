@@ -235,6 +235,7 @@
                 Meteor.call('queryPosTable', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 1200}
                 }, (err, result) => {
                     if (!err) {
@@ -269,13 +270,12 @@
                 }
             },
             tableOpt() {
-                Meteor.call('queryTableOption', (err, result) => {
+                Meteor.call('queryTableOption',Session.get("area"), (err, result) => {
                     this.tableOption = result;
                 })
             },
             tableLocationOpt() {
-                let selector = {};
-                Meteor.call('queryTableLocationOption', selector, (err, result) => {
+                Meteor.call('queryTableLocationOption', Session.get("area"), (err, result) => {
                     this.tableLocationOption = result;
                 })
             },

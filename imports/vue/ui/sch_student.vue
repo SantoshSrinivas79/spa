@@ -1330,6 +1330,7 @@
                 Meteor.call('querySchStudent', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10},
                     sortItem: this.sortItem
                 }, (err, result) => {

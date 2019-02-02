@@ -8,13 +8,15 @@ import {Pos_TransferInventory} from "../../../imports/collection/posTransferInve
 import {Sch_Class} from "../../../imports/collection/schClass";
 
 Meteor.methods({
-    queryPosProduction({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosProduction({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countPosProduction: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {
@@ -183,7 +185,7 @@ Meteor.methods({
         }
         return isUpdated;
     },
-    queryPosProductionBoard({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosProductionBoard({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -191,6 +193,8 @@ Meteor.methods({
             };
             let selector = {};
             selector.status = false;
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

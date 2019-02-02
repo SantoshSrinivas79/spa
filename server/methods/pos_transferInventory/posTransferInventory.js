@@ -10,7 +10,7 @@ import {Pos_Vendor} from "../../../imports/collection/posVendor";
 import {Pos_TermReact} from "../../../imports/collection/posTerm";
 
 Meteor.methods({
-    queryTransferInventory({q, filter, options = {limit: 10, skip: 0}}) {
+    queryTransferInventory({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -19,6 +19,8 @@ Meteor.methods({
             let companyDoc = WB_waterBillingSetup.findOne({});
 
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

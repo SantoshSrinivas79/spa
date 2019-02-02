@@ -490,6 +490,7 @@
                 Meteor.call('queryLoanDisbursement', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -503,7 +504,7 @@
             customerOpt(query) {
                 if (!!query) {
                     setTimeout(() => {
-                        Meteor.call('queryPosCustomerOption', query, (err, result) => {
+                        Meteor.call('queryPosCustomerOption', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.clientOption = result;
                             } else {
@@ -512,7 +513,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOption', "", (err, result) => {
+                    Meteor.call('queryPosCustomerOption', "",Session.get("area"), (err, result) => {
                         if (!err) {
                             this.clientOption = result;
                         } else {
@@ -524,7 +525,7 @@
             creditOfficerOpt(query) {
                 if (!!query) {
                     setTimeout(() => {
-                        Meteor.call('queryLoanCreditOfficerOption', query, (err, result) => {
+                        Meteor.call('queryLoanCreditOfficerOption', query,Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.creditOfficerOption = result;
                             } else {
@@ -533,7 +534,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryLoanCreditOfficerOption', "", (err, result) => {
+                    Meteor.call('queryLoanCreditOfficerOption', "",Session.get("area"), (err, result) => {
                         if (!err) {
                             this.creditOfficerOption = result;
                         } else {

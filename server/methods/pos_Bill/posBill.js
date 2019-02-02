@@ -12,7 +12,7 @@ import {Pos_ImeiBill} from "../../../imports/collection/posImeiBill";
 import {Pos_ImeiInvoice} from "../../../imports/collection/posImeiInvoice";
 
 Meteor.methods({
-    queryPosBill({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosBill({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -21,6 +21,7 @@ Meteor.methods({
             let companyDoc = WB_waterBillingSetup.findOne({});
 
             let selector = {};
+            selector.rolesArea = rolesArea;
 
 
             if (!!q) {

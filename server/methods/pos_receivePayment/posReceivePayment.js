@@ -13,7 +13,7 @@ import {Pos_ProductionResultReact} from "../../../imports/collection/posProducti
 import {Pos_SaleOrder} from "../../../imports/collection/posSaleOrder";
 
 Meteor.methods({
-    queryPosReceivePayment({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosReceivePayment({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -23,6 +23,8 @@ Meteor.methods({
             let companyDoc = WB_waterBillingSetup.findOne({});
 
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

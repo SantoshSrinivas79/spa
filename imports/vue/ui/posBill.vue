@@ -1365,6 +1365,7 @@
                 Meteor.call('queryPosBill', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1401,8 +1402,7 @@
                 })
             },
             vendorOpt() {
-                let selector = {};
-                Meteor.call('queryPosVendorOption', selector, (err, result) => {
+                Meteor.call('queryPosVendorOption', Session.get("area"), (err, result) => {
                     this.vendorOption = result;
                 })
             },
@@ -1546,7 +1546,7 @@
             },
             removePosBill(index, row, rows) {
                 let vm = this;
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 if (companyDoc.integratedPosAccount) {
                     Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
                         if (re !== undefined) {
@@ -1678,7 +1678,7 @@
                 $(".el-dialog__title").text(this.langConfig['update']);
                 this.vendorOpt();
                 this.termOpt();
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 if (companyDoc.integratedPosAccount) {
                     Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
                         if (re !== undefined) {
@@ -1731,7 +1731,7 @@
             findPosBillById(doc) {
                 let vm = this;
                 this.posBillId = doc.row._id;
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 Meteor.call("queryPosBillById", doc.row._id, (err, data) => {
                     vm.posBillData = [];
                     if (data) {
@@ -1933,7 +1933,7 @@
                 vm.posBillData.forEach(function (obj) {
                     total += parseFloat(vm.$_numeral(obj.amount).value());
                 });
-                let companyDoc = WB_waterBillingSetup.findOne({rolesArea: Session.get("area")});
+                let companyDoc = WB_waterBillingSetup.findOne({});
                 this.currencySymbol = getCurrencySymbolById(companyDoc.baseCurrency);
                 vm.posBillForm.total = formatCurrency(total, companyDoc.baseCurrency);
 

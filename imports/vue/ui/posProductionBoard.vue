@@ -339,6 +339,7 @@
                 Meteor.call('queryPosProductionBoard', {
                     q: val,
                     filter: this.filter,
+                    rolesArea:Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 12}
                 }, (err, result) => {
                     if (!err) {

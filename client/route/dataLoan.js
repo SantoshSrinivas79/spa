@@ -71,3 +71,14 @@ loanData.route('/loanRepayment', {
         _Main('loan_repayment');
     }
 });
+
+import "../../imports/ui/loan_repaymentForm/loanRepaymentForm";
+// Repayment
+loanData.route('/loanRepaymentForm', {
+    name: 'loan.repaymentForm',
+    parent: 'wb.homeData',
+    title: "Repayment Form",
+    action: function (query, params) {
+        _Main('loan_repaymentForm');
+    }
+});

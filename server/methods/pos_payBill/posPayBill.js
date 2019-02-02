@@ -12,7 +12,7 @@ import {Pos_Customer} from "../../../imports/collection/posCustomer";
 import {Pos_LocationReact} from "../../../imports/collection/posLocation";
 
 Meteor.methods({
-    queryPayBill({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPayBill({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -22,6 +22,8 @@ Meteor.methods({
             let companyDoc = WB_waterBillingSetup.findOne({});
 
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
 

@@ -7,13 +7,15 @@ import {SpaceChar} from "../../../both/config.js/space"
 import {Sch_Student} from "../../../imports/collection/schStudent";
 
 Meteor.methods({
-    querySchBusRegister({q, filter, options = {limit: 10, skip: 0}}) {
+    querySchBusRegister({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countSchBusRegister: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             //selector.status = "Active";
             if (!!q) {
                 let reg = new RegExp(q);

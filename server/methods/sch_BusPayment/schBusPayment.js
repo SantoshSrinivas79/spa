@@ -10,7 +10,7 @@ import {Sch_Student} from "../../../imports/collection/schStudent";
 import {Sch_BusReact} from "../../../imports/collection/schBus";
 
 Meteor.methods({
-    querySchBusPayment({q, filter, options = {limit: 10, skip: 0}}) {
+    querySchBusPayment({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -20,6 +20,8 @@ Meteor.methods({
             let companyDoc = WB_waterBillingSetup.findOne({});
 
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {

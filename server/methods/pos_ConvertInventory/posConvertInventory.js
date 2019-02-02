@@ -8,13 +8,15 @@ import {Pos_TransferInventory} from "../../../imports/collection/posTransferInve
 import {Pos_CategoryReact} from "../../../imports/collection/posCategory";
 
 Meteor.methods({
-    queryPosConvertInventory({q, filter, options = {limit: 10, skip: 0}}) {
+    queryPosConvertInventory({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
                 countPosConvertInventory: 0,
             };
             let selector = {};
+            selector.rolesArea = rolesArea;
+
             if (!!q) {
                 let reg = new RegExp(q);
                 if (!!filter) {
