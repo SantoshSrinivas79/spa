@@ -170,7 +170,7 @@ Meteor.methods({
                     profit: doc.amount - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty)
                 };
 
-                avgCost += obj.averageCost;
+                avgCost += (obj.averageCost * doc.qty);
 
                 let isInsrt = Pos_AverageInventory.insert(obj);
                 if (isInsrt) {
@@ -213,7 +213,7 @@ Meteor.methods({
                     journalDoc.status = "Invoice";
                     journalDoc.refId = data.id;
                     journalDoc.total = numeral(formatCurrencyLast(data.total + avgCost, companyDoc.baseCurrency)).value();
-
+                    let avgCostTemp = avgCost;
                     avgCost = formatCurrencyLast(avgCost, companyDoc.baseCurrency);
 
                     let transaction = [];
@@ -252,20 +252,20 @@ Meteor.methods({
                         });
                     }
 
-                    if (avgCost > 0) {
+                    if (avgCostTemp > 0) {
                         transaction.push({
                             account: cogsAcc._id,
-                            dr: avgCost,
+                            dr: avgCostTemp,
                             cr: 0,
-                            drcr: avgCost
+                            drcr: avgCostTemp
                         });
 
 
                         transaction.push({
                             account: inventoryAcc._id,
                             dr: 0,
-                            cr: avgCost,
-                            drcr: -avgCost
+                            cr: avgCostTemp,
+                            drcr: -avgCostTemp
                         });
                     }
 
@@ -783,6 +783,10 @@ Meteor.methods({
             data.code = productDoc && productDoc.code || "";
             data.barcode = productDoc && productDoc.barcode || "";
             data.itemId = productDoc && productDoc._id || "";
+        }
+        let setup = WB_waterBillingSetup.findOne();
+        if (setup.validateStock === false) {
+            return true;
         }
         return data && data.qtyEnding > 0 ? data : false;
     },

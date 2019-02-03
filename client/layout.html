@@ -61,7 +61,7 @@
                                     {{#if posLayout}}
                                         <ul class="nav navbar-nav">
                                             {{#if manageModule.restaurant}}
-                                                <li>
+                                                <li style="cursor: pointer;">
                                                     <a href="{{pathFor 'pos.tableBoard'}}" class="dropdown-toggle"
                                                        aria-expanded="true">
                                                         <img src="/res.png" alt=""
@@ -70,7 +70,7 @@
                                                 </li>
                                             {{/if}}
                                             {{#if manageModule.coffee}}
-                                                <li>
+                                                <li style="cursor: pointer;">
                                                     <a href="{{pathFor 'pos.saleCoffee'}}" class="dropdown-toggle"
                                                        aria-expanded="true">
                                                         <img src="/coffee-cup.png" alt=""
@@ -78,14 +78,14 @@
                                                     </a>
                                                 </li>
                                             {{/if}}
-                                            <li>
+                                            <li style="cursor: pointer;">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                                    aria-expanded="true">
                                                     <i class="fa fa-bell-o"></i>
                                                     <span class="label label-danger">{{invoiceExpire}}</span>
                                                 </a>
                                             </li>
-                                            <li>
+                                            <li style="cursor: pointer;">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                                    aria-expanded="true">
                                                     <i class="fa fa-bank"></i>
@@ -141,13 +141,13 @@
                                                                         Account
                                                                         Settings
                                                                     </li>
-                                                                    <li><a href="{{pathFor 'acc.chartAccount'}}"><i
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor 'acc.chartAccount'}}"><i
                                                                             class="fa fa-superpowers"
                                                                             aria-hidden="true"></i> Chart
                                                                         Account</a>
                                                                     </li>
 
-                                                                    <li><a href="{{pathFor 'wb.waterBillingSetup'}}">
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor 'wb.waterBillingSetup'}}">
                                                                         <i class="fa fa-cog" aria-hidden="true"></i>
                                                                         Setup</a></li>
 
@@ -166,7 +166,7 @@
                                                                             <span>{{_
                                                                                     "sch.sidebarMenu.student"}}</span>
                                                                         </a>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'sch.schRegisterReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -175,21 +175,21 @@
                                                                         </li>
 
                                                                         {{#if isPaymentReportRole}}
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schPaymentReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "sch.sidebarMenu.payment"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schDebtSummaryReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "sch.sidebarMenu.debtSummary"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schDebtDetailReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
@@ -212,28 +212,28 @@
                                                                             <i class="fa fa-bus"></i> <span>{{_
                                                                                 "sch.sidebarMenu.bus"}}</span>
                                                                         </a>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'sch.schBusRegisterReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "sch.sidebarMenu.busRegister"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'sch.schBusRegisterActiveReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "sch.sidebarMenu.busRegisterActive"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'sch.schBusPaymentReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "sch.sidebarMenu.busPayment"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'sch.schBusDebtSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -241,7 +241,7 @@
                                                                         </a>
                                                                         </li>
 
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'sch.schBusDebtDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -261,7 +261,7 @@
                                                                             <i class="fa fa-file"></i> <span>{{_
                                                                                 "sch.sidebarMenu.general"}}</span>
                                                                         </a>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'sch.schStudentListReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -279,35 +279,35 @@
                                                                                 <i class="fa fa-user"></i> <span>{{_
                                                                                     "sch.sidebarMenu.teacher"}}</span>
                                                                             </a>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schTeacherActivityReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "sch.sidebarMenu.teacherActivity"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schTeacherSalaryReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "sch.sidebarMenu.teacherSalary"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schTeacherByLevelReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "sch.sidebarMenu.teacherByLevel"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schTeacherDevelopmentReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "sch.sidebarMenu.teacherDevelopment"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'sch.schTeacherLevelSalaryReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
@@ -334,14 +334,14 @@
                                                                             <i class="fa fa-file"></i> <span>{{_
                                                                                 "pos.sidebarMenu.customer"}}</span>
                                                                         </a>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posSaleByCustomerSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.saleByCustomerSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posSaleByCustomerDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -349,14 +349,14 @@
                                                                         </a>
                                                                         </li>
 
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posSaleByProductSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.saleByProductSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posSaleByProductDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -364,54 +364,54 @@
                                                                         </a>
                                                                         </li>
 
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posReceivePaymentSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.receivePaymentSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posReceivePaymentDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.receivePaymentDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posDebtSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.debtSummary"}}</a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posDebtDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.debtDetail"}}</a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posCollectionSheetSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.collectionSheetSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posCollectionSheetDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.collectionSheetDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posSaleReceivePaymentByCustomerDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.saleReceivePaymentByCustomerDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posSaleDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -419,7 +419,7 @@
                                                                         </a>
                                                                         </li>
                                                                         {{#if manageModule.phoneShop}}
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'pos.posInvoiceByImeiReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
@@ -440,56 +440,56 @@
                                                                             <i class="fa fa-file"></i> <span>{{_
                                                                                 "pos.sidebarMenu.vendor"}}</span>
                                                                         </a>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posPurchaseByVendorSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.purchaseByVendorSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posPurchaseByVendorDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.purchaseByVendorDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posPurchaseByProductSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.purchaseByProductSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posPurchaseByProductDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.purchaseByProductDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posPayBillSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.payBillSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posPayBillDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.payBillDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posUnPaidSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.unPaidSummary"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posUnPaidDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -505,14 +505,14 @@
                                                                                 <i class="fa fa-file"></i> <span>{{_
                                                                                     "pos.sidebarMenu.production"}}</span>
                                                                             </a>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'pos.posProductionReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "pos.sidebarMenu.production"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'pos.posProductionSummaryReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
@@ -520,14 +520,14 @@
                                                                             </a>
                                                                             </li>
 
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'pos.posProductionResultReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
                                                                                     "pos.sidebarMenu.productionResult"}}
                                                                             </a>
                                                                             </li>
-                                                                            <li><a href="{{pathFor
+                                                                            <li style="cursor: pointer;"><a href="{{pathFor
                                                                                     'pos.posProductionResultSummaryReport'}}"
                                                                                    class="title-body">
                                                                                 <i class="fa fa-dollar"></i> {{_
@@ -547,7 +547,7 @@
                                                                         <i class="fa fa-file"></i> <span>{{_
                                                                             "pos.sidebarMenu.general"}}</span>
                                                                     </a>
-                                                                    <li><a href="{{pathFor
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor
                                                                             'pos.posProdcutListReport'}}"
                                                                            class="title-body">
                                                                         <i class="fa fa-dollar"></i> {{_
@@ -555,14 +555,14 @@
                                                                     </li>
 
                                                                     {{#if manageModule.inventory}}
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posInventoryEndingReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.inventoryEnding"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posInventoryTransactionReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -572,14 +572,14 @@
                                                                     {{/if}}
 
                                                                     {{#if manageModule.transfer}}
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posTransferLocationReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.transferLocation"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posTransferLocationSummaryReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -589,21 +589,21 @@
 
                                                                     {{/if}}
 
-                                                                    <li><a href="{{pathFor
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor
                                                                             'pos.posConvertInventoryReport'}}"
                                                                            class="title-body">
                                                                         <i class="fa fa-dollar"></i> {{_
                                                                             "pos.sidebarMenu.convertInventory"}}
                                                                     </a>
                                                                     </li>
-                                                                    <li><a href="{{pathFor
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor
                                                                             'pos.posConvertInventorySummaryReport'}}"
                                                                            class="title-body">
                                                                         <i class="fa fa-dollar"></i> {{_
                                                                             "pos.sidebarMenu.convertInventorySummary"}}
                                                                     </a>
                                                                     </li>
-                                                                    <li><a href="{{pathFor
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor
                                                                             'pos.posPurchaseSaleByProductSummaryReport'}}"
                                                                            class="title-body">
                                                                         <i class="fa fa-dollar"></i> {{_
@@ -618,21 +618,21 @@
                                                                             <i class="fa fa-file"></i> <span>{{_
                                                                                 "pos.sidebarMenu.saleOrder"}}</span>
                                                                         </a>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posSaleOrderByCustomerDetailReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.saleOrderByCustomerDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posStockDebtReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
                                                                                 "pos.sidebarMenu.stockDebt"}}
                                                                         </a>
                                                                         </li>
-                                                                        <li><a href="{{pathFor
+                                                                        <li style="cursor: pointer;"><a href="{{pathFor
                                                                                 'pos.posStockReceiveReport'}}"
                                                                                class="title-body">
                                                                             <i class="fa fa-dollar"></i> {{_
@@ -656,14 +656,14 @@
                                                                         <i class="fa fa-file"></i> <span>{{_
                                                                             "loan.sidebarMenu.client"}}</span>
                                                                     </a>
-                                                                    <li><a href="{{pathFor
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor
                                                                             'loan.loanRepaymentScheduleReport'}}"
                                                                            class="title-body">
                                                                         <i class="fa fa-dollar"></i> {{_
                                                                             "loan.sidebarMenu.repaymentSchedule"}}
                                                                     </a>
                                                                     </li>
-                                                                    <li><a href="{{pathFor
+                                                                    <li style="cursor: pointer;"><a href="{{pathFor
                                                                             'loan.loanDisbursementReport'}}"
                                                                            class="title-body">
                                                                         <i class="fa fa-dollar"></i> {{_
@@ -697,7 +697,7 @@
                                     <!--class="caret"></span></span>-->
                                     <!--</a>-->
                                     <!--&lt;!&ndash;<ul class="dropdown-menu">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li style="curs">&ndash;&gt;-->
                                     {{#if currentUser}}
                                         {{#if isAdminSettingAndSuper}}
                                             <!--&lt;!&ndash;<a href="{{pathFor 'wb.userSetting'}}"&ndash;&gt;-->
@@ -709,7 +709,7 @@
 
                                     {{/if}}
                                     <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li style="curs">&ndash;&gt;-->
                                     {{#if currentUser}}
                                         <!--&lt;!&ndash;<a class="logout btn btn-default btn-flat">Sign out</a>&ndash;&gt;-->
                                     {{/if}}
@@ -719,24 +719,24 @@
                                         <!--{{#if currentUser}}-->
                                     <!--<ul class="dropdown-menu mega-dropdown-menu" role="menu">-->
                                         <!--{{#if isAdminSettingAndSuper}}-->
-                                        <!--<li><a class="cursor-pointer" style="display: flex;"-->
+                                        <!--<li style="curs"><a class="cursor-pointer" style="display: flex;"-->
                                         <!--href="{{pathFor 'wb.userSetting'}}"><i-->
                                         <!--class="fa fa-circle-o-notch" aria-hidden="true"></i>តារាងអ្នកប្រើប្រាស់</a>-->
                                         <!--</li>-->
                                             <!--{{/if}}-->
-                                    <!--<li><a class="cursor-pointer" style="display: flex;"-->
+                                    <!--<li style="curs"><a class="cursor-pointer" style="display: flex;"-->
                                     <!--href="{{pathFor 'wb.changePassword'}}"><i-->
                                     <!--class="fa fa-unlock-alt"></i>&nbsp;ប្តូរពាក្យសម្ងាត់</a>-->
                                     <!--</li>-->
                                     <!--<li class="divider"></li>-->
-                                    <!--<li><a class="cursor-pointer" style="display: flex;"><i-->
+                                    <!--<li style="curs"><a class="cursor-pointer" style="display: flex;"><i-->
                                     <!--class="fa fa-sign-out"></i>&nbsp;ចាកចេញ</a>-->
                                     <!--</li>-->
                                     <!--</ul>-->
                                         <!--{{/if}}-->
                                     <!--</li>-->
                                     <!--&lt;!&ndash; Control Sidebar Toggle Button &ndash;&gt;-->
-                                    <!--&lt;!&ndash;<li>-->
+                                    <!--&lt;!&ndash;<li style="curs">-->
                                     <!--<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>-->
                                     <!--</li>&ndash;&gt;-->
                                     <!--</ul>-->
@@ -779,7 +779,7 @@
                                 <strong>&nbsp;&nbsp; Copyright © 2017 <a href="https://h2e.asia">H2E
                                     Tech</a></strong>
                                 <!--<ul class="nav navbar-nav">
-                                    <li>
+                                    <li style="curs">
                                         {{>i18n_ui}}
                                     </li>
                                 </ul>-->
@@ -905,7 +905,7 @@
 
                         <!--{{/if}}-->
                     <!--</li>-->
-                    <!--<li>-->
+                    <!--<li style="curs">-->
                         <!--{{#if currentUser}}-->
                     <!--<a class="logout btn btn-default btn-flat">Sign out</a>-->
                         <!--{{/if}}-->
@@ -916,26 +916,26 @@
                         <ul class="dropdown-menu" style="position: inherit !important;float: none !important;"
                             role="menu">
                             {{#if isAdminSettingAndSuper}}
-                                <li><a class="cursor-pointer" style="display: flex;"
+                                <li style="cursor: pointer;"><a class="cursor-pointer" style="display: flex;"
                                        href="{{pathFor 'wb.userSetting'}}"><i
                                         class="fa fa-circle-o-notch" aria-hidden="true"></i>តារាងអ្នកប្រើប្រាស់</a>
                                 </li>
                             {{/if}}
                             {{#if isSuper}}
-                                <li><a class="cursor-pointer" style="display: flex;"
+                                <li style="cursor: pointer;"><a class="cursor-pointer" style="display: flex;"
                                        href="{{pathFor 'manage.module'}}"><i
                                         class="fa fa-circle-o-notch" aria-hidden="true"></i>គ្រប់គ្រងប្រព័ន្ធ</a>
                                 </li>
                             {{/if}}
 
 
-                            <li><a class="cursor-pointer" style="display: flex;"
+                            <li style="cursor: pointer;"><a class="cursor-pointer" style="display: flex;"
                                    href="{{pathFor 'wb.changePassword'}}"><i
                                     class="fa fa-unlock-alt"></i>&nbsp;ប្តូរពាក្យសម្ងាត់</a>
                             </li>
                             <li class="divider"></li>
                             <li class="cursor-pointer"></li>
-                            <li><a class="cursor-pointer logout" style="display: flex;"><i
+                            <li style="cursor: pointer;"><a class="cursor-pointer logout" style="display: flex;"><i
                                     class="fa fa-sign-out"></i>&nbsp;ចាកចេញ</a>
                             </li>
                         </ul>
@@ -947,21 +947,21 @@
             {{#if accountLayout}}
                 <ul class="sidebar-menu tree animated-padding animated fadeInLeft" data-widget="tree">
 
-                    <li><a style="color: white !important;" href="{{pathFor 'acc.journal'}}" class="title-head"><i
+                    <li style="cursor: pointer;"><a style="color: white !important;" href="{{pathFor 'acc.journal'}}" class="title-head"><i
                             class="fa fa-registered"></i>  {{_
                             "acc.sidebarMenu.journal"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'acc.fixedAsset'}}">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'acc.fixedAsset'}}">
                         <i class="fa fa-cubes" aria-hidden="true"></i>
                         {{_ "acc.sidebarMenu.fixedAsset"}}</a>
                     </li>
 
-                    <li><a href="{{pathFor 'acc.exchange'}}">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'acc.exchange'}}">
                         <i class="fa fa-exchange" aria-hidden="true"></i>
                         {{_
                                 "acc.sidebarMenu.exchange"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'acc.closingEntry'}}">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'acc.closingEntry'}}">
                         <i class="fa fa-hourglass-end" aria-hidden="true"></i>
                         Closing
                         Entry</a>
@@ -975,34 +975,34 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     {{#if isAdminAndSuper }}
-                        <li><a href="{{pathFor 'acc.accountListReport'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'acc.accountListReport'}}" class="title-body">
                             <i class="fa fa-dollar"></i> Account List
                             Report</a>
                         </li>
-                        <li><a href="{{pathFor 'acc.fixedAssetReport'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'acc.fixedAssetReport'}}" class="title-body">
                             <i class="fa fa-dollar"></i> Fixed Asset
                             Report</a>
                         </li>
-                        <li><a href="{{pathFor 'acc.journalReport'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'acc.journalReport'}}" class="title-body">
                             <i class="fa fa-dollar"></i> Journal​
                             Report</a>
                         </li>
-                        <li><a href="{{pathFor
+                        <li style="cursor: pointer;"><a href="{{pathFor
                                 'acc.transactionDetailReport'}}" class="title-body">
                             <i class="fa fa-dollar"></i> Transaction Detail Report</a>
                         </li>
-                        <li><a href="{{pathFor 'acc.ledgerReport'}}"> <i class="fa fa-dollar"></i> Ledger
+                        <li style="cursor: pointer;"><a href="{{pathFor 'acc.ledgerReport'}}"> <i class="fa fa-dollar"></i> Ledger
                             Report</a>
                         </li>
-                        <li><a href="{{pathFor 'acc.trialBalanceReport'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'acc.trialBalanceReport'}}" class="title-body">
                             <i class="fa fa-dollar"></i> Trial Balance
                             Report</a>
                         </li>
-                        <li><a href="{{pathFor 'acc.profitLostReport'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'acc.profitLostReport'}}" class="title-body">
                             <i class="fa fa-dollar"></i> Profit Lost
                             Report</a>
                         </li>
-                        <li><a href="{{pathFor 'acc.balanceSheetReport'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'acc.balanceSheetReport'}}" class="title-body">
                             <i class="fa fa-dollar"></i> Balance Sheet
                             Report</a>
                         </li>
@@ -1024,18 +1024,18 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
 
-                    <li><a href="{{pathFor 'pos.vendor'}}" class="title-body"><i class="fa fa-user"
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.vendor'}}" class="title-body"><i class="fa fa-user"
                                                                                  aria-hidden="true"></i> {{_
                             "pos.sidebarMenu.vendor"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'pos.bill'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.bill'}}" class="title-body">
                         <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.bill"}}</a>
                     </li>
 
-                    <li><a href="{{pathFor 'pos.payBill'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.payBill'}}" class="title-body">
                         <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.payBill"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'pos.convertInventory'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.convertInventory'}}" class="title-body">
                         <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.convertInventory"}}</a>
                     </li>
                     <a href="#" class="title-head">
@@ -1043,20 +1043,20 @@
                             "pos.sidebarMenu.customer"}}</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
-                    <li><a href="{{pathFor 'pos.customer'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.customer'}}" class="title-body">
                         <i class="fa fa-user" aria-hidden="true"></i> {{_ "pos.sidebarMenu.customer"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'pos.invoice'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.invoice'}}" class="title-body">
                         <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.invoice"}}</a>
                     </li>
-                    <!--<li><a href="{{pathFor 'pos.saleCoffee'}}" class="title-body">
+                    <!--<li style="curs"><a href="{{pathFor 'pos.saleCoffee'}}" class="title-body">
                         <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.saleCoffee"}}</a>
                     </li>-->
-                    <li><a href="{{pathFor 'pos.receivePayment'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.receivePayment'}}" class="title-body">
                         <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.receivePayment"}}</a>
                     </li>
                     {{#if manageModule.order}}
-                        <li><a href="{{pathFor 'pos.saleOrder'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'pos.saleOrder'}}" class="title-body">
                             <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.saleOrder"}}</a>
                         </li>
                     {{/if}}
@@ -1066,24 +1066,24 @@
                                 "pos.sidebarMenu.production"}}</span>
                             <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                         </a>
-                        <li><a href="{{pathFor 'pos.production'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'pos.production'}}" class="title-body">
                             <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.production"}}</a>
                         </li>
-                        <li><a href="{{pathFor 'pos.productionBoard'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'pos.productionBoard'}}" class="title-body">
                             <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.productionBoard"}}</a>
                         </li>
-                        <li><a href="{{pathFor 'pos.productionResult'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'pos.productionResult'}}" class="title-body">
                             <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.productionResult"}}</a>
                         </li>
                     {{/if}}
                     <hr>
                     {{#if manageModule.transfer}}
-                        <li><a href="{{pathFor 'pos.transferInventory'}}" class="title-body">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'pos.transferInventory'}}" class="title-body">
                             <i class="fa fa-dollar"></i> {{_ "pos.sidebarMenu.transferInventory"}}</a>
                         </li>
                     {{/if}}
 
-                    <li><a href="{{pathFor 'acc.exchange'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'acc.exchange'}}" class="title-body">
                         <i class="fa fa-exchange" aria-hidden="true"></i> {{_ "pos.sidebarMenu.exchange"}}</a>
                     </li>
                     <!--Report -->
@@ -1098,43 +1098,43 @@
                         </a>
                         <ul class="treeview-menu animated-padding">
                             {{#if isAdminAndSuper }}
-                                <li><a href="{{pathFor 'pos.term'}}" class="title-body"><i class="fa fa-terminal"
+                                <li style="cursor: pointer;"><a href="{{pathFor 'pos.term'}}" class="title-body"><i class="fa fa-terminal"
                                                                                            aria-hidden="true"></i>
                                     {{_ "pos.sidebarMenu.term"}}</a>
                                 </li>
-                                <li><a href="{{pathFor 'pos.unit'}}" class="title-body"><i class="fa fa-terminal"
+                                <li style="cursor: pointer;"><a href="{{pathFor 'pos.unit'}}" class="title-body"><i class="fa fa-terminal"
                                                                                            aria-hidden="true"></i>
                                     {{_ "pos.sidebarMenu.unit"}}</a>
                                 </li>
-                                <li><a href="{{pathFor 'pos.location'}}" class="title-body">
+                                <li style="cursor: pointer;"><a href="{{pathFor 'pos.location'}}" class="title-body">
                                     <i class="fa fa-location-arrow" aria-hidden="true"></i>{{_
                                         "pos.sidebarMenu.location"}}</a>
                                 </li>
 
                                 {{#if manageModule.table}}
-                                    <li><a href="{{pathFor 'pos.tableLocation'}}" class="title-body">
+                                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.tableLocation'}}" class="title-body">
                                         <i class="fa fa-location-arrow" aria-hidden="true"></i>{{_
                                             "pos.sidebarMenu.tableLocation"}}</a>
                                     </li>
-                                    <li><a href="{{pathFor 'pos.table'}}" class="title-body">
+                                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.table'}}" class="title-body">
                                         <i class="fa fa-location-arrow" aria-hidden="true"></i>{{_
                                             "pos.sidebarMenu.table"}}</a>
                                     </li>
                                 {{/if}}
 
 
-                                <li><a href="{{pathFor 'pos.category'}}" class="title-body">
+                                <li style="cursor: pointer;"><a href="{{pathFor 'pos.category'}}" class="title-body">
                                     <i class="fa fa-rebel" aria-hidden="true"></i>{{_ "pos.sidebarMenu.category"}}</a>
                                 </li>
-                                <li><a href="{{pathFor 'pos.product'}}" class="title-body"><i class="fa fa-product-hunt"
+                                <li style="cursor: pointer;"><a href="{{pathFor 'pos.product'}}" class="title-body"><i class="fa fa-product-hunt"
                                                                                               aria-hidden="true"></i> {{_
                                         "pos.sidebarMenu.product"}}</a>
                                 </li>
-                                <!--<li><a href="{{pathFor 'pos.agent'}}" class="title-body"><i class="fa fa-product-hunt"
+                                <!--<li style="curs"><a href="{{pathFor 'pos.agent'}}" class="title-body"><i class="fa fa-product-hunt"
                                                                                             aria-hidden="true"></i> {{_
                                         "pos.sidebarMenu.agent"}}</a>
                                 </li>-->
-                                <li><a href="{{pathFor 'wb.waterBillingSetup'}}" class="title-body">
+                                <li style="cursor: pointer;"><a href="{{pathFor 'wb.waterBillingSetup'}}" class="title-body">
                                     <i class="fa fa-key" aria-hidden="true"></i>{{_ "pos.sidebarMenu.setup"}}</a></li>
 
                             {{/if}}
@@ -1167,18 +1167,18 @@
                             "pos.sidebarMenu.customer"}}</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
-                    <li><a href="{{pathFor 'pos.customer'}}" class="title-body">
+                    <li style="cursor: pointer;"><a href="{{pathFor 'pos.customer'}}" class="title-body">
                         <i class="fa fa-user" aria-hidden="true"></i> {{_ "pos.sidebarMenu.customer"}}</a>
                     </li>
 
-                    <li><a href="{{pathFor 'loan.disbursement'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.disbursement'}}" class="title-body"><i class="fa fa-book"></i> {{_
                             "loan.sidebarMenu.disbursement"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'loan.repaymentForm'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.repaymentForm'}}" class="title-body"><i class="fa fa-book"></i> {{_
                             "loan.sidebarMenu.repaymentForm"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'loan.repayment'}}" class="title-body"><i class="fa fa-book"></i> {{_
-                            "loan.sidebarMenu.repayment"}}</a>
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.repayment'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                            "loan.sidebarMenu.repaymentList"}}</a>
                     </li>
 
                     <a href="#" class="title-head">
@@ -1187,7 +1187,7 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
 
-                    <li><a href="{{pathFor 'loan.creditOfficer'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.creditOfficer'}}" class="title-body"><i class="fa fa-book"></i> {{_
                             "loan.sidebarMenu.creditOfficer"}}</a>
                     </li>
 
@@ -1196,17 +1196,17 @@
                             "sch.sidebarMenu.setting"}}</span>
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>
-                    <li><a href="{{pathFor 'loan.penalty'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.penalty'}}" class="title-body"><i class="fa fa-book"></i> {{_
                             "loan.sidebarMenu.penalty"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'loan.penaltyClosing'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.penaltyClosing'}}" class="title-body"><i class="fa fa-book"></i> {{_
                             "loan.sidebarMenu.penaltyClosing"}}</a>
                     </li>
-                    <li><a href="{{pathFor 'loan.product'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.product'}}" class="title-body"><i class="fa fa-book"></i> {{_
                             "loan.sidebarMenu.product"}}</a>
                     </li>
 
-                    <li><a href="{{pathFor 'loan.config'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                    <li style="cursor: pointer;"><a href="{{pathFor 'loan.config'}}" class="title-body"><i class="fa fa-book"></i> {{_
                             "loan.sidebarMenu.config"}}</a>
                     </li>
                 </ul>
@@ -1223,19 +1223,19 @@
                                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                             </a>
 
-                            <li><a href="{{pathFor 'sch.student'}}" class="title-body"><i class="fa fa-graduation-cap"
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.student'}}" class="title-body"><i class="fa fa-graduation-cap"
                                                                                           aria-hidden="true"></i> {{_
                                     "sch.sidebarMenu.student"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.register'}}" class="title-body"><i class="fa fa-registered"
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.register'}}" class="title-body"><i class="fa fa-registered"
                                                                                            aria-hidden="true"></i> {{_
                                     "sch.sidebarMenu.register"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.class'}}" class="title-body"><i class="fa fa-cube"
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.class'}}" class="title-body"><i class="fa fa-cube"
                                                                                         aria-hidden="true"></i> {{_
                                     "sch.sidebarMenu.class"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.classBoard'}}" class="title-body">
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.classBoard'}}" class="title-body">
 
                                 <i class="el-icon-menu"
                                    aria-hidden="true"></i> {{_
@@ -1251,7 +1251,7 @@
                                 "sch.sidebarMenu.payment"}}</span>
                             <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                         </a>
-                        <li><a href="{{pathFor 'sch.payment'}}" class="title-body"><i class="fa fa-shopping-cart"
+                        <li style="cursor: pointer;"><a href="{{pathFor 'sch.payment'}}" class="title-body"><i class="fa fa-shopping-cart"
                                                                                       aria-hidden="true"></i> {{_
                                 "sch.sidebarMenu.payment"}}</a>
                         </li>
@@ -1267,11 +1267,11 @@
                             <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                         </a>
 
-                        <li><a href="{{pathFor 'sch.busRegister'}}" class="title-body"><i class="fa fa-bus"
+                        <li style="cursor: pointer;"><a href="{{pathFor 'sch.busRegister'}}" class="title-body"><i class="fa fa-bus"
                                                                                           aria-hidden="true"></i> {{_
                                 "sch.sidebarMenu.busRegister"}}</a>
                         </li>
-                        <li><a href="{{pathFor 'sch.busPayment'}}" class="title-body"><i class="fa fa-shopping-cart"
+                        <li style="cursor: pointer;"><a href="{{pathFor 'sch.busPayment'}}" class="title-body"><i class="fa fa-shopping-cart"
                                                                                          aria-hidden="true"></i> {{_
                                 "sch.sidebarMenu.busPayment"}}</a>
                         </li>
@@ -1288,11 +1288,11 @@
                                     "sch.sidebarMenu.teacher"}}</span>
                                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                             </a>
-                            <li><a href="{{pathFor 'sch.teacher'}}" class="title-body"><i class="fa fa-user"
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.teacher'}}" class="title-body"><i class="fa fa-user"
                                                                                           aria-hidden="true"></i> {{_
                                     "sch.sidebarMenu.teacher"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.teacherActivity'}}" class="title-body"><i class="fa fa-plane"
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.teacherActivity'}}" class="title-body"><i class="fa fa-plane"
                                                                                                   aria-hidden="true"></i> {{_
                                     "sch.sidebarMenu.teacherActivity"}}</a>
                             </li>
@@ -1308,23 +1308,23 @@
                     {{#if manageModule.student}}
                         {{#if isStudentRole}}
 
-                            <li><a href="{{pathFor 'sch.time'}}" class="title-body"><i class="fa fa-calendar"></i> {{_
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.time'}}" class="title-body"><i class="fa fa-calendar"></i> {{_
                                     "sch.sidebarMenu.time"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.program'}}" class="title-body"><i class="fa fa-tasks"></i> {{_
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.program'}}" class="title-body"><i class="fa fa-tasks"></i> {{_
                                     "sch.sidebarMenu.program"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.faculty'}}" class="title-body"><i
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.faculty'}}" class="title-body"><i
                                     class="fa fa-industry"></i> {{_
                                     "sch.sidebarMenu.faculty"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.major'}}" class="title-body"><i class="fa fa-ravelry"></i> {{_
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.major'}}" class="title-body"><i class="fa fa-ravelry"></i> {{_
                                     "sch.sidebarMenu.major"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.level'}}" class="title-body"><i class="fa fa-level-up"></i> {{_
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.level'}}" class="title-body"><i class="fa fa-level-up"></i> {{_
                                     "sch.sidebarMenu.level"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.promotion'}}" class="title-body"><i class="fa fa-gift"></i> {{_
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.promotion'}}" class="title-body"><i class="fa fa-gift"></i> {{_
                                     "sch.sidebarMenu.promotion"}}</a>
                             </li>
                         {{/if}}
@@ -1332,17 +1332,17 @@
                     {{#if manageModule.trascript}}
                         {{#if isStudentRole}}
 
-                            <li><a href="{{pathFor 'sch.subject'}}" class="title-body"><i class="fa fa-book"></i> {{_
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.subject'}}" class="title-body"><i class="fa fa-book"></i> {{_
                                     "sch.sidebarMenu.subject"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.ciriculumn'}}" class="title-body"><i
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.ciriculumn'}}" class="title-body"><i
                                     class="el-icon-time"></i> {{_
                                     "sch.sidebarMenu.ciriculumn"}}</a>
                             </li>
 
                             {{#if isStudentRole}}
 
-                                <li><a href="{{pathFor 'sch.mention'}}" class="title-body"><i
+                                <li style="cursor: pointer;"><a href="{{pathFor 'sch.mention'}}" class="title-body"><i
                                         class="fa fa-star"></i> {{_
                                         "sch.sidebarMenu.mention"}}</a>
                                 </li>
@@ -1353,11 +1353,11 @@
                     {{#if manageModule.teacher}}
                         {{#if isTeacherRole}}
 
-                            <li><a href="{{pathFor 'sch.position'}}" class="title-body"><i
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.position'}}" class="title-body"><i
                                     class="fa fa-podcast"></i> {{_
                                     "sch.sidebarMenu.position"}}</a>
                             </li>
-                            <li><a href="{{pathFor 'sch.activity'}}" class="title-body"><i
+                            <li style="cursor: pointer;"><a href="{{pathFor 'sch.activity'}}" class="title-body"><i
                                     class="fa fa-support"></i> {{_
                                     "sch.sidebarMenu.activity"}}</a>
                             </li>
@@ -1366,16 +1366,16 @@
 
                     {{#if manageModule.bus}}
                         <hr>
-                        <li><a href="{{pathFor 'sch.busStop'}}" class="title-body"><i class="fa fa-map-marker"></i> {{_
+                        <li style="cursor: pointer;"><a href="{{pathFor 'sch.busStop'}}" class="title-body"><i class="fa fa-map-marker"></i> {{_
                                 "sch.sidebarMenu.busStop"}}</a>
                         </li>
-                        <li><a href="{{pathFor 'sch.bus'}}" class="title-body"><i class="fa fa-bus"></i> {{_
+                        <li style="cursor: pointer;"><a href="{{pathFor 'sch.bus'}}" class="title-body"><i class="fa fa-bus"></i> {{_
                                 "sch.sidebarMenu.bus"}}</a>
                         </li>
                     {{/if}}
                     <hr>
                     {{#if manageModule.super}}
-                        <li><a href="{{pathFor 'wb.waterBillingSetup'}}">
+                        <li style="cursor: pointer;"><a href="{{pathFor 'wb.waterBillingSetup'}}">
                             <i class="fa fa-cog"></i> Setup</a></li>
                     {{/if}}
                 </ul>

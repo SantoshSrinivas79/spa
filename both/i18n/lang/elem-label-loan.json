@@ -149,7 +149,7 @@
     },
     "repayment": {
       "searchHere": "Search Here ...",
-      "title": "Repayment",
+      "title": "Repayment List",
       "action": "Action",
       "save": "Save",
       "cancel": "Cancel",
@@ -175,7 +175,14 @@
       "productType": "Product Type",
       "installment": "Installment",
       "feeAmount": "Fee",
-      "paymentNumber": "Payment Number"
+      "paymentNumber": "Payment Number",
+      "repaymentForm": "Repayment Form",
+      "disbursementId": "Disbursement Id",
+      "paid": "Paid",
+      "penalty": "Penalty",
+      "voucher": "Voucher",
+      "note": "Note",
+      "totalPaid": "Total Paid"
     }
   },
   {
@@ -329,7 +336,7 @@
     },
     "repayment": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",
-      "title": "បង់ប្រាក់",
+      "title": "ទិន្នន័យបង់ប្រាក់",
       "show": "បង្ហាញកម្ចីប្រាក់",
       "action": "សកម្មភាព",
       "save": "រក្សាទុក",
@@ -355,7 +362,14 @@
       "productType": "ប្រភេទកម្ចី",
       "installment": "ចំនួនដងត្រូវបង់",
       "feeAmount": "តម្លៃរដ្ឋបាល",
-      "paymentNumber": "ចំនួនដងបង់រួច"
+      "paymentNumber": "ចំនួនដងបង់រួច",
+      "repaymentForm": "កន្លែងទទួលប្រាក់",
+      "disbursementId": "លេខគណនី",
+      "paid": "បង់",
+      "penalty": "ពិន័យ",
+      "voucher": "លេខវិក័យបត្រ",
+      "note": "បរិយាយ",
+      "totalPaid": "សរុបការបង់"
     }
   }
 ]

@@ -25,6 +25,21 @@ Loan_Repayment.schema = new SimpleSchema({
         type: Number,
         decimal: true
     },
+    penalty: {
+        type: Number,
+        decimal: true
+    },
+    totalPaid: {
+        type: Number,
+        decimal: true
+    },
+    voucher: {
+        type: String,
+    },
+    note: {
+        type: String,
+        optional: true
+    },
 
     createdAt: {
         type: Date,

@@ -499,14 +499,16 @@ let invoiceReact = function (id) {
 
 
 let addImeiInvoice = function (imeiList, invoiceId) {
-    imeiList.forEach((obj) => {
-        let data = {};
-        data.name = obj.name;
-        data.invoiceId = invoiceId;
-        Pos_ImeiInvoice.insert(data);
-        Pos_ImeiBill.remove({name: obj.name});
+    if (imeiList && imeiList.length > 0) {
+        imeiList.forEach((obj) => {
+            let data = {};
+            data.name = obj.name;
+            data.invoiceId = invoiceId;
+            Pos_ImeiInvoice.insert(data);
+            Pos_ImeiBill.remove({name: obj.name});
 
-    })
+        })
+    }
 };
 let removeImeiByInvoiceId = function (invoiceId) {
     return Pos_ImeiInvoice.remove({invoiceId: invoiceId});

@@ -337,13 +337,15 @@ let billReact = function (id) {
 
 
 let addImeiBill = function (imeiList, billId) {
-    imeiList.forEach((obj) => {
-        let data = {};
-        data.name = obj.name;
-        data.billId = billId;
-        Pos_ImeiBill.insert(data);
-        Pos_ImeiInvoice.remove({name: obj.name});
-    })
+    if (imeiList && imeiList.length > 0) {
+        imeiList.forEach((obj) => {
+            let data = {};
+            data.name = obj.name;
+            data.billId = billId;
+            Pos_ImeiBill.insert(data);
+            Pos_ImeiInvoice.remove({name: obj.name});
+        })
+    }
 };
 let removeImeiByBillId = function (billId) {
     return Pos_ImeiBill.remove({billId: billId});

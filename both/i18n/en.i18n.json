@@ -138,7 +138,8 @@
       "repaymentSchedule": "Repayment Schedule",
       "client": "Client",
       "repayment": "Repayment",
-      "repaymentForm": "Repayment Form"
+      "repaymentForm": "Repayment Form",
+      "repaymentList": "Repayment List"
     }
   },
   "global": {
