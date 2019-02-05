@@ -179,7 +179,9 @@ export const getCurrencySymbolById = function (id) {
         return "$";
     } else if (id === "KHR") {
         return "៛";
-    } else {
+    } else if (id === "THB") {
         return "B";
+    } else {
+        return "";
     }
 };

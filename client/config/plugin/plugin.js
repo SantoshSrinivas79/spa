@@ -34,6 +34,9 @@ Vue.use(math);
 // Vue.use($);
 
 Vue.filter('numFormat', (val) => {
+    if (val === "") {
+        return 0;
+    }
     return numeral(val).format('0,0.00');
 });
 

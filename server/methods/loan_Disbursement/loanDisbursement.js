@@ -136,7 +136,7 @@ Meteor.methods({
             });
         if (isUpdated) {
             disbursementReact(id);
-            removeRepaymentSchedule(data._id);
+            removeRepaymentSchedule(id);
             generateSchedulePayment(data, productDoc, configDoc, id);
         }
         return isUpdated;
@@ -199,6 +199,8 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, 
                 repaymentScheduleDoc.currencyId = disbursementDoc.currencyId;
                 repaymentScheduleDoc.rolesArea = disbursementDoc.rolesArea;
                 repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.amount;
+                repaymentScheduleDoc.principleUnpaid = repaymentScheduleDoc.principle;
+                repaymentScheduleDoc.interestUnpaid = repaymentScheduleDoc.interest;
                 repaymentScheduleDoc.dayRange = numDay;
 
 
@@ -220,6 +222,8 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, 
                 repaymentScheduleDoc.rolesArea = disbursementDoc.rolesArea;
 
                 repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.amount;
+                repaymentScheduleDoc.principleUnpaid = repaymentScheduleDoc.principle;
+                repaymentScheduleDoc.interestUnpaid = repaymentScheduleDoc.interest;
                 repaymentScheduleDoc.dayRange = numDay;
 
 

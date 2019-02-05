@@ -52,8 +52,16 @@
                             :label="langConfig['type']">
                     </el-table-column>
                     <el-table-column
-                            prop="amount"
-                            :label="langConfig['amount']">
+                            prop="amountUSD"
+                            :label="langConfig['amountUSD']">
+                    </el-table-column>
+                    <el-table-column
+                            prop="amountKHR"
+                            :label="langConfig['amountKHR']">
+                    </el-table-column>
+                    <el-table-column
+                            prop="amountTHB"
+                            :label="langConfig['amountTHB']">
                     </el-table-column>
                     <el-table-column
                             prop="graceDay"
@@ -84,7 +92,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -118,8 +127,14 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item :label="langConfig['amount']" prop="amount">
-                        <el-input v-model.number="loanPenaltyForm.amount" type="number"></el-input>
+                    <el-form-item :label="langConfig['amountUSD']" prop="amountUSD">
+                        <el-input v-model.number="loanPenaltyForm.amountUSD" type="number"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['amountKHR']" prop="amountKHR">
+                        <el-input v-model.number="loanPenaltyForm.amountKHR" type="number"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['amountTHB']" prop="amountTHB">
+                        <el-input v-model.number="loanPenaltyForm.amountTHB" type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['graceDay']" prop="graceDay">
                         <el-input v-model.number="loanPenaltyForm.graceDay" type="number"></el-input>
@@ -161,8 +176,14 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item :label="langConfig['amount']" prop="amount">
-                        <el-input v-model.number="loanPenaltyForm.amount" type="number"></el-input>
+                    <el-form-item :label="langConfig['amountUSD']" prop="amountUSD">
+                        <el-input v-model.number="loanPenaltyForm.amountUSD" type="number"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['amountKHR']" prop="amountKHR">
+                        <el-input v-model.number="loanPenaltyForm.amountKHR" type="number"></el-input>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['amountTHB']" prop="amountTHB">
+                        <el-input v-model.number="loanPenaltyForm.amountTHB" type="number"></el-input>
                     </el-form-item>
                     <el-form-item :label="langConfig['graceDay']" prop="graceDay">
                         <el-input v-model.number="loanPenaltyForm.graceDay" type="number"></el-input>
@@ -226,7 +247,9 @@
                 loanPenaltyForm: {
                     name: "",
                     type: "",
-                    amount: "",
+                    amountUSD: "",
+                    amountKHR: "",
+                    amountTHB: "",
                     graceDay: "",
                     _id: ""
                 },
@@ -298,7 +321,9 @@
                         let loanPenaltyDoc = {
                             name: vm.loanPenaltyForm.name,
                             type: vm.loanPenaltyForm.type,
-                            amount: vm.loanPenaltyForm.amount,
+                            amountUSD: vm.loanPenaltyForm.amountUSD,
+                            amountKHR: vm.loanPenaltyForm.amountKHR,
+                            amountTHB: vm.loanPenaltyForm.amountTHB,
                             graceDay: vm.loanPenaltyForm.graceDay,
                             rolesArea: Session.get('area')
                         };
@@ -332,7 +357,9 @@
                             _id: vm.loanPenaltyForm._id,
                             name: vm.loanPenaltyForm.name,
                             type: vm.loanPenaltyForm.type,
-                            amount: vm.loanPenaltyForm.amount,
+                            amountUSD: vm.loanPenaltyForm.amountUSD,
+                            amountKHR: vm.loanPenaltyForm.amountKHR,
+                            amountTHB: vm.loanPenaltyForm.amountTHB,
                             graceDay: vm.loanPenaltyForm.graceDay,
                             rolesArea: Session.get('area')
                         };

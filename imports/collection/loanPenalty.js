@@ -11,7 +11,15 @@ Loan_Penalty.schema = new SimpleSchema({
         label: "Type",
         optional: true
     },
-    amount: {
+    amountUSD: {
+        type: Number,
+        label: "Amount",
+    },
+    amountKHR: {
+        type: Number,
+        label: "Amount",
+    },
+    amountTHB: {
         type: Number,
         label: "Amount",
     },
@@ -58,7 +66,7 @@ Loan_Penalty.schema = new SimpleSchema({
                 return Meteor.userId();
             }
         }
-    },rolesArea: {
+    }, rolesArea: {
         type: String,
         label: "Role Area",
         index: true

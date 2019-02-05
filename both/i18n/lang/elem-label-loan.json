@@ -91,7 +91,9 @@
       "removeCancel": "Remove Cancel",
       "name": "Name",
       "type": "Type",
-      "amount": "Amount",
+      "amountUSD": "Amount USD",
+      "amountKHR": "Amount KHR",
+      "amountTHB": "Amount THB",
       "graceDay": "Grace Day",
       "add": "Add Penalty",
       "update": "Update Penalty"
@@ -168,7 +170,7 @@
       "creditOfficer": "Credit Officer",
       "description": "Description",
       "loanAmount": "Loan Amount",
-      "repaymentDate": "Repayment Date",
+      "repaymentDate": "Paid Date",
       "add": "Add Disbursement",
       "update": "Update Repayment",
       "startPaidDate": "Start Paid Date",
@@ -182,7 +184,17 @@
       "penalty": "Penalty",
       "voucher": "Voucher",
       "note": "Note",
-      "totalPaid": "Total Paid"
+      "totalPaid": "Total Paid",
+      "paidUSD": "Paid USD",
+      "paidKHR": "Paid KHR",
+      "paidTHB": "Paid THB",
+      "loanAcc": "Loan Account",
+      "nationId": "Nation Id",
+      "principleDue": "Principle Due",
+      "interestDue": "Interest Due",
+      "penaltyDue": "Penalty Due",
+      "totalDue": "Total Due",
+      "dayLate": "Day Late"
     }
   },
   {
@@ -280,7 +292,9 @@
       "update": "កែប្រែព័តមានពិន័យ",
       "name": "ឈ្មោះ",
       "type": "ប្រភេទ",
-      "amount": "តម្លៃ",
+      "amountUSD": "តម្លៃជាដុល្លា",
+      "amountKHR": "តម្លៃជារៀល",
+      "amountTHB": "តម្លៃជាបាត",
       "graceDay": "ថ្ងៃត្រូវពិន័យ"
     },
     "penaltyClosing": {
@@ -330,7 +344,7 @@
       "disbursementDate": "ថ្ងៃខ្ចី",
       "startPaidDate": "ថ្ងៃចាប់ផ្តើមបង់",
       "productType": "ប្រភេទកម្ចី",
-      "installment": "ចំនួនដងត្រូវបង់",
+      "installment": "ចំនួនដំណាក់កាលត្រូវបង់",
       "feeAmount": "តម្លៃរដ្ឋបាល",
       "paymentNumber": "ចំនួនដងបង់រួច"
     },
@@ -360,7 +374,7 @@
       "repaymentDate": "ថ្ងៃបង់ប្រាក់",
       "startPaidDate": "ថ្ងៃចាប់ផ្តើមបង់",
       "productType": "ប្រភេទកម្ចី",
-      "installment": "ចំនួនដងត្រូវបង់",
+      "installment": "ដំណាក់កាល",
       "feeAmount": "តម្លៃរដ្ឋបាល",
       "paymentNumber": "ចំនួនដងបង់រួច",
       "repaymentForm": "កន្លែងទទួលប្រាក់",
@@ -369,7 +383,17 @@
       "penalty": "ពិន័យ",
       "voucher": "លេខវិក័យបត្រ",
       "note": "បរិយាយ",
-      "totalPaid": "សរុបការបង់"
+      "totalPaid": "សរុបការបង់",
+      "paidUSD": "បង់ប្រាក់ជាដុល្លា",
+      "paidKHR": "បង់ប្រាក់ជារៀល",
+      "paidTHB": "បង់ប្រាក់ជាបាត",
+      "loanAcc": "លេខគណនី",
+      "nationId": "ប័ណ្ណសំគាល់ខ្លួន",
+      "principleDue": "ប្រាក់ដើមត្រូវបង់",
+      "interestDue": "ការប្រាក់ត្រូវបង់",
+      "penaltyDue": "ពិន័យត្រូវបង់",
+      "totalDue": "សរុបត្រូវបង់",
+      "dayLate": "ចំនួនថ្ងៃយឺត"
     }
   }
 ]

@@ -55,6 +55,14 @@ Loan_RepaymentSchedule.schema = new SimpleSchema({
         type: Number,
         decimal: true
     },
+    principleUnpaid: {
+        type: Number,
+        decimal: true
+    },
+    interestUnpaid: {
+        type: Number,
+        decimal: true
+    },
     paid: {
         type: [Object],
         optional: true,
