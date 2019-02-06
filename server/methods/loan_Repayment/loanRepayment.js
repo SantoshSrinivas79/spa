@@ -97,7 +97,9 @@ Meteor.methods({
         data.repaymentDateName = moment(data.repaymentDate).format("DD/MM/YYYY");
         let isInserted = Loan_Repayment.insert(data);
         if (isInserted) {
+
             repaymentReact(isInserted);
+            makeRepayment(data.disbursementId, data, isInserted);
             Loan_Disbursement.update({_id: data.disbursementId}, {$inc: {paymentNumber: 1}});
 
         }
@@ -108,6 +110,7 @@ Meteor.methods({
         let isRemoved = Loan_Repayment.remove({_id: id});
         if (isRemoved) {
             repaymentReact(id);
+            removeRepayment(loanDoc);
             Loan_Disbursement.update({_id: loanDoc.disbursementId}, {$inc: {paymentNumber: -1}});
 
         }
@@ -197,6 +200,7 @@ Meteor.methods({
         return voucher + "";
     },
 
+
 });
 
 
@@ -212,5 +216,71 @@ let repaymentReact = function (id) {
         Loan_RepaymentReact.insert({
             id: id
         });
+    }
+}
+
+
+let makeRepayment = function (disbursementId, doc, repaymentId) {
+    let repaymentScheduleList = Loan_RepaymentSchedule.find({loanId: disbursementId, isPaid: false}).fetch();
+    let amountPaid = doc.paid;
+    if (repaymentScheduleList.length > 0) {
+        repaymentScheduleList.forEach((obj) => {
+            if (amountPaid > 0) {
+                let repaymentScheduleDoc = obj;
+                let paid = obj.paid || [];
+                let paidDoc = {};
+                paidDoc.repaymentDate = moment(doc.repaymentDate).startOf("day").add(12, "hour").toDate();
+                paidDoc.repaymentId = repaymentId;
+
+                paidDoc.interestPaid = amountPaid >= obj.interestUnpaid ? obj.interestUnpaid : amountPaid;
+                amountPaid = amountPaid - paidDoc.interestPaid;
+
+                repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.balanceUnpaid - paidDoc.interestPaid;
+                repaymentScheduleDoc.interestUnpaid = repaymentScheduleDoc.interestUnpaid - paidDoc.interestPaid;
+
+                paidDoc.principlePaid = amountPaid >= obj.principleUnpaid ? obj.principleUnpaid : amountPaid;
+                amountPaid = amountPaid - paidDoc.principlePaid;
+
+                repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.balanceUnpaid - paidDoc.principlePaid;
+                repaymentScheduleDoc.principleUnpaid = repaymentScheduleDoc.principleUnpaid - paidDoc.principlePaid;
+
+                paid.push(paidDoc);
+                repaymentScheduleDoc.isPaid = !(math.round(repaymentScheduleDoc.balanceUnpaid, 2) > 0);
+                repaymentScheduleDoc.paid = paid;
+
+                Loan_RepaymentSchedule.update({_id: obj._id}, {$set: repaymentScheduleDoc});
+            } else {
+                return false;
+            }
+        })
+    }
+}
+
+let removeRepayment = function (repaymentDoc) {
+    let repaymentScheduleList = Loan_RepaymentSchedule.find({
+        "paid.repaymentId": repaymentDoc._id,
+        loanId: repaymentDoc.disbursementId
+    }).fetch();
+    if (repaymentScheduleList.length > 0) {
+        repaymentScheduleList.forEach((obj) => {
+            let newRepaymentScheduleDoc = obj;
+            let newPaid = [];
+            if (obj.paid.length > 0) {
+                obj.paid.forEach((ob) => {
+                    if (ob.repaymentId === repaymentDoc._id) {
+                        newRepaymentScheduleDoc.balanceUnpaid = newRepaymentScheduleDoc.balanceUnpaid + ob.principlePaid + ob.interestPaid;
+                        newRepaymentScheduleDoc.prinUnpaid = newRepaymentScheduleDoc.prinUnpaid + ob.principlePaid;
+                        newRepaymentScheduleDoc.interestUnpaid = newRepaymentScheduleDoc.interestUnpaid + ob.interestPaid;
+                    } else {
+                        newPaid.push(ob);
+                    }
+                })
+
+                newRepaymentScheduleDoc.isPaid = !(math.round(newRepaymentScheduleDoc.balanceUnpaid, 2) > 0);
+
+                newRepaymentScheduleDoc.paid = newPaid;
+                Loan_RepaymentSchedule.update({_id: obj._id}, {$set: newRepaymentScheduleDoc});
+            }
+        })
     }
 }

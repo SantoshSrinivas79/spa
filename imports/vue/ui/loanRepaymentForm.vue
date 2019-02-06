@@ -240,19 +240,19 @@
                         vm.loanRepaymentForm.remainKHR = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "KHR", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "KHR");
                         vm.loanRepaymentForm.remainTHB = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "THB", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "THB");
                         if (result.currencyId === "USD") {
-                            vm.loanRepaymentForm.paidUSD = vm.$_numeral(result.balanceUnpaid).value();
+                            vm.loanRepaymentForm.paidUSD = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid, "USD")).value();
                             vm.loanRepaymentForm.paidKHR = 0;
                             vm.loanRepaymentForm.paidTHB = 0;
                         } else if (result.currencyId === "KHR") {
                             vm.loanRepaymentForm.paidUSD = 0;
-                            vm.loanRepaymentForm.paidKHR = vm.$_numeral(result.balanceUnpaid).value();
+                            vm.loanRepaymentForm.paidKHR = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid, "KHR")).value();
                             vm.loanRepaymentForm.paidTHB = 0;
 
 
                         } else if (result.currencyId === "THB") {
                             vm.loanRepaymentForm.paidUSD = 0;
                             vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = vm.$_numeral(result.balanceUnpaid).value();
+                            vm.loanRepaymentForm.paidTHB = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid, "THB")).value();
                         }
                         this.getTotal();
                     }
