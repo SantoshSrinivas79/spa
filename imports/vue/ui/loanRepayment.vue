@@ -8,7 +8,7 @@
                 <el-col :span="8">
                     <h4>
                         <a class="cursor-pointer">
-                             {{langConfig['title']}}
+                            {{langConfig['title']}}
                         </a>
                     </h4>
                 </el-col>
@@ -48,8 +48,8 @@
                             :label="langConfig['client']">
                     </el-table-column>
                     <el-table-column
-                            prop="disbursementId"
-                            :label="langConfig['disbursementId']">
+                            prop="disbursementDoc.loanAcc"
+                            :label="langConfig['loanAcc']">
                     </el-table-column>
                     <el-table-column
                             prop="repaymentDateName"
@@ -90,9 +90,10 @@
                                 <el-button type="danger" class="cursor-pointer" icon="el-icon-delete" size="small"
                                            @click="removeLoanRepayment(scope.$index,scope.row,loanRepaymentData)"
                                            :disabled="disabledRemove"></el-button>
-                                <el-button type="primary" disabled icon="el-icon-edit" size="small" class="cursor-pointer"
+                                <el-button type="primary" disabled icon="el-icon-edit" size="small"
+                                           class="cursor-pointer"
                                            @click="findLoanRepaymentById(scope),dialogUpdateLoanRepayment= true"
-                                           ></el-button>
+                                ></el-button>
                             </el-button-group>
 
                         </template>
@@ -104,7 +105,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -184,7 +186,7 @@
                 Meteor.call('queryLoanRepayment', {
                     q: val,
                     filter: this.filter,
-                    rolesArea:Session.get('area'),
+                    rolesArea: Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {

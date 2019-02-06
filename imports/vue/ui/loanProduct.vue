@@ -52,6 +52,10 @@
                             :label="langConfig['rate']">
                     </el-table-column>
                     <el-table-column
+                            prop="methodType"
+                            :label="langConfig['methodType']">
+                    </el-table-column>
+                    <el-table-column
                             prop="rateType"
                             :label="langConfig['rateType']">
                     </el-table-column>
@@ -103,7 +107,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -135,6 +140,19 @@
                                    placeholder="">
                             <el-option
                                     v-for="item in rateTypeOption"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    :disabled="item.disabled">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['methodType']" prop="methodType">
+                        <el-select style="display: block !important;" filterable clearable
+                                   v-model="loanProductForm.methodType"
+                                   placeholder="method  config">
+                            <el-option
+                                    v-for="item in methodTypeOption"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -229,6 +247,19 @@
                                    placeholder="">
                             <el-option
                                     v-for="item in rateTypeOption"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value"
+                                    :disabled="item.disabled">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item :label="langConfig['methodType']" prop="methodType">
+                        <el-select style="display: block !important;" filterable clearable
+                                   v-model="loanProductForm.methodType"
+                                   placeholder="method  config">
+                            <el-option
+                                    v-for="item in methodTypeOption"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value"
@@ -351,6 +382,7 @@
                     penaltyClosingId: "",
                     description: "",
                     rateType: "",
+                    methodType: "",
                     status: false,
                     _id: ""
                 },
@@ -360,6 +392,12 @@
                         required: true,
                         type: 'string',
                         message: 'Please choose Penalty',
+                        trigger: 'change'
+                    }],
+                    methodType: [{
+                        required: true,
+                        type: 'string',
+                        message: 'Please choose Method Type',
                         trigger: 'change'
                     }],
                     rateType: [{
@@ -393,6 +431,10 @@
                     {label: "Weekly", value: "Weekly"},
                     {label: "Monthly", value: "Monthly"},
                     {label: "Yearly", value: "Yearly"},
+                ],
+                methodTypeOption: [
+                    {label: "Straight Line", value: "Straight Line"},
+                    {label: "Declining Balance", value: "Declining Balance"},
                 ],
                 penaltyClosingOption: [],
                 skip: 0
@@ -459,6 +501,7 @@
                             productDate: vm.loanProductForm.productDate,
                             status: vm.loanProductForm.status,
                             penaltyId: vm.loanProductForm.penaltyId,
+                            methodType: vm.loanProductForm.methodType,
                             penaltyClosingId: vm.loanProductForm.penaltyClosingId,
                             description: vm.loanProductForm.description,
                             rateType: vm.loanProductForm.rateType,
@@ -499,6 +542,7 @@
                             productDate: vm.loanProductForm.productDate,
                             status: vm.loanProductForm.status,
                             penaltyId: vm.loanProductForm.penaltyId,
+                            methodType: vm.loanProductForm.methodType,
                             penaltyClosingId: vm.loanProductForm.penaltyClosingId,
                             description: vm.loanProductForm.description,
                             rateType: vm.loanProductForm.rateType,

@@ -22,7 +22,7 @@ Meteor.methods({
                             $regex: reg,
                             $options: 'mi'
                         }
-                    }, {description: {$regex: reg, $options: 'mi'}}];
+                    }, {phoneNumber: {$regex: reg, $options: 'mi'}}];
                 }
             }
             let loanCreditOfficers = Loan_CreditOfficer.aggregate([

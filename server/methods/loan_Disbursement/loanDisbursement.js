@@ -1,7 +1,6 @@
 import {Loan_Disbursement} from '../../../imports/collection/loanDisbursement';
 import {Loan_DisbursementReact} from '../../../imports/collection/loanDisbursement';
 import {Loan_Product} from "../../../imports/collection/loanProduct";
-import {Loan_Config} from "../../../imports/collection/loanConfig";
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency";
 import math from "mathjs";
 import {Loan_PenaltyClosing} from "../../../imports/collection/loanPenaltyClosing";
@@ -24,12 +23,27 @@ Meteor.methods({
                 if (!!filter) {
                     selector[filter] = {$regex: reg, $options: 'mi'}
                 } else {
+                    let clientList = Pos_Customer.find({
+                            name: {
+                                $regex: reg,
+                                $options: 'mi'
+                            }
+                        }, {_id: true},
+                        {
+                            $limit: options.limit
+                        },
+                        {
+                            $skip: options.skip
+                        }).fetch().map((obj) => {
+                        return obj._id;
+                    });
+
                     selector.$or = [{name: {$regex: reg, $options: 'mi'}}, {
                         code: {
                             $regex: reg,
                             $options: 'mi'
                         }
-                    }, {description: {$regex: reg, $options: 'mi'}}];
+                    }, {clientId: {$in: clientList}}, {loanAcc: {$regex: reg, $options: 'mi'}}];
                 }
             }
             let loanDisbursements = Loan_Disbursement.aggregate([
@@ -96,8 +110,7 @@ Meteor.methods({
         data.startDateName = moment(data.startDate).format("DD/MM/YYYY");
 
         let productDoc = Loan_Product.findOne({_id: data.productId});
-        let configDoc = Loan_Config.findOne({});
-        let projectInterest = calculateProjectInterest(data, productDoc, configDoc);
+        let projectInterest = calculateProjectInterest(data, productDoc);
 
         data.loanAcc = generateDisbursementId(data);
 
@@ -110,7 +123,7 @@ Meteor.methods({
         let isInserted = Loan_Disbursement.insert(data);
         if (isInserted) {
             disbursementReact(isInserted);
-            generateSchedulePayment(data, productDoc, configDoc, isInserted);
+            generateSchedulePayment(data, productDoc, isInserted);
             Pos_Customer.update({_id: data.clientId}, {$inc: {loanCycle: 1}});
 
         }
@@ -122,8 +135,7 @@ Meteor.methods({
         data.startDateName = moment(data.startDate).format("DD/MM/YYYY");
 
         let productDoc = Loan_Product.findOne({_id: data.productId});
-        let configDoc = Loan_Config.findOne({});
-        let projectInterest = calculateProjectInterest(data, productDoc, configDoc);
+        let projectInterest = calculateProjectInterest(data, productDoc);
         data.projectInterest = projectInterest;
 
         if (productDoc.rateType === "Monthly") {
@@ -137,7 +149,7 @@ Meteor.methods({
         if (isUpdated) {
             disbursementReact(id);
             removeRepaymentSchedule(id);
-            generateSchedulePayment(data, productDoc, configDoc, id);
+            generateSchedulePayment(data, productDoc, id);
         }
         return isUpdated;
     },
@@ -171,8 +183,8 @@ let disbursementReact = function (id) {
     }
 }
 
-let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, id) {
-    if (configDoc.methodType === "Straight Line") {
+let generateSchedulePayment = function (disbursementDoc, productDoc, id) {
+    if (productDoc.methodType === "Straight Line") {
         let amount = (disbursementDoc.loanAmount + disbursementDoc.projectInterest) / disbursementDoc.installment;
         let principle = disbursementDoc.loanAmount / disbursementDoc.installment;
         let penaltyClosingDoc = Loan_PenaltyClosing.findOne({_id: productDoc.penaltyClosingId});
@@ -240,10 +252,10 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, configDoc, 
 
 
 }
-let calculateProjectInterest = function (disbursementDoc, productDoc, configDoc) {
+let calculateProjectInterest = function (disbursementDoc, productDoc) {
     let projectInterest = 0;
 
-    if (configDoc.methodType === "Straight Line") {
+    if (productDoc.methodType === "Straight Line") {
         projectInterest = disbursementDoc.loanAmount * (productDoc.rate / 100) * disbursementDoc.installment;
     }
 

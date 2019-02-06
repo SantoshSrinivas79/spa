@@ -72,7 +72,8 @@
       "update": "Update Product",
       "address": "Address",
       "rateType": "Rate Type",
-      "status": "Status"
+      "status": "Status",
+      "methodType": "Method Type"
     },
     "penalty": {
       "searchHere": "Search Here ...",
@@ -147,7 +148,8 @@
       "productType": "Product Type",
       "installment": "Installment",
       "feeAmount": "Fee",
-      "paymentNumber": "Payment Number"
+      "paymentNumber": "Payment Number",
+      "loanAcc": "Loan Account"
     },
     "repayment": {
       "searchHere": "Search Here ...",
@@ -271,7 +273,8 @@
       "description": "បរិយាយ",
       "address": "អាស័យដ្ឋាន",
       "rateType": "ប្រភេទការប្រាក់",
-      "status": "ស្ថានភាព"
+      "status": "ស្ថានភាព",
+      "methodType": "ប្រភេទគណនាការប្រាក់"
     },
     "penalty": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",
@@ -346,7 +349,8 @@
       "productType": "ប្រភេទកម្ចី",
       "installment": "ចំនួនដំណាក់កាលត្រូវបង់",
       "feeAmount": "តម្លៃរដ្ឋបាល",
-      "paymentNumber": "ចំនួនដងបង់រួច"
+      "paymentNumber": "ចំនួនដងបង់រួច",
+      "loanAcc": "លេខគណនី"
     },
     "repayment": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",

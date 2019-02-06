@@ -13,6 +13,9 @@ Loan_Repayment.schema = new SimpleSchema({
         type: String,
         label: "Currency",
     },
+    type: {
+        type: String,
+    },
     repaymentDate: {
         type: Date,
         label: "Repayment Date",

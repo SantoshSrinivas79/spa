@@ -44,6 +44,10 @@
                         border
                         style="width: 100%">
                     <el-table-column
+                            prop="loanAcc"
+                            :label="langConfig['loanAcc']">
+                    </el-table-column>
+                    <el-table-column
                             prop="clientDoc.name"
                             :label="langConfig['client']">
                     </el-table-column>
@@ -79,7 +83,7 @@
                                            @click="removeLoanDisbursement(scope.$index,scope.row,loanDisbursementData)"
                                            :disabled="disabledRemove"></el-button>
                                 <el-button type="primary" icon="el-icon-edit" size="small" class="cursor-pointer"
-                                           @click="findLoanDisbursementById(scope),dialogUpdateLoanDisbursement= true"
+                                           @click="findLoanDisbursementById(scope),popUpUpdate(scope.row)"
                                            :disabled="disabledUpdate"></el-button>
                             </el-button-group>
 
@@ -92,7 +96,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -490,7 +495,7 @@
                 Meteor.call('queryLoanDisbursement', {
                     q: val,
                     filter: this.filter,
-                    rolesArea:Session.get('area'),
+                    rolesArea: Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -504,7 +509,7 @@
             customerOpt(query) {
                 if (!!query) {
                     setTimeout(() => {
-                        Meteor.call('queryPosCustomerOption', query,Session.get("area"), (err, result) => {
+                        Meteor.call('queryPosCustomerOption', query, Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.clientOption = result;
                             } else {
@@ -513,7 +518,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOption', "",Session.get("area"), (err, result) => {
+                    Meteor.call('queryPosCustomerOption', "", Session.get("area"), (err, result) => {
                         if (!err) {
                             this.clientOption = result;
                         } else {
@@ -525,7 +530,7 @@
             creditOfficerOpt(query) {
                 if (!!query) {
                     setTimeout(() => {
-                        Meteor.call('queryLoanCreditOfficerOption', query,Session.get("area"), (err, result) => {
+                        Meteor.call('queryLoanCreditOfficerOption', query, Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.creditOfficerOption = result;
                             } else {
@@ -534,7 +539,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryLoanCreditOfficerOption', "",Session.get("area"), (err, result) => {
+                    Meteor.call('queryLoanCreditOfficerOption', "", Session.get("area"), (err, result) => {
                         if (!err) {
                             this.creditOfficerOption = result;
                         } else {
@@ -652,6 +657,14 @@
 
             },
             removeLoanDisbursement(index, row, rows) {
+                if (row.paymentNumber > 0) {
+                    this.$message({
+                        type: 'error',
+                        message: "can't remove, already have repayment !"
+                    });
+                    return false;
+                }
+
                 let vm = this;
                 this.$confirm(this.langConfig['message'], this.langConfig['warning'], {
                     confirmButtonText: 'OK',
@@ -694,6 +707,17 @@
                         vm.loanDisbursementForm = result;
                     }
                 })
+            },
+            popUpUpdate(row) {
+                if (row.paymentNumber > 0) {
+                    this.$message({
+                        type: 'error',
+                        message: "can't update, already have repayment !"
+                    });
+                    return false;
+                }
+                this.dialogUpdateLoanDisbursement = true;
+
             },
             cancel() {
                 this.$message({

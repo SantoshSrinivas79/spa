@@ -10,6 +10,7 @@ import moment from "moment";
 import {Pos_Customer} from "../../../imports/collection/posCustomer";
 import {Pos_Invoice} from "../../../imports/collection/posInvoice";
 import {Loan_Disbursement} from "../../../imports/collection/loanDisbursement";
+import {Pos_Vendor} from "../../../imports/collection/posVendor";
 
 Meteor.methods({
     queryLoanRepayment({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
@@ -26,12 +27,46 @@ Meteor.methods({
                 if (!!filter) {
                     selector[filter] = {$regex: reg, $options: 'mi'}
                 } else {
+                    let clientList = Pos_Customer.find({
+                            name: {
+                                $regex: reg,
+                                $options: 'mi'
+                            }
+                        }, {_id: true},
+                        {
+                            $limit: options.limit
+                        },
+                        {
+                            $skip: options.skip
+                        }).fetch().map((obj) => {
+                        return obj._id;
+                    });
+                    let disbursementList = Loan_Disbursement.find({
+                            loanAcc: {
+                                $regex: reg,
+                                $options: 'mi'
+                            }
+                        }, {_id: true},
+                        {
+                            $limit: options.limit
+                        },
+                        {
+                            $skip: options.skip
+                        }).fetch().map((obj) => {
+                        return obj._id;
+                    });
+
                     selector.$or = [{name: {$regex: reg, $options: 'mi'}}, {
                         code: {
                             $regex: reg,
                             $options: 'mi'
                         }
-                    }, {description: {$regex: reg, $options: 'mi'}}];
+                    }, {clientId: {$in: clientList}}, {disbursementId: {$in: disbursementList}}, {
+                        description: {
+                            $regex: reg,
+                            $options: 'mi'
+                        }
+                    }];
                 }
             }
             let loanRepayments = Loan_Repayment.aggregate([
@@ -75,6 +110,20 @@ Meteor.methods({
                 {
                     $unwind: {
                         path: "$clientDoc",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "loan_disbursement",
+                        localField: "disbursementId",
+                        foreignField: "_id",
+                        as: "disbursementDoc"
+                    }
+                },
+                {
+                    $unwind: {
+                        path: "$disbursementDoc",
                         preserveNullAndEmptyArrays: true
                     }
                 }
@@ -151,6 +200,19 @@ Meteor.methods({
             {
                 $unwind: {
                     path: "$productDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_penalty",
+                    localField: "productDoc.penaltyId",
+                    foreignField: "_id",
+                    as: "penaltyDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$penaltyDoc",
                     preserveNullAndEmptyArrays: true
                 }
             }, {

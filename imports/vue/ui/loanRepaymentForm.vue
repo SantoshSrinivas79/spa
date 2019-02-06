@@ -72,6 +72,17 @@
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
+
+                                <el-form-item prop="voucher">
+                                    <el-radio-group v-model="loanRepaymentForm.type">
+                                        <el-radio-button label="Fee" v-if="isFee"></el-radio-button>
+                                        <el-radio-button label="Repayment" v-if="!isFee"></el-radio-button>
+                                        <el-radio-button label="Prepay" v-if="!isFee"></el-radio-button>
+                                        <el-radio-button label="Closing" v-if="!isFee"></el-radio-button>
+                                        <el-radio-button label="Write Off" v-if="!isFee"></el-radio-button>
+                                    </el-radio-group>
+                                </el-form-item>
+
                                 <el-form-item :label="langConfig['penalty']" prop="penalty">
                                     <el-input v-model.number="loanRepaymentForm.penaltyPaid" type='number'>
                                         <el-button slot="append">
@@ -136,6 +147,7 @@
     import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency";
     import {WB_waterBillingSetup} from "../../collection/waterBillingSetup";
     import {Manage_Module} from "../../collection/manageModule";
+    import math from "mathjs";
 
     export default {
         meteor: {
@@ -176,6 +188,7 @@
                     voucher: "",
                     note: "",
                     clientId: "",
+                    type: "Repayment",
                     _id: ""
                 },
                 rules: {},
@@ -189,17 +202,18 @@
                 skip: 0,
                 currencySymbol: "",
                 dayLate: 0,
-                balance: 0
+                balance: 0,
+                isFee: false
             }
         },
         watch: {
             "loanRepaymentForm.disbursementId"(val) {
-                this.getCalculateAmountPaid(val);
+                this.getDisbursementById(val);
             },
             "loanRepaymentForm.repaymentDate"(val) {
                 this.getVoucherByRoleAndDate(val);
+                this.getDisbursementById(this.loanRepaymentForm.disbursementId);
                 this.loanRepaymentForm.repaymentDate = val;
-                this.getCalculateAmountPaid(this.loanRepaymentForm.disbursementId);
             }
         },
         methods: {
@@ -235,28 +249,57 @@
                             vm.dayLate = moment(vm.loanRepaymentForm.repaymentDate).startOf("days").add(12, "hours").diff(result.date, "days");
                         }
                         vm.dayLate = vm.dayLate > 0 ? vm.dayLate : 0;
+
+                        if (result && result.penaltyDoc && vm.dayLate > result.penaltyDoc.graceDay) {
+                            let penaltyPerday;
+                            if (result.currencyId === "USD") {
+                                penaltyPerday = result.penaltyDoc.amountUSD;
+                            } else if (result.currencyId === "KHR") {
+                                penaltyPerday = result.penaltyDoc.amountKHR;
+                            } else if (result.currencyId === "THB") {
+                                penaltyPerday = result.penaltyDoc.amountTHB;
+                            }
+
+                            if (result.penaltyDoc.type === "A") {
+                                vm.loanRepaymentForm.penalty = formatCurrencyLast((vm.dayLate - result.penaltyDoc.graceDay) * penaltyPerday, result.currencyId);
+                            } else if (result.penaltyDoc.type === "P") {
+                                vm.loanRepaymentForm.penalty = formatCurrencyLast((vm.dayLate - result.penaltyDoc.graceDay) * (penaltyPerday * result.principleUnpaid / 100), result.currencyId);
+                            }
+                        } else {
+                            vm.loanRepaymentForm.penalty = 0;
+                        }
+
+
                         vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
                         vm.loanRepaymentForm.remainUSD = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "USD", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "USD");
                         vm.loanRepaymentForm.remainKHR = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "KHR", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "KHR");
                         vm.loanRepaymentForm.remainTHB = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "THB", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "THB");
                         if (result.currencyId === "USD") {
-                            vm.loanRepaymentForm.paidUSD = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid, "USD")).value();
+                            vm.loanRepaymentForm.paidUSD = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, "USD")).value();
                             vm.loanRepaymentForm.paidKHR = 0;
                             vm.loanRepaymentForm.paidTHB = 0;
                         } else if (result.currencyId === "KHR") {
                             vm.loanRepaymentForm.paidUSD = 0;
-                            vm.loanRepaymentForm.paidKHR = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid, "KHR")).value();
+                            vm.loanRepaymentForm.paidKHR = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, "KHR")).value();
                             vm.loanRepaymentForm.paidTHB = 0;
 
 
                         } else if (result.currencyId === "THB") {
                             vm.loanRepaymentForm.paidUSD = 0;
                             vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid, "THB")).value();
+                            vm.loanRepaymentForm.paidTHB = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, "THB")).value();
+                        } else {
+                            vm.loanRepaymentForm.paidUSD = 0;
+                            ``
+                            vm.loanRepaymentForm.paidKHR = 0;
+                            vm.loanRepaymentForm.paidTHB = 0;
                         }
                         this.getTotal();
                     }
                 })
+            },
+            getCalculateFeePaid(disbursementId) {
+                let vm = this;
             },
             getTotal() {
 
@@ -273,6 +316,25 @@
                 Meteor.call("loan_getVoucherNoByRoleAndDate", Session.get("area"), date, (err, result) => {
                     if (!err) {
                         vm.loanRepaymentForm.voucher = result;
+                    }
+                })
+            },
+            getDisbursementById(id) {
+                let vm = this;
+                Meteor.call("queryLoanDisbursementById", id, (err, result) => {
+                    if (result) {
+                        vm.isFee = math.round(result.feeAmount - result.paidFeeAmount) > 0;
+                        console.log((result.feeAmount - result.paidFeeAmount));
+                        if (vm.isFee === true) {
+                            vm.repaymentDoc.disbursementDoc = result;
+                            vm.loanRepaymentForm.type = "Fee";
+                            vm.dayLate = 0;
+
+                        } else {
+                            this.getCalculateAmountPaid(val);
+                            vm.loanRepaymentForm.type = "Repayment";
+
+                        }
                     }
                 })
             },
@@ -303,7 +365,6 @@
 
                         };
 
-                        console.log(loanRepaymentDoc);
                         Meteor.call("insertLoanRepayment", loanRepaymentDoc, (err, result) => {
                             if (!err) {
                                 vm.$message({
@@ -345,11 +406,12 @@
                 this.loanRepaymentForm.paidUSD = 0;
                 this.loanRepaymentForm.paidKHR = 0;
                 this.loanRepaymentForm.paidTHB = 0;
+
                 this.loanRepaymentForm.remainUSD = 0;
                 this.loanRepaymentForm.remainKHR = 0;
                 this.loanRepaymentForm.remainTHB = 0;
                 this.loanRepaymentForm.penalty = 0;
-                this.loanRepaymentForm.remainPenalty = 0;
+                this.loanRepaymentForm.penaltyPaid = 0;
                 this.loanRepaymentForm.note = "";
 
             }

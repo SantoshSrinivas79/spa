@@ -14,14 +14,17 @@ Loan_Penalty.schema = new SimpleSchema({
     amountUSD: {
         type: Number,
         label: "Amount",
+        decimal: true
     },
     amountKHR: {
         type: Number,
         label: "Amount",
+        decimal: true
     },
     amountTHB: {
         type: Number,
         label: "Amount",
+        decimal: true
     },
     graceDay: {
         type: Number

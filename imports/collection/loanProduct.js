@@ -22,6 +22,9 @@ Loan_Product.schema = new SimpleSchema({
         type: Boolean,
         defaultValue: false,
     },
+    methodType: {
+        type: String
+    },
     name: {
         type: String,
         label: "Name",
