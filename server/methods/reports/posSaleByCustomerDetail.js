@@ -11,6 +11,7 @@ import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatNumber} from "../../../imports/api/methods/roundCurrency"
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     posSaleByCustomerDetailReport(params, translate) {
@@ -27,6 +28,15 @@ Meteor.methods({
 
         let companyDoc = WB_waterBillingSetup.findOne({});
 
+        let newParams = {};
+        if (params.categoryId !== "") {
+            if (params.productId != "") {
+                newParams["item.itemId"] = params.productId;
+            } else {
+                let productList = Pos_Product.find({categoryId: params.categoryId}).map((obj) => obj._id);
+                newParams["item.itemId"] = {$in: productList};
+            }
+        }
 
         parameter.invoiceDate = {
             $lte: moment(params.date[1]).endOf("day").toDate(),
@@ -48,6 +58,15 @@ Meteor.methods({
                     $sort: {
                         invoiceDate: 1
                     }
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $group: {
@@ -101,33 +120,31 @@ Meteor.methods({
                     let ind = 1;
                     let balProfit = 0;
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            totalQty += o.qty;
-                            balProfit += (o.amount - o.totalCost);
-                            saleHTML += `
+                        bal += ob.item.amount;
+                        totalQty += ob.item.qty;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                
-                                <td>${formatNumber(o.qty)}</td>
-                                <td>${o.unitName || ""}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            </tr>
                     `;
-                            ind++;
-                        })
+                        ind++;
                     })
                 })
                 saleHTML += `
@@ -152,6 +169,15 @@ Meteor.methods({
                     $sort: {
                         invoiceDate: 1
                     }
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $group: {
@@ -180,35 +206,35 @@ Meteor.methods({
 
                 salelList[0].data.forEach((obj) => {
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            balProfit += (o.amount - o.totalCost);
-                            totalQty += o.qty;
-                            saleHTML += `
+
+                        bal += ob.item.amount;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                         
-                                                                <td>${formatNumber(o.qty)}</td>
-                                <td>${o.unitName || ""}</td>
+                                                                <td>${formatNumber(ob.item.qty)}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td> 
-                                <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            
                            
                            </tr>
                     `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 saleHTML += `
@@ -234,6 +260,15 @@ Meteor.methods({
                     $sort: {
                         invoiceDate: 1
                     }
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $group: {
@@ -272,35 +307,35 @@ Meteor.methods({
             
                     `;
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            balProfit += (o.amount - o.totalCost);
-                            totalQty += o.qty;
 
-                            saleHTML += `
+                        bal += ob.item.amount;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                                                <td>${formatNumber(o.qty)}</td>
+                                                                <td>${formatNumber(ob.item.qty)}</td>
 
-                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
-                            <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                            <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            
                            </tr>
                     `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 saleHTML += `
@@ -331,6 +366,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -385,7 +423,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                              
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${obj._id.unitName || ""}</td>
@@ -426,6 +464,15 @@ Meteor.methods({
                 },
 
                 {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
+                },
+                {
                     $group: {
                         _id: {
                             day: {$dayOfMonth: "$invoiceDate"},
@@ -462,34 +509,34 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            balProfit += (o.amount - o.totalCost);
-                            totalQty += o.qty;
 
-                            saleHTML += `
+                        bal += ob.item.amount;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                            
-                                                                <td>${formatNumber(o.qty)}</td>
-                                <td>${o.unitName || ""}</td>
+                                                                <td>${formatNumber(ob.item.qty)}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 saleHTML += `
@@ -516,6 +563,15 @@ Meteor.methods({
                     }
                 },
 
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
+                },
                 {
                     $group: {
                         _id: {
@@ -553,36 +609,36 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            balProfit += (o.amount - o.totalCost);
-                            totalQty += o.qty;
 
-                            saleHTML += `
+                        bal += ob.item.amount;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                           
-                                                                <td>${formatNumber(o.qty)}</td>
-                                <td>${o.unitName || ""}</td>
+                                                                <td>${formatNumber(ob.item.qty)}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
-                           <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                           <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            
                           
                                 
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 saleHTML += `
@@ -609,6 +665,15 @@ Meteor.methods({
                     }
                 },
 
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
+                },
                 {
                     $group: {
                         _id: {
@@ -645,34 +710,34 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            balProfit += (o.amount - o.totalCost);
-                            totalQty += o.qty;
 
-                            saleHTML += `
+                        bal += ob.item.amount;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                             
-                                                                <td>${formatNumber(o.qty)}</td>
-                                <td>${o.unitName || ""}</td>
+                                                                <td>${formatNumber(ob.item.qty)}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
-                           <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                           <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 saleHTML += `
@@ -699,6 +764,15 @@ Meteor.methods({
                     }
                 },
 
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
+                },
                 {
                     $group: {
                         _id: {
@@ -747,34 +821,33 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            balProfit += (o.amount - o.totalCost);
-                            totalQty += o.qty;
 
-                            saleHTML += `
+                        bal += ob.item.amount;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                              
-                                                                <td>${formatNumber(o.qty)}</td>
-                                <td>${o.unitName || ""}</td>
+                                                                <td>${formatNumber(ob.item.qty)}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
-                           <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                           <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
                     })
                 })
                 saleHTML += `
@@ -801,6 +874,15 @@ Meteor.methods({
                     }
                 },
 
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
+                },
                 {
                     $group: {
                         _id: {
@@ -836,34 +918,34 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            balProfit += (o.amount - o.totalCost);
-                            totalQty += o.qty;
 
-                            saleHTML += `
+                        bal += ob.item.amount;
+                        balProfit += (ob.item.amount - ob.item.totalCost);
+                        totalQty += ob.item.qty;
+
+                        saleHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                          
-                                                                <td>${formatNumber(o.qty)}</td>
-                                <td>${o.unitName || ""}</td>
+                                                                <td>${formatNumber(ob.item.qty)}</td>
+                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
-                           <td>${formatCurrency(o.amount - o.totalCost, companyDoc.baseCurrency)}</td>
+                           <td>${formatCurrency(ob.item.amount - ob.item.totalCost, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(balProfit, companyDoc.baseCurrency)}</td>        
                            
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 saleHTML += `
@@ -901,4 +983,21 @@ function pad(number, length) {
 
     return str;
 
+}
+
+
+let convertToString = function (arr, desc) {
+    if (arr.length > 0) {
+        let list = "";
+        if (arr && arr.length > 0) {
+            arr.forEach((o) => {
+                list += `
+            <p>${o.name}</p>
+        `;
+            })
+        }
+        return list;
+    } else {
+        return desc;
+    }
 }

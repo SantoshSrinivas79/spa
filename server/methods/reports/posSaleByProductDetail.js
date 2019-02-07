@@ -11,6 +11,7 @@ import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatNumber} from "../../../imports/api/methods/roundCurrency"
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     posSaleByProductDetailReport(params, translate) {
@@ -26,6 +27,15 @@ Meteor.methods({
         let data = {};
 
         let companyDoc = WB_waterBillingSetup.findOne({});
+        let newParams = {};
+        if (params.categoryId !== "") {
+            if (params.productId != "") {
+                newParams["item.itemId"] = params.productId;
+            } else {
+                let productList = Pos_Product.find({categoryId: params.categoryId}).map((obj) => obj._id);
+                newParams["item.itemId"] = {$in: productList};
+            }
+        }
 
 
         parameter.invoiceDate = {
@@ -53,6 +63,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $group: {
@@ -109,7 +122,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${obj.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -151,6 +164,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $lookup:
@@ -199,7 +215,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                               
                                                                 <td>${formatNumber(ob.item.qty)}</td>
 
@@ -243,6 +259,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $lookup:
@@ -301,7 +320,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -345,6 +364,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
 
                 {
@@ -411,7 +433,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                               
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -453,6 +475,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $lookup:
@@ -517,7 +542,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -560,6 +585,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $lookup:
@@ -623,7 +651,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -665,6 +693,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $lookup:
@@ -727,7 +758,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -769,6 +800,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $lookup:
@@ -843,7 +877,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -887,6 +921,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $lookup:
@@ -948,7 +985,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.invoiceNo)}</td>
                                 <td style="text-align: left !important;">${ob.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
                                                                 <td>${formatNumber(ob.item.qty)}</td>
                                 <td>${ob.item.unitName || ""}</td>
@@ -999,4 +1036,21 @@ function pad(number, length) {
 
     return str;
 
+}
+
+
+let convertToString = function (arr, desc) {
+    if (arr.length > 0) {
+        let list = "";
+        if (arr && arr.length > 0) {
+            arr.forEach((o) => {
+                list += `
+            <p>${o.name}</p>
+        `;
+            })
+        }
+        return list;
+    } else {
+        return desc;
+    }
 }

@@ -13,6 +13,7 @@ import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     ledgerReport(params) {
@@ -343,7 +344,15 @@ Meteor.methods({
                 $sort: {code: 1}
             }
         ])
-
+        let newParams = {};
+        if (params.checkedAccountType.length > 0) {
+            if (params.account != "") {
+                newParams._id = params.account;
+            } else {
+                let chartAccountList = Acc_ChartAccount.find({accountTypeId: {$in: params.checkedAccountType}}).map((obj) => obj._id);
+                newParams._id = {$in: chartAccountList};
+            }
+        }
 
         let chartAccountList = Acc_ChartAccount.aggregate([
             {
@@ -361,7 +370,26 @@ Meteor.methods({
             }
         ]);
 
-        chartAccountList.forEach(function (chartAccDoc) {
+        let rawChartAccountList = Acc_ChartAccount.aggregate([
+            {
+                $match: newParams
+            },
+            {
+                $graphLookup: {
+                    from: "acc_chartAccount",
+                    startWith: "$subAccountOf",
+                    connectFromField: "subAccountOf",
+                    connectToField: "_id",
+                    maxDepth: 3,
+                    depthField: "numConnections",
+                    as: "parentDoc"
+                }
+            }, {
+                $sort: {code: 1}
+            }
+        ]);
+
+        rawChartAccountList.forEach(function (chartAccDoc) {
             ledgerHTML += `<th colspan="6"​  style="text-align: left !important;">${SpaceChar.space(chartAccDoc.level * 6) + chartAccDoc.code} : ${chartAccDoc.name}</th>
                          
             `;

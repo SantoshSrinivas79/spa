@@ -11,6 +11,7 @@ import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatNumber} from "../../../imports/api/methods/roundCurrency"
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     posSaleDetailReport(params, translate) {
@@ -23,6 +24,18 @@ Meteor.methods({
         if (params.locationId != "") {
             parameter.locationId = params.locationId;
         }
+
+        let newParams = {};
+        if (params.categoryId !== "") {
+            if (params.productId != "") {
+                newParams["item.itemId"] = params.productId;
+            } else {
+                let productList = Pos_Product.find({categoryId: params.categoryId}).map((obj) => obj._id);
+                newParams["item.itemId"] = {$in: productList};
+            }
+        }
+
+
         let data = {};
 
         let companyDoc = WB_waterBillingSetup.findOne({});
@@ -46,6 +59,15 @@ Meteor.methods({
                 $sort: {
                     invoiceDate: 1
                 }
+            },
+            {
+                $unwind: {
+                    path: "$item",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $match: newParams
             },
             {
                 $lookup:
@@ -76,20 +98,18 @@ Meteor.methods({
         if (salelList.length > 0) {
             let ind = 1;
             salelList[0].data.forEach((obj) => {
-                obj.item.forEach((o) => {
-                    totalQty += o.qty;
-                    saleHTML += `
+                totalQty += obj.item.qty;
+                saleHTML += `
                            <tr>
                                 <td style="text-align: center !important;">${moment(obj.invoiceDate).format("DD/MM/YYYY")}</td>
                                 <td style="text-align: left !important;">${obj.customerDoc.name}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td>${convertToString(o.imei)}</td>
-                                <td>${formatNumber(o.qty)}</td>
+                                <td style="text-align: left !important;">${obj.item && obj.item.itemName.split(":")[1] || ""}</td>
+                                <td>${convertToString(obj.item.imei)}</td>
+                                <td>${formatNumber(obj.item.qty)}</td>
                            
                            </tr>
                     `;
-                    ind++;
-                })
+                ind++;
             })
             saleHTML += `
             <tr>

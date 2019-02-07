@@ -176,7 +176,9 @@
                     branch: '',
                     area: '',
                     date: null,
-                    locationId: ""
+                    locationId: "",
+                    categoryId: "",
+                    productId: "",
 
                 },
                 rolesArea: '',
@@ -185,6 +187,8 @@
                 labelPosition: 'top',
                 branchOptions: [],
                 areaOptions: [],
+                categoryOptions: [],
+                productOptions: [],
                 locationOptions: [],
 
 
@@ -252,7 +256,13 @@
         watch: {
 
             "params.branch"(val) {
+                this.params.area = "";
                 this.fetchArea(val);
+            },
+            "params.categoryId"(val) {
+                this.params.categoryId = val;
+                this.params.productId = "";
+                this.productOpt("");
             }
         },
         created() {
@@ -263,6 +273,7 @@
             })
             this.fetchBranch();
             this.fetchLocation();
+            this.categoryOpt();
         },
         methods: {
 
@@ -286,6 +297,48 @@
                         this.locationOptions = result;
                     }
                 })
+            },
+            productOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryItemOptionReport', query, this.params.categoryId, (err, result) => {
+                            if (!err) {
+                                this.productOptions = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryItemOptionReport', "", this.params.categoryId, (err, result) => {
+                        if (!err) {
+                            this.productOptions = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+            },
+            categoryOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryCategoryOptionReport', query, (err, result) => {
+                            if (!err) {
+                                this.categoryOptions = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryCategoryOptionReport', "", (err, result) => {
+                        if (!err) {
+                            this.categoryOptions = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
             },
             handleRun() {
                 this.loading = true;

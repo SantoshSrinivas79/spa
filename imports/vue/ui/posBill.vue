@@ -105,7 +105,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -1365,7 +1366,7 @@
                 Meteor.call('queryPosBill', {
                     q: val,
                     filter: this.filter,
-                    rolesArea:Session.get('area'),
+                    rolesArea: Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1982,7 +1983,7 @@
                 let vm = this;
                 if (vm.imeiInput !== "") {
 
-                    if ( this.rowDoc && vm.imeiShow.length >= this.rowDoc.qty) {
+                    if (this.rowDoc && vm.imeiShow.length >= this.rowDoc.qty) {
                         vm.$message({
                             type: 'error',
                             message: 'បញ្ចូលគ្រប់ហើយ!!!!!!!'
@@ -2030,8 +2031,8 @@
             },
             removeImei(index, row) {
                 let removeIndex = this.imei.map(function (item) {
-                    return item.itemId;
-                }).indexOf(row.itemId);
+                    return item.name;
+                }).indexOf(row.name);
 
                 this.imei.splice(removeIndex, 1);
                 this.imeiShow.splice(index, 1);

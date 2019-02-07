@@ -20,7 +20,9 @@
       "dayOverDue": "Day Over Due",
       "amountNeedToPay": "Amount Need To Pay",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "collectionSheetSummary": {
       "run": "RUN REPORT",
@@ -39,7 +41,9 @@
       "phoneNumber": "Phone Number",
       "amountNeedToPay": "Amount Need To Pay",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "debtDetail": {
       "run": "RUN REPORT",
@@ -59,7 +63,9 @@
       "total": "Total",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "debtSummary": {
       "run": "RUN REPORT",
@@ -81,7 +87,9 @@
       "paid": "Paid",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "invoiceA4Print": {
       "date": "Date",
@@ -121,7 +129,9 @@
       "returnTHB": "Return Baht :",
       "note": "Note",
       "orderDate": "Order Date",
-      "orderNo": "Order No"
+      "orderNo": "Order No",
+      "category": "Category",
+      "product": "Product"
     },
     "saleOrderA4Print": {
       "date": "Date",
@@ -161,7 +171,9 @@
       "returnTHB": "Return Baht :",
       "note": "Note",
       "orderDate": "Order Date",
-      "orderNo": "Order No"
+      "orderNo": "Order No",
+      "category": "Category",
+      "product": "Product"
     },
     "receivePaymentDetail": {
       "run": "RUN REPORT",
@@ -182,7 +194,9 @@
       "dayOverDue": "Day Overdue",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "receivePaymentSummary": {
       "run": "RUN REPORT",
@@ -202,7 +216,9 @@
       "no": "No",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "saleByCustomerDetail": {
       "run": "RUN REPORT",
@@ -233,7 +249,9 @@
       "location": "Location",
       "profit": "Profit",
       "profitBalance": "Profit Balance",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "saleDetail": {
       "run": "RUN REPORT",
@@ -264,7 +282,9 @@
       "location": "Location",
       "customer": "Customer",
       "imei": "Imei",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "saleReceivePaymentByCustomerDetail": {
       "run": "RUN REPORT",
@@ -296,7 +316,9 @@
       "profit": "Profit",
       "profitBalance": "Profit Balance",
       "unit": "Unit",
-      "selectOne": "Select One"
+      "selectOne": "Select One",
+      "category": "Category",
+      "product": "Product"
     },
     "saleByCustomerSummary": {
       "run": "RUN REPORT",
@@ -316,7 +338,9 @@
       "netTotal": "Net Total",
       "no": "No",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "saleOrderByCustomerDetail": {
       "run": "RUN REPORT",
@@ -347,7 +371,9 @@
       "location": "Location",
       "profit": "Profit",
       "profitBalance": "Profit Balance",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "stockDebt": {
       "run": "RUN REPORT",
@@ -378,7 +404,9 @@
       "location": "Location",
       "profit": "Profit",
       "profitBalance": "Profit Balance",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "stockReceive": {
       "run": "RUN REPORT",
@@ -409,7 +437,9 @@
       "location": "Location",
       "profit": "Profit",
       "profitBalance": "Profit Balance",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "invoiceByImei": {
       "run": "RUN REPORT",
@@ -436,7 +466,9 @@
       "invoiceNo": "Invoice No",
       "billNo": "Bill No",
       "customer": "Customer",
-      "vendor": "Vendor"
+      "vendor": "Vendor",
+      "category": "Category",
+      "product": "Product"
     },
     "saleByProductSummary": {
       "run": "RUN REPORT",
@@ -455,7 +487,9 @@
       "no": "No",
       "grandTotal": "Grand Total",
       "location": "Location",
-      "qty": "Qty"
+      "qty": "Qty",
+      "category": "Category",
+      "product": "Product"
     },
     "saleByProductDetail": {
       "run": "RUN REPORT",
@@ -485,7 +519,9 @@
       "grandTotal": "Grand Total",
       "customer": "Customer",
       "location": "Location",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "productList": {
       "run": "RUN REPORT",
@@ -519,7 +555,9 @@
       "discount": "Discount",
       "netTotal": "Net Total",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "purchaseByVendorDetail": {
       "run": "RUN REPORT",
@@ -545,7 +583,9 @@
       "balance": "Balance",
       "grandTotal": "Grand Total",
       "location": "Location",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "purchaseByProductSummary": {
       "run": "RUN REPORT",
@@ -564,7 +604,9 @@
       "no": "No",
       "grandTotal": "Grand Total",
       "location": "Location",
-      "qty": "Qty"
+      "qty": "Qty",
+      "category": "Category",
+      "product": "Product"
     },
     "purchaseByProductDetail": {
       "run": "RUN REPORT",
@@ -591,7 +633,9 @@
       "grandTotal": "Grand Total",
       "vendor": "Vendor",
       "location": "Location",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "payBillSummary": {
       "run": "RUN REPORT",
@@ -611,7 +655,9 @@
       "no": "No",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "payBillDetail": {
       "run": "RUN REPORT",
@@ -632,7 +678,9 @@
       "dayOverDue": "Day Overdue",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "unPaidSummary": {
       "run": "RUN REPORT",
@@ -654,7 +702,9 @@
       "paid": "Paid",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "unPaidDetail": {
       "run": "RUN REPORT",
@@ -674,7 +724,9 @@
       "total": "Total",
       "balanceUnPaid": "Balance UnPaid",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "purchaseSaleByProductSummary": {
       "run": "RUN REPORT",
@@ -696,7 +748,9 @@
       "no": "No",
       "purchase": "Purchase",
       "grandTotal": "Grand Total",
-      "location": "Location"
+      "location": "Location",
+      "category": "Category",
+      "product": "Product"
     },
     "inventoryEnding": {
       "run": "RUN REPORT",
@@ -723,7 +777,9 @@
       "amount": "Amount",
       "cost": "Cost",
       "location": "Location",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "inventoryTransaction": {
       "run": "RUN REPORT",
@@ -756,7 +812,9 @@
       "averageCost": "Average Cost",
       "venCus": "Vendor/Customer",
       "transactionType": "Transaction Type",
-      "unit": "Unit"
+      "unit": "Unit",
+      "category": "Category",
+      "product": "Product"
     },
     "transferLocation": {
       "run": "RUN REPORT",
@@ -792,7 +850,9 @@
       "venCus": "Vendor/Customer",
       "transactionType": "Transaction Type",
       "transferFrom": "Transfer From",
-      "transferTo": "Transfer To"
+      "transferTo": "Transfer To",
+      "category": "Category",
+      "product": "Product"
     },
     "transferLocationSummary": {
       "run": "RUN REPORT",
@@ -828,7 +888,9 @@
       "venCus": "Vendor/Customer",
       "transactionType": "Transaction Type",
       "transferFrom": "Transfer From",
-      "transferTo": "Transfer To"
+      "transferTo": "Transfer To",
+      "category": "Category",
+      "product": "Product"
     },
     "convertInventory": {
       "run": "RUN REPORT",
@@ -857,7 +919,9 @@
       "profit": "Profit",
       "profitBalance": "Profit Balance",
       "unit": "Unit",
-      "convert": "Convert"
+      "convert": "Convert",
+      "category": "Category",
+      "product": "Product"
     },
     "production": {
       "run": "RUN REPORT",
@@ -888,7 +952,9 @@
       "unit": "Unit",
       "convert": "Convert",
       "status": "Status",
-      "productionName": "Production Name"
+      "productionName": "Production Name",
+      "category": "Category",
+      "product": "Product"
     },
     "productionSummary": {
       "run": "RUN REPORT",
@@ -918,7 +984,9 @@
       "profitBalance": "Profit Balance",
       "unit": "Unit",
       "convert": "Convert",
-      "total": "Total"
+      "total": "Total",
+      "category": "Category",
+      "product": "Product"
     },
     "productionResult": {
       "run": "RUN REPORT",
@@ -948,7 +1016,9 @@
       "profitBalance": "Profit Balance",
       "unit": "Unit",
       "convert": "Convert",
-      "productionName": "Production Name"
+      "productionName": "Production Name",
+      "category": "Category",
+      "product": "Product"
     },
     "productionResultSummary": {
       "run": "RUN REPORT",
@@ -978,7 +1048,9 @@
       "profitBalance": "Profit Balance",
       "unit": "Unit",
       "convert": "Convert",
-      "total": "Total"
+      "total": "Total",
+      "category": "Category",
+      "product": "Product"
     }
   },
   {
@@ -1002,7 +1074,9 @@
       "dayOverDue": "ចំនួនថ្ងៃលើស",
       "amountNeedToPay": "ទឹកប្រាក់ត្រូវបង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "collectionSheetSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1021,7 +1095,9 @@
       "phoneNumber": "លេខទូរស័ព្ទ",
       "amountNeedToPay": "ទឹកប្រាក់ត្រូវបង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "debtDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1041,7 +1117,9 @@
       "total": "សរុប",
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "debtSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1063,7 +1141,9 @@
       "paid": "បានបង់",
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "invoiceA4Print": {
       "date": "កាលបរិច្ឆេទ",
@@ -1104,7 +1184,9 @@
       "returnTHB": "អាប់ជាបាត :",
       "note": "សម្គាល់",
       "orderDate": "ថ្ងៃកុម្មង់",
-      "orderNo": "លេខវិ័ក័យបត្រ"
+      "orderNo": "លេខវិ័ក័យបត្រ",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleOrderA4Print": {
       "date": "កាលបរិច្ឆេទ",
@@ -1145,7 +1227,9 @@
       "returnTHB": "អាប់ជាបាត :",
       "note": "សម្គាល់",
       "orderDate": "ថ្ងៃកុម្មង់",
-      "orderNo": "លេខវិ័ក័យបត្រ"
+      "orderNo": "លេខវិ័ក័យបត្រ",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "receivePaymentDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1167,7 +1251,9 @@
       "paid": "បានបង់",
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "receivePaymentSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1187,7 +1273,9 @@
       "discount": "បញ្ចុះតម្លៃ",
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleByCustomerDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1219,7 +1307,9 @@
       "location": "ទីតាំង",
       "profit": "ចំនេញ",
       "profitBalance": "សមតុល្យចំនេញ",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1251,7 +1341,9 @@
       "location": "ទីតាំង",
       "customer": "អតិថិជន",
       "imei": "លេខអាយមី",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleReceivePaymentByCustomerDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1284,7 +1376,9 @@
       "profit": "ចំនេញ",
       "profitBalance": "សមតុល្យចំនេញ",
       "unit": "គិតជា",
-      "selectOne": "ជ្រើសរើសទីតាំង"
+      "selectOne": "ជ្រើសរើសទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleByCustomerSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1304,7 +1398,9 @@
       "no": "ល.រ",
       "netTotal": "សរុបសុទ្ធ",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleOrderByCustomerDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1336,7 +1432,9 @@
       "location": "ទីតាំង",
       "profit": "ចំនេញ",
       "profitBalance": "សមតុល្យចំនេញ",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "stockDebt": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1368,7 +1466,9 @@
       "location": "ទីតាំង",
       "profit": "ចំនេញ",
       "profitBalance": "សមតុល្យចំនេញ",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "stockReceive": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1400,7 +1500,9 @@
       "location": "ទីតាំង",
       "profit": "ចំនេញ",
       "profitBalance": "សមតុល្យចំនេញ",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleByProductSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1419,7 +1521,9 @@
       "total": "សរុប",
       "grandTotal": "សរុប",
       "location": "ទីតាំង",
-      "qty": "ចំនួន"
+      "qty": "ចំនួន",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "invoiceByImei": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1446,7 +1550,9 @@
       "invoiceNo": "លេខវិក័យបត្រ",
       "billNo": "លេខវិក័យបត្រ",
       "customer": "អតិថិជន",
-      "vendor": "អ្នកផ្គត់ផ្គង់"
+      "vendor": "អ្នកផ្គត់ផ្គង់",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "saleByProductDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1477,7 +1583,9 @@
       "grandTotal": "សរុប",
       "customer": "អតិថិជន",
       "location": "ទីតាំង",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "productList": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1512,7 +1620,9 @@
       "discount": "បញ្ចុះតម្លៃ",
       "netTotal": "សរុបសុទ្ធ",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "purchaseByVendorDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1539,7 +1649,9 @@
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
       "location": "ទីតាំង",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "purchaseByProductSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1558,7 +1670,9 @@
       "total": "សរុប",
       "grandTotal": "សរុប",
       "location": "ទីតាំង",
-      "qty": "ចំនួន"
+      "qty": "ចំនួន",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "purchaseByProductDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1586,7 +1700,9 @@
       "grandTotal": "សរុប",
       "vendor": "អ្នកផ្គត់ផ្គង់",
       "location": "ទីតាំង",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "payBillSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1606,7 +1722,9 @@
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "no": "ល.រ",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "payBillDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1628,7 +1746,9 @@
       "paid": "បានបង់",
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "unPaidSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1650,7 +1770,9 @@
       "paid": "បានបង់",
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "unPaidDetail": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1670,7 +1792,9 @@
       "total": "សរុប",
       "balanceUnPaid": "សមតុល្យមិនទាន់បង់",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "purchaseSaleByProductSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1692,7 +1816,9 @@
       "sale": "ការលក់",
       "purchase": "ការទិញ",
       "grandTotal": "សរុប",
-      "location": "ទីតាំង"
+      "location": "ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "inventoryEnding": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1719,7 +1845,9 @@
       "amount": "សរុប",
       "cost": "ថ្លៃដើម",
       "location": "ទីតាំង",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "inventoryTransaction": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1752,7 +1880,9 @@
       "averageCost": "ថ្លៃដើម",
       "venCus": "អ្នកផ្គត់ផ្គង់/អតិថិជន",
       "transactionType": "ប្រភេទប្រតិបត្តការណ៍",
-      "unit": "គិតជា"
+      "unit": "គិតជា",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "transferLocation": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1788,7 +1918,9 @@
       "venCus": "អ្នកផ្គត់ផ្គង់/អតិថិជន",
       "transactionType": "ប្រភេទប្រតិបត្តការណ៍",
       "transferFrom": "ផ្ទេរពីតាំង",
-      "transferTo": "ទៅកនា់ទីតាំង"
+      "transferTo": "ទៅកនា់ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "transferLocationSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1824,7 +1956,9 @@
       "venCus": "អ្នកផ្គត់ផ្គង់/អតិថិជន",
       "transactionType": "ប្រភេទប្រតិបត្តការណ៍",
       "transferFrom": "ផ្ទេរពីតាំង",
-      "transferTo": "ទៅកនា់ទីតាំង"
+      "transferTo": "ទៅកនា់ទីតាំង",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "convertInventory": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1854,7 +1988,9 @@
       "profit": "ចំនេញ",
       "profitBalance": "សមតុល្យចំនេញ",
       "unit": "គិតជា",
-      "convert": "ប្តូរបាន"
+      "convert": "ប្តូរបាន",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "production": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1886,7 +2022,9 @@
       "unit": "គិតជា",
       "convert": "ប្តូរបាន",
       "status": "ស្ថានភាព",
-      "productionName": "ឈ្មោះការផលិត"
+      "productionName": "ឈ្មោះការផលិត",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "productionSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1917,7 +2055,9 @@
       "profitBalance": "សមតុល្យចំនេញ",
       "unit": "គិតជា",
       "convert": "ប្តូរបាន",
-      "total": "សរុប"
+      "total": "សរុប",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "productionResult": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1948,7 +2088,9 @@
       "profitBalance": "សមតុល្យចំនេញ",
       "unit": "គិតជា",
       "convert": "ប្តូរបាន",
-      "productionName": "ឈ្មោះការផលិត"
+      "productionName": "ឈ្មោះការផលិត",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     },
     "productionResultSummary": {
       "run": "ដំណើរការរបាយការណ៍",
@@ -1979,7 +2121,9 @@
       "profitBalance": "សមតុល្យចំនេញ",
       "unit": "គិតជា",
       "convert": "ប្តូរបាន",
-      "total": "សរុប"
+      "total": "សរុប",
+      "category": "ប្រភេទ",
+      "product": "ផលិតផល"
     }
   }
 ]

@@ -10,6 +10,7 @@ import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     posPurchaseByVendorDetailReport(params, translate) {
@@ -26,6 +27,15 @@ Meteor.methods({
 
         let companyDoc = WB_waterBillingSetup.findOne({});
 
+        let newParams = {};
+        if (params.categoryId !== "") {
+            if (params.productId != "") {
+                newParams["item.itemId"] = params.productId;
+            } else {
+                let productList = Pos_Product.find({categoryId: params.categoryId}).map((obj) => obj._id);
+                newParams["item.itemId"] = {$in: productList};
+            }
+        }
 
         parameter.billDate = {
             $lte: moment(params.date[1]).endOf("day").toDate(),
@@ -41,6 +51,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -97,31 +116,31 @@ Meteor.methods({
                     let bal = 0;
                     let ind = 1;
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                
 
-                                <td>${o.qty}</td>
-                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                            
                                 
                            </tr>
                     `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `
@@ -139,6 +158,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -170,30 +198,30 @@ Meteor.methods({
                 let ind = 1;
                 purchaseList[0].data.forEach((obj) => {
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
 
-                                <td>${o.qty}</td>
-                                                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                            
                            </tr>
                     `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `
@@ -212,6 +240,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -253,30 +290,30 @@ Meteor.methods({
             
                     `;
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
 
-                                <td>${o.qty}</td>
-                                                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                            
                            </tr>
                     `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `
@@ -305,6 +342,9 @@ Meteor.methods({
                         path: "$item",
                         preserveNullAndEmptyArrays: true
                     }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -353,7 +393,7 @@ Meteor.methods({
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
                                 <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${ob.item.desc || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                         
                     
                                 <td>${ob.item.qty}</td>
@@ -383,6 +423,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -425,29 +474,29 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${o.qty}</td>
-                                                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                           
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `
@@ -465,6 +514,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -507,31 +565,31 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${o.qty}</td>
-                                                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                           
                           
                                 
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `
@@ -549,6 +607,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -590,29 +657,29 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${o.qty}</td>
-                                                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                           
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `
@@ -630,6 +697,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -683,29 +759,29 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${o.qty}</td>
-                                                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                           
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `
@@ -723,6 +799,15 @@ Meteor.methods({
 
                 {
                     $match: parameter
+                },
+                {
+                    $unwind: {
+                        path: "$item",
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $match: newParams
                 },
                 {
                     $sort: {
@@ -763,29 +848,29 @@ Meteor.methods({
                     `;
 
                     obj.data.forEach((ob) => {
-                        ob.item.forEach((o) => {
-                            bal += o.amount;
-                            purchaseHTML += `
+
+                        bal += ob.item.amount;
+                        purchaseHTML += `
                            <tr>
                                                        <td style="text-align: center !important;">${ind}</td>
 
                                 <td>${moment(ob.billDate).format("DD/MM/YYYY")}</td>
                                 <td>${ob.transactionType || ""}</td>
                                 <td>${getVoucherSubString(ob.billNo)}</td>
-                                <td style="text-align: left !important;">${o.itemName && o.itemName.split(":")[1] || ""}</td>
-                                <td style="text-align: left !important;">${o.desc || ""}</td>
+                                <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
+                                <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${o.qty}</td>
-                                                                                                <td>${o.unitName || ""}</td>
+                                <td>${ob.item.qty}</td>
+                                                                                                <td>${ob.item.unitName || ""}</td>
 
-                                <td>${formatCurrency(o.price, companyDoc.baseCurrency)}</td>
-                                <td>${formatCurrency(o.amount, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
+                                <td>${formatCurrency(ob.item.amount, companyDoc.baseCurrency)}</td>
                                 <td>${formatCurrency(bal, companyDoc.baseCurrency)}</td>
                           
                            </tr>
                             `;
-                            ind++;
-                        })
+                        ind++;
+
                     })
                 })
                 purchaseHTML += `

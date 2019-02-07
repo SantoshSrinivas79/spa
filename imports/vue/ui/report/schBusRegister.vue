@@ -291,6 +291,7 @@
         watch: {
 
             "params.branch"(val) {
+                this.params.area = "";
                 this.fetchArea(val);
             }
         },

@@ -11,6 +11,7 @@ import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     posInventoryEndingReport(params, translate) {
@@ -27,6 +28,14 @@ Meteor.methods({
 
         let companyDoc = WB_waterBillingSetup.findOne({});
 
+        if (params.categoryId !== "") {
+            if (params.productId != "") {
+                parameter.itemId = params.productId;
+            } else {
+                let productList = Pos_Product.find({categoryId: params.categoryId}).map((obj) => obj._id);
+                parameter.itemId = {$in: productList};
+            }
+        }
 
         parameter.averageInventoryDate = {
             $lte: moment(params.date).endOf("day").toDate(),
@@ -41,7 +50,6 @@ Meteor.methods({
                     createdAt: 1
                 }
             },
-
             {
                 $group: {
                     _id: {

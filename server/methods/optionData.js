@@ -161,6 +161,40 @@ Meteor.methods({
         return list;
     }
     ,
+    queryItemOptionReport(q, categoryId) {
+        let list = [];
+        let selector = {};
+        if (q != "") {
+            q = q.replace(/[/\\]/g, '');
+            let reg = new RegExp(q, 'mi');
+            selector.$or = [
+                {name: {$regex: reg}},
+                {_id: q}
+            ];
+        }
+        selector.categoryId = categoryId;
+        Pos_Product.find(selector, {sort: {code: 1}, limit: 300}).fetch().forEach(function (obj) {
+            list.push({label: obj.code + " : " + obj.name, value: obj._id});
+        });
+        return list;
+    }
+    , queryCategoryOptionReport(q, categoryId) {
+        let list = [];
+        let selector = {};
+        if (q != "") {
+            q = q.replace(/[/\\]/g, '');
+            let reg = new RegExp(q, 'mi');
+            selector.$or = [
+                {name: {$regex: reg}},
+                {_id: q}
+            ];
+        }
+        Pos_Category.find(selector, {sort: {code: 1}, limit: 300}).fetch().forEach(function (obj) {
+            list.push({label: obj.code + " : " + obj.name, value: obj._id});
+        });
+        return list;
+    }
+    ,
 
     queryLevelOption(selector) {
         let list = [];
@@ -728,12 +762,12 @@ Meteor.methods({
                     label: SpaceChar.space(obj.level * 6) + obj.code + " | " + obj.name,
                     value: obj._id
                 })
-            } else if (obj.accountTypeId === "29") {
+
                 listAccumulated.push({
                     label: SpaceChar.space(obj.level * 6) + obj.code + " | " + obj.name,
                     value: obj._id
                 })
-            } else if (obj.accountTypeId === "61") {
+            } else if (obj.accountTypeId === "60" || obj.accountTypeId === "61") {
                 listExpense.push({
                     label: SpaceChar.space(obj.level * 6) + obj.code + " | " + obj.name,
                     value: obj._id

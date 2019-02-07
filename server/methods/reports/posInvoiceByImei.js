@@ -12,6 +12,7 @@ import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import {Pos_Vendor} from "../../../imports/collection/posVendor";
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     posInvoiceByImeiReport(params, translate) {
@@ -29,7 +30,14 @@ Meteor.methods({
         let companyDoc = WB_waterBillingSetup.findOne({});
         let reg = new RegExp(params.imei);
         parameter['item.desc'] = {$regex: reg, $options: 'mi'}
-
+        if (params.categoryId !== "") {
+            if (params.productId != "") {
+                parameter["item.itemId"] = params.productId;
+            } else {
+                let productList = Pos_Product.find({categoryId: params.categoryId}).map((obj) => obj._id);
+                parameter["item.itemId"] = {$in: productList};
+            }
+        }
 
         //Range Date
         let saleList = Pos_Invoice.find(parameter).fetch();

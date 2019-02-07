@@ -10,6 +10,7 @@ import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
+import {Pos_Product} from "../../../imports/collection/posProduct";
 
 Meteor.methods({
     posSaleByProductSummaryReport(params, translate) {
@@ -26,7 +27,15 @@ Meteor.methods({
 
         let companyDoc = WB_waterBillingSetup.findOne({});
 
-
+        let newParams = {};
+        if (params.categoryId !== "") {
+            if (params.productId != "") {
+                newParams["item.itemId"] = params.productId;
+            } else {
+                let productList = Pos_Product.find({categoryId: params.categoryId}).map((obj) => obj._id);
+                newParams["item.itemId"] = {$in: productList};
+            }
+        }
         parameter.invoiceDate = {
             $lte: moment(params.date[1]).endOf("day").toDate(),
             $gte: moment(params.date[0]).startOf("day").toDate()
@@ -45,6 +54,9 @@ Meteor.methods({
                     path: "$item",
                     preserveNullAndEmptyArrays: true
                 }
+            },
+            {
+                $match: newParams
             },
             {
                 $project: {

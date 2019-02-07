@@ -117,7 +117,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -1854,7 +1855,7 @@
                 Meteor.call('queryPosInvoice', {
                     q: val,
                     filter: this.filter,
-                    rolesArea:Session.get('area'),
+                    rolesArea: Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1894,7 +1895,7 @@
                 if (!!query) {
                     setTimeout(() => {
                         let lists = [];
-                        Meteor.call('queryPosCustomerOption', query,Session.get("area"), (err, result) => {
+                        Meteor.call('queryPosCustomerOption', query, Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerOption = result;
                             } else {
@@ -1903,7 +1904,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOption', "",Session.get("area"), (err, result) => {
+                    Meteor.call('queryPosCustomerOption', "", Session.get("area"), (err, result) => {
                         if (!err) {
                             this.customerOption = result;
                         } else {
@@ -2775,6 +2776,7 @@
                                         type: 'error',
                                         message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
                                     });
+                                    return false;
                                 } else {
                                     Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
                                         if (result) {
@@ -2818,6 +2820,7 @@
                                 type: 'error',
                                 message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
                             });
+                            return false;
                         } else {
                             Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
                                 if (result) {
@@ -2852,9 +2855,8 @@
             },
             removeImei(index, row) {
                 let removeIndex = this.imei.map(function (item) {
-                    return item.itemId;
-                }).indexOf(row.itemId);
-
+                    return item.name;
+                }).indexOf(row.name);
                 this.imei.splice(removeIndex, 1);
                 this.imeiShow.splice(index, 1);
                 this.rowDoc.desc = "";
@@ -2864,6 +2866,7 @@
                 })
                 this.rowDoc.numImei = this.imeiShow.length;
                 this.updatePosInvoiceDetail(this.rowDoc, this.indexRow);
+                this.imeiInput = "";
 
             },
             popUpAddImei(doc, index) {
