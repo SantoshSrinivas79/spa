@@ -1932,6 +1932,15 @@
             savePosInvoice(isCloseDialog, event, isPrint) {
                 event.preventDefault();
                 let vm = this;
+
+                if (vm.posInvoiceData.length === 0) {
+                    vm.$message({
+                        duration: 1000,
+                        message: this.langConfig['noItemAdd'],
+                        type: 'error'
+                    });
+                    return false;
+                }
                 this.$refs["posInvoiceFormAdd"].validate((valid) => {
                     if (valid) {
                         let posInvoiceDoc = {

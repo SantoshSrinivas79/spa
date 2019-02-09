@@ -1417,6 +1417,14 @@
             savePosBill(isCloseDialog, event) {
                 event.preventDefault();
                 let vm = this;
+                if (vm.posBillData.length === 0) {
+                    vm.$message({
+                        duration: 1000,
+                        message: this.langConfig['noItemAdd'],
+                        type: 'error'
+                    });
+                    return false;
+                }
                 let item = vm.posBillData;
 
                 this.$refs["posBillFormAdd"].validate((valid) => {

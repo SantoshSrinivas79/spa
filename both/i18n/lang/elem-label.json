@@ -90,7 +90,8 @@
       "paidOnSaleOrder": "Paid On Prepay",
       "paidOnSaleOrderRaw": "Prepay",
       "barcode": "Barcode",
-      "imei": "Imei"
+      "imei": "Imei",
+      "noItemAdd": "No Item Add"
     },
     "saleCoffee": {
       "searchHere": "Search Here ...",
@@ -298,7 +299,8 @@
       "chooseLocation": "Choose Location",
       "unit": "Unit",
       "barcode": "Barcode",
-      "imei": "Imei"
+      "imei": "Imei",
+      "noItemAdd": "No Item Add"
     },
     "vendor": {
       "searchHere": "Search Here ...",
@@ -866,7 +868,8 @@
       "paidOnSaleOrder": "កាត់ពីប្រាក់កក់",
       "paidOnSaleOrderRaw": "ប្រាក់កក់",
       "barcode": "លេខកូដ",
-      "imei": "Imei"
+      "imei": "Imei",
+      "noItemAdd": "មិនទាន់បានបញ្ចូលទំនិញ"
     },
     "saleCoffee": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",
@@ -1070,7 +1073,8 @@
       "chooseLocation": "ជ្រើសរើសទីតាំង",
       "unit": "ឯកតា",
       "barcode": "លេខកូដ",
-      "imei": "លេខសំគាល់"
+      "imei": "លេខសំគាល់",
+      "noItemAdd": "មិនទាន់បានបញ្ចូលទំនិញ"
     },
     "vendor": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",
