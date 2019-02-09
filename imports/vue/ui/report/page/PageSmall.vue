@@ -1,7 +1,7 @@
 <template>
     <div class="page-small">
         <div class="smallForm" align="center !important"
-             style="background: white !important;font-size: 9px !important;width: 255px !important;margin: 0 auto">
+             style="background: white !important;font-size: 9px !important;width: 302.36px !important;margin: 0 auto">
             <div class="center">
                 <slot name="header"></slot>
             </div>
