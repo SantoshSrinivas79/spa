@@ -196,11 +196,11 @@
                             <el-input v-model="posProductForm.code"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
+                    <!--<el-col :span="12">
                         <el-form-item :label="langConfig['qtyOnHand']" prop="qtyOnHand">
                             <el-input v-model.number="posProductForm.qtyOnHand"></el-input>
                         </el-form-item>
-                    </el-col>
+                    </el-col>-->
                 </el-row>
 
                 <el-row>
@@ -353,12 +353,12 @@
                         <el-form-item :label="langConfig['code']" prop="code">
                             <el-input v-model="posProductForm.code"></el-input>
                         </el-form-item>
-                    </el-col>
+                    </el-col><!--
                     <el-col :span="12">
                         <el-form-item :label="langConfig['qtyOnHand']" prop="qtyOnHand">
                             <el-input v-model.number="posProductForm.qtyOnHand"></el-input>
                         </el-form-item>
-                    </el-col>
+                    </el-col>-->
                 </el-row>
 
                 <el-row>
