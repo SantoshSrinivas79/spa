@@ -83,7 +83,7 @@
                                            @click="popupSchRegisterUpdateToClass(scope.row),findSchRegisterById(scope),dialogUpdateSchRegisterToClass= true"
                                            :disabled="disabledUpdate"></el-button>
                                 <el-button type="success" size="small" class="cursor-pointer"
-                                           @click="dialoginputTranscript= true,popUpInputTranscript(scope.row)"
+                                           @click="popUpInputTranscript(scope.row)"
                                            :disabled="disabledUpdate">T
                                 </el-button>
                                 <el-button type="warning" icon="el-icon-printer" size="small" class="cursor-pointer"
@@ -101,7 +101,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -584,6 +585,7 @@
                     <el-col :span="12">
                         <span><b>ឆមាស ១(Semester 1)</b></span>
                         <el-table
+                                v-loading="loadingCurriculumn"
                                 :data="culumnData1"
                                 stripe
                                 style="width: 100%">
@@ -684,6 +686,7 @@
                     <el-col :span="12">
                         <span><b>ឆមាស ២(Semester 2)</b></span>
                         <el-table
+                                v-loading="loadingCurriculumn"
                                 :data="culumnData2"
                                 stripe
                                 style="width: 100%">
@@ -931,6 +934,7 @@
                 majorList: [],
                 promotionList: [],
                 subjectList: [],
+                loadingCurriculumn: true,
                 yearList: [
                     {label: "1", value: 1},
                     {label: "2", value: 2},
@@ -1405,6 +1409,7 @@
             findCuriculumnById(id) {
                 let vm = this;
                 vm.inputTranscriptForm.isCompleted = false;
+                vm.loadingCurriculumn = true;
                 Meteor.call("querySchCiriculumnById", id, (err, result) => {
                     if (result) {
                         let i = 1;
@@ -1445,6 +1450,8 @@
                         });
                         vm.culumnData2 = result.culumnSemester2;
                     }
+                    vm.loadingCurriculumn = false;
+
                 })
             },
             saveTranscript() {
@@ -1573,6 +1580,7 @@
             popUpInputTranscript(data) {
                 let vm = this;
                 vm.ref = "inputTranscriptForm";
+                vm.dialoginputTranscript = true;
                 this.majorOpt();
                 vm.resetForm();
                 Meteor.call("querySchStudentById", data.studentId, (err, res) => {
@@ -1607,6 +1615,8 @@
                                 vm.disabledCuriculumn = true;
                             }
                         });
+                        vm.loadingCurriculumn = false;
+
                     }
                 });
 

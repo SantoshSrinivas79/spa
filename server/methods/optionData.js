@@ -682,7 +682,7 @@ Meteor.methods({
     }
     ,
 
-    queryPosVendorOptionUnPaid(q) {
+    queryPosVendorOptionUnPaid(q, rolesArea) {
         let selector = {};
         if (q != "") {
             q = q.replace(/[/\\]/g, '');
