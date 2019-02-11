@@ -2,11 +2,12 @@
 <template>
     <div class="posInvoicePrintSmall-report">
         <smallForm>
-            <span slot="content" style="margin: 0px !important;">
+            <span slot="content" style="margin-top: 0px !important;padding-top: 0px !important;">
                 <div class="printInvoice">
-                <table class="table table-bordered">
-                      <caption style="padding-top: 0px !important;">
-                          <div class="row" style="text-align: center !important;">
+                <table class="table table-bordered" style="margin-top: 0px !important;padding-top: 0px !important;">
+                      <caption style="padding-top: 0px !important;margin-top: 0px !important;">
+                          <div class="row"
+                               style="text-align: center !important;margin-top: 0px !important;padding-top: 0px !important;">
                                      <img style="width: 50px;height: 50px;vertical-align: baseline !important;"
                                           src="/mih.png"
                                           :onLoad="onLoadHandler()"

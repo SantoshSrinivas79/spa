@@ -46,6 +46,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posInvoiceDataDisplay"
                         stripe
                         border
@@ -1482,6 +1483,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 keyCode: [],
                 refForm: '',
                 posInvoiceData: [],
@@ -1852,6 +1854,7 @@
                 return index + 1;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryPosInvoice', {
                     q: val,
                     filter: this.filter,
@@ -1863,6 +1866,7 @@
                         this.count = result.countPosInvoice;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             itemOpt(query) {
@@ -2204,7 +2208,7 @@
                         }
                         if (row.status === "Active" || row.paymentNumber < 2) {
 
-                            vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                            vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                                 confirmButtonText: 'OK',
                                 cancelButtonText: 'Cancel',
                                 type: 'warning'
@@ -2246,7 +2250,7 @@
                 } else {
                     if (row.status === "Active" || row.paymentNumber < 2) {
 
-                        vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                        vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                             confirmButtonText: 'OK',
                             cancelButtonText: 'Cancel',
                             type: 'warning'
@@ -2525,7 +2529,7 @@
                 })
             },
             removePosInvoiceDetailByIndex(index, row) {
-                this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                this.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                     confirmButtonText: 'OK',
                     cancelButtonText: 'Cancel',
                     type: 'warning'

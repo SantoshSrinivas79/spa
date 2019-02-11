@@ -342,7 +342,7 @@
             },
             removeSchPosition(index, row, rows) {
                 let vm = this;
-                this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                this.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                     confirmButtonText: 'OK',
                     cancelButtonText: 'Cancel',
                     type: 'warning'

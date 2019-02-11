@@ -397,7 +397,7 @@
                 let vm = this;
                 Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
                     if (re.month == row.month && re.year == row.year) {
-                        vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                        vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                             confirmButtonText: 'OK',
                             cancelButtonText: 'Cancel',
                             type: 'warning'

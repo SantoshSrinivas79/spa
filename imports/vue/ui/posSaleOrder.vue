@@ -1505,7 +1505,7 @@
                         }
                         if ((row.status !== "Complete" || row.receiveNumber < 2) && (row.paymentNumber === undefined || row.paymentNumber < 1)) {
 
-                            vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                            vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                                 confirmButtonText: 'OK',
                                 cancelButtonText: 'Cancel',
                                 type: 'warning'
@@ -1547,7 +1547,7 @@
                 } else {
                     if ((row.status !== "Complete" || row.receiveNumber < 2) && (row.paymentNumber === undefined || row.paymentNumber < 1)) {
 
-                        vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                        vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                             confirmButtonText: 'OK',
                             cancelButtonText: 'Cancel',
                             type: 'warning'
@@ -1779,7 +1779,7 @@
 
             },
             removePosSaleOrderDetailByIndex(index, row) {
-                this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                this.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                     confirmButtonText: 'OK',
                     cancelButtonText: 'Cancel',
                     type: 'warning'

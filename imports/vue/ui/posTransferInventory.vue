@@ -956,7 +956,7 @@
             },
             removeTransferInventory(index, row, rows) {
                 let vm = this;
-                vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                     confirmButtonText: 'OK',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
@@ -1105,7 +1105,7 @@
                 })
             },
             removeTransferInventoryDetailByIndex(index, row) {
-                this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                this.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                     confirmButtonText: 'OK',
                     cancelButtonText: 'Cancel',
                     type: 'warning'

@@ -1573,7 +1573,7 @@
                             return false;
                         }
                         if (row.status === "Active" || row.paymentNumber < 2) {
-                            vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                            vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                                 confirmButtonText: 'OK',
                                 cancelButtonText: 'Cancel',
                                 type: 'warning'
@@ -1616,7 +1616,7 @@
                     })
                 } else {
                     if (row.status === "Active" || row.paymentNumber < 2) {
-                        vm.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                        vm.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                             confirmButtonText: 'OK',
                             cancelButtonText: 'Cancel',
                             type: 'warning'
@@ -1853,7 +1853,7 @@
 
             },
             removePosBillDetailByIndex(index, row) {
-                this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+                this.$confirm('This will permanently delete the Item. Continue?', 'Warning', {
                     confirmButtonText: 'OK',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
