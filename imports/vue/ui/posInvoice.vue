@@ -2461,6 +2461,15 @@
                     let s = new buzz.sound('/the-calling.mp3');
                     s.play();*/
 
+                    let companyDoc = WB_waterBillingSetup.findOne({});
+                    if (isFound.qty + 1 > isFound.rawQty && companyDoc.validateStock === true) {
+                        vm.$message({
+                            type: 'error',
+                            message: 'ស្តុកមានមិនគ្រប់គ្រាន់ ។ ស្តុកនៅសល់តែ ' + isFound.rawQty + ' ប៉ុន្នោះ !!'
+                        });
+                        return false;
+                    }
+
                     isFound.qty = isFound.qty + 1;
                     isFound.amount = isFound.qty * isFound.price;
                     vm.posInvoiceData[isFound.itemId] = isFound;
@@ -2551,7 +2560,8 @@
             }
             ,
             updatePosInvoiceDetail(row, index) {
-                if (row.qty > row.rawQty) {
+                let companyDoc = WB_waterBillingSetup.findOne({});
+                if (row.qty > row.rawQty && companyDoc.validateStock === true) {
                     this.$message({
                         type: 'error',
                         message: 'ស្តុកមានមិនគ្រប់គ្រាន់ ។ ស្តុកនៅសល់តែ ' + row.rawQty + ' ប៉ុន្នោះ !!'
