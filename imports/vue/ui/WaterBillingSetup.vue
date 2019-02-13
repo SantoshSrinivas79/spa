@@ -15,7 +15,7 @@
                         <el-col :span="6">
                             <el-button v-show="isEmptyCompany" type="primary" icon="plus" size="small"
                                        @click="dialogFormVisible = true">
-                                Add waterBillingSetup
+                                Add Setup
                             </el-button>
 
                         </el-col>

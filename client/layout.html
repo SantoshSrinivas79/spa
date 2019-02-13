@@ -1097,25 +1097,6 @@
                         <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
                     </a>-->
 
-                    {{#if manageModule.bus}}
-                        <hr>
-                        <a href="#" class="title-head">
-                            <i style="color: white !important;" class="fa fa-bus"></i> <span
-                                style="color: white;">{{_
-                                "sch.sidebarMenu.bus"}}</span>
-                            <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-                        </a>
-
-                        <li><a href="{{pathFor 'sch.busRegister'}}" class="title-body"><i class="fa fa-bus"
-                                                                                          aria-hidden="true"></i> {{_
-                                "sch.sidebarMenu.busRegister"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.busPayment'}}" class="title-body"><i class="fa fa-shopping-cart"
-                                                                                         aria-hidden="true"></i> {{_
-                                "sch.sidebarMenu.busPayment"}}</a>
-                        </li>
-
-                    {{/if}}
 
 
                     <hr>
@@ -1183,15 +1164,6 @@
                         </li>
                         <li><a href="{{pathFor 'sch.activity'}}" class="title-body"><i class="fa fa-support"></i> {{_
                                 "sch.sidebarMenu.activity"}}</a>
-                        </li>
-                    {{/if}}
-                    {{#if manageModule.bus}}
-                        <hr>
-                        <li><a href="{{pathFor 'sch.busStop'}}" class="title-body"><i class="fa fa-map-marker"></i> {{_
-                                "sch.sidebarMenu.busStop"}}</a>
-                        </li>
-                        <li><a href="{{pathFor 'sch.bus'}}" class="title-body"><i class="fa fa-bus"></i> {{_
-                                "sch.sidebarMenu.bus"}}</a>
                         </li>
                     {{/if}}
                     <hr>

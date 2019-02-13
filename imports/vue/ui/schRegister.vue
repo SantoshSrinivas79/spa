@@ -1622,7 +1622,7 @@
                 val = parseFloat(val) || 0;
 
                 function checkMention(range) {
-                    return range.from <= val && range.to > val;
+                    return range.from <= val && range.to >= val;
                 }
 
                 let data = this.mentionRange.find(checkMention);
