@@ -68,6 +68,10 @@
                             :label="langConfig['note']">
                     </el-table-column>
                     <el-table-column
+                            prop="generation"
+                            :label="langConfig['generation']">
+                    </el-table-column>
+                    <el-table-column
                             :label="langConfig['action']"
                             width="240"
                     >
@@ -175,6 +179,10 @@
                                         :disabled="item.disabled">
                                 </el-option>
                             </el-select>
+                        </el-form-item>
+                        <el-form-item :label="langConfig['generation']" prop="generation">
+                            <el-input-number v-model="schRegisterForm.generation" controls-position="right"
+                                             :min="1"></el-input-number>
                         </el-form-item>
 
                     </el-col>
@@ -307,6 +315,11 @@
                                         :disabled="item.disabled">
                                 </el-option>
                             </el-select>
+                        </el-form-item>
+
+                        <el-form-item :label="langConfig['generation']" prop="generation">
+                            <el-input-number v-model="schRegisterForm.generation" controls-position="right"
+                                             :min="1"></el-input-number>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -952,7 +965,8 @@
                     registerDate: "",
                     startClassDate: "",
                     _id: "",
-                    note: ""
+                    note: "",
+                    generation: 1
 
                 },
                 inputTranscriptForm: {
@@ -1215,6 +1229,7 @@
                             promotionId: vm.schRegisterForm.promotionId,
                             term: vm.schRegisterForm.term,
                             note: vm.schRegisterForm.note,
+                            generation: vm.schRegisterForm.generation,
                             registerDate: vm.schRegisterForm.registerDate,
                             registerDateName: moment(vm.schRegisterForm.registerDate).format("DD/MM/YYYY"),
                             rolesArea: Session.get('area')
@@ -1254,6 +1269,7 @@
                             promotionId: vm.schRegisterForm.promotionId,
                             term: vm.schRegisterForm.term,
                             registerDate: vm.schRegisterForm.registerDate,
+                            generation: vm.schRegisterForm.generation,
                             registerDateName: moment(vm.schRegisterForm.registerDate).format("DD/MM/YYYY"),
                             classId: vm.schRegisterForm.classId,
                             note: vm.schRegisterForm.note,
@@ -1632,7 +1648,7 @@
                 val = parseFloat(val) || 0;
 
                 function checkMention(range) {
-                    return range.from <= val && range.to > val;
+                    return range.from <= val && range.to >= val;
                 }
 
                 let data = this.mentionRange.find(checkMention);

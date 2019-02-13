@@ -115,7 +115,8 @@
       "teacherSalary": "Teacher Salary",
       "teacherLevelSalary": "Teacher Level Salary",
       "teacherByLevel": "Teacher By Level",
-      "teacherDevelopment": "Teacher Development"
+      "teacherDevelopment": "Teacher Development",
+      "reExam": "Re Exam"
     }
   },
   "acc": {

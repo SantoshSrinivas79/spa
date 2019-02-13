@@ -18,6 +18,9 @@ Sch_Register.schema = new SimpleSchema({
     programId: {
         type: String
     },
+    generation: {
+        type: Number
+    },
     promotionId: {
         type: String
     },

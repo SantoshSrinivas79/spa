@@ -1815,9 +1815,12 @@
                 let vm = this;
                 if ((this.dialogAddPosInvoice === true || this.dialogUpdatePosInvoice === true) && this.dialogAddImei === false) {
                     let scannerSensitivity = 100;
-                    if (e.keyCode !== 13 && !isNaN(e.key)) {
-                        this.takeBarcode += e.key;
+                    let charCode = event.which || event.keyCode;
+                    if (charCode !== 13 && charCode !== 16 && charCode !== 18 && charCode !== 17) {
+                        this.takeBarcode += String.fromCharCode(charCode);
                     }
+
+
                     if (e.keyCode === 107 && !e.ctrlKey && !e.altKey) {
                         e.preventDefault();
                         vm.savePosInvoice(true, e, true);

@@ -70,7 +70,7 @@
       "credit": "Credit",
       "score": "Score",
       "grades": "Grade",
-      "curiculumn": "Curiculumn",
+      "curiculumn": "Curriculum",
       "inputTranscript": "Input Transcript",
       "finalGrade": "Grade",
       "gradePoint": "GPA",
@@ -254,14 +254,15 @@
       "credit": "Credit",
       "score": "Score",
       "grades": "Grade",
-      "curiculumn": "Curiculumn",
+      "curiculumn": "Curriculum",
       "inputTranscript": "Input Transcript",
       "finalGrade": "Grade",
       "gradePoint": "GPA",
       "requiredCredit": "Required Credit",
       "isCompleted": "Completed",
       "startClassDate": "Study On",
-      "note": "Note"
+      "note": "Note",
+      "generation": "Generation"
     },
     "class": {
       "searchHere": "Search Here ...",
@@ -535,8 +536,8 @@
       "khName": "Khmer Name",
       "code": "Code",
       "desc": "desc",
-      "add": "Add Ciriculumn",
-      "update": "Update Ciriculumn",
+      "add": "Add Curriculum",
+      "update": "Update Curriculum",
       "year": "Year",
       "semester": "Semester",
       "subject": "Subject",
@@ -1031,7 +1032,8 @@
       "requiredCredit": "ទាមទារចំនួនក្រេឌីត",
       "isCompleted": "បំពេញរួចរាល់",
       "startClassDate": "ចូលរៀននៅថ្ងៃ",
-      "note": "បរិយាយ"
+      "note": "បរិយាយ",
+      "generation": "ជំនាន់"
     },
     "class": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",

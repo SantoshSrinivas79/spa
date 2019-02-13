@@ -62,7 +62,7 @@
                                            @click="removeSchCiriculumn(scope.$index,scope.row,schCiriculumnData)"
                                            :disabled="disabledRemove"></el-button>
                                 <el-button type="primary" icon="el-icon-edit" size="small" class="cursor-pointer"
-                                           @click="findSchCiriculumnById(scope),dialogUpdateSchCiriculumn= true"
+                                           @click="findSchCiriculumnById(scope)"
                                            :disabled="disabledUpdate"></el-button>
                             </el-button-group>
 
@@ -75,7 +75,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -287,8 +288,10 @@
                 </el-row>
                 <hr style="margin-top: 0px !important;">
                 <el-row class="pull-right">
-                    <el-button @click="dialogAddSchCiriculumn = false, cancel()">{{langConfig['cancel']}} <i>(ESC)</i></el-button>
-                    <el-button type="primary" @click="saveSchCiriculumn($event)">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button @click="dialogAddSchCiriculumn = false, cancel()">{{langConfig['cancel']}} <i>(ESC)</i>
+                    </el-button>
+                    <el-button type="primary" @click="saveSchCiriculumn($event)">{{langConfig['save']}} <i>(Ctrl +
+                        Enter)</i></el-button>
                 </el-row>
                 <br>
             </el-form>
@@ -497,8 +500,10 @@
                 <input type="hidden" v-model="schCiriculumnForm._id"/>
                 <hr style="margin-top: 0px !important;">
                 <el-row class="pull-right">
-                    <el-button @click="dialogUpdateSchCiriculumn = false ,cancel()">{{langConfig['cancel']}} <i>(ESC)</i></el-button>
-                    <el-button type="primary" @click="updateSchCiriculumn">{{langConfig['save']}} <i>(Ctrl + Enter)</i></el-button>
+                    <el-button @click="dialogUpdateSchCiriculumn = false ,cancel()">{{langConfig['cancel']}}
+                        <i>(ESC)</i></el-button>
+                    <el-button type="primary" @click="updateSchCiriculumn">{{langConfig['save']}} <i>(Ctrl + Enter)</i>
+                    </el-button>
                 </el-row>
                 <br>
             </el-form>
@@ -827,16 +832,33 @@
             findSchCiriculumnById(doc) {
                 let vm = this;
                 vm.schCiriculumnForm = {};
+                vm.culumnData1 = [];
+                vm.culumnData2 = [];
+
+                const newloading = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    //background: 'rgba(0, 0, 0, 0.7)'
+                });
+
                 Meteor.call("querySchCiriculumnById", doc.row._id, (err, result) => {
                     if (result) {
                         vm.schCiriculumnForm._id = result._id;
                         vm.schCiriculumnForm = result;
                         vm.culumnData1 = result.culumnSemester1;
                         vm.culumnData2 = result.culumnSemester2;
+                        setTimeout(() => {
+                            newloading.close();
+                            vm.dialogUpdateSchCiriculumn = true;
+                        }, 1000);
                     }
                 })
             },
             cancel() {
+                this.schCiriculumnForm = {};
+                this.culumnData1 = [];
+                this.culumnData2 = [];
                 this.$message({
                     type: 'info',
                     message: 'Canceled'

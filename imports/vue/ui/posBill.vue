@@ -1323,8 +1323,9 @@
                     let vm = this;
                     if (this.dialogAddPosBill === true || this.dialogUpdatePosBill === true) {
                         let scannerSensitivity = 100;
-                        if (e.keyCode !== 13 && !isNaN(e.key)) {
-                            this.takeBarcode += e.key;
+                        let charCode = event.which || event.keyCode;
+                        if (charCode !== 13 && charCode !== 16 && charCode !== 18 && charCode !== 17) {
+                            this.takeBarcode += String.fromCharCode(charCode);
                         }
                         this.timeStamp.push(Date.now());
                         if (this.timeStamp.length > 1) {

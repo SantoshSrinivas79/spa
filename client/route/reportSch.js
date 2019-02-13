@@ -122,6 +122,17 @@ schReport.route('/schRegisterReport', {
     }
 
 });
+import '../../imports/ui/report/schReExam/schReExam';
+
+schReport.route('/schReExamReport', {
+    name: 'sch.schReExamReport',
+    title: "ReExam Report",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('sch_reExamReport');
+    }
+
+});
 import '../../imports/ui/report/schPayment/schPayment';
 
 schReportPayment.route('/schPaymentReport', {
