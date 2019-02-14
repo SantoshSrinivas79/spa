@@ -7,11 +7,14 @@
                 <table class="table table-bordered">
                       <caption style="padding-top: 0px !important;">
                           <div class="row"
-                               style="text-align: center !important;display: flex !important;align-items: center !important;justify-content: center !important;margin-left: -60px !important;">
+                               style="text-align: center !important;margin-top: 0px !important;padding-top: 0px !important;">
                                      <img style="width: 50px;height: 50px;vertical-align: baseline !important;"
                                           src="/mih.png"
                                           :onLoad="onLoadHandler()"
                                           alt="">
+                          </div>
+                          <div class="row"
+                               style="text-align: center !important;display: flex !important;align-items: center !important;justify-content: center !important;margin-left: -60px !important;">
                                         <span style="font-family: 'Khmer OS Muol light','Khmer OS Muol';font-size: 12px !important;vertical-align: middle !important;">
                                             <p style="margin-bottom: 0px !important;">{{waterBillingSetup.khName}}</p><p
                                                 style="margin-bottom: 0px !important;">{{waterBillingSetup.enName}}</p>

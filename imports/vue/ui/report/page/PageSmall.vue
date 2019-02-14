@@ -1,11 +1,11 @@
 <template>
     <div class="page-small">
         <div class="smallForm" align="center !important"
-             style="background: white !important;font-size: 9px !important;width: 303px !important;margin: 0 auto">
+             style="background: white !important;font-size: 9px !important;width: 70mm !important;margin: 0 auto;">
             <div class="center">
                 <slot name="header"></slot>
             </div>
-            <div class="content">
+            <div class="">
                 <slot name="content"></slot>
             </div>
             <slot name="footer"></slot>
@@ -18,22 +18,21 @@
 </script>
 
 <style scope>
-    /*@page {*/
-    /*size: A4;*/
-    /*margin: 0;*/
-    /*}*/
+    /*@page {
+    size: A4;
+    margin: 0;
+    }*/
 
-    /*@media print {*/
-    /*html, body {*/
-    /*width: 210mm;*/
-    /*height: auto;*/
-    /*}*/
+    /*@media print {
+        html, body {
+            width: 70mm !important;
+            height: auto;
+        }
 
-    /*table {*/
-    /*background: #000;*/
-    /*height: auto;*/
-    /*}*/
-
-    /*!* ... the r``est of the rules ... *!*/
-    /*}*/
+        !*table {
+            background: #000;
+            height: auto;
+        }*!
+        !* ... the r``est of the rules ... *!
+    }*/
 </style>
