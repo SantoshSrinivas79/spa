@@ -145,7 +145,7 @@
                 // entire view has been rendered
                 if (vm.printInvoiceSmallHtml != "" && vm.onLoad === true) {
                     setTimeout(function () {
-                        /*window.print();
+                        window.print();
 
                         if (vm.isMiniInvoice === true) {
                             FlowRouter.go('/pos-sale/posInvoice');
@@ -157,7 +157,7 @@
                             duration: 1000,
                             message: vm.langConfig['saveSuccess'],
                             type: 'success'
-                        });*/
+                        });
 
                     }, 400);
 
