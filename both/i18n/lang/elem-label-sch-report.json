@@ -75,6 +75,7 @@
       "pickDate": "Pick a Date",
       "pickDateRange": "Pick Date Range",
       "all": "All",
+      "selectOne": "Select One",
       "currency": "Currency",
       "groupBy": "Group By",
       "transactionType": "Transaction Type",
@@ -794,6 +795,7 @@
       "pickDate": "ជ្រើសរើសកាលបរិច្ឆេទ",
       "pickDateRange": "ជ្រើសរើសកាលបរិច្ឆេទចន្លោះ",
       "all": "ទាំងអស់",
+      "selectOne": "ជ្រើសរើសមួយ",
       "currency": "រូបិយប័ណ្ណ",
       "groupBy": "ផ្តុំដោយ",
       "transactionType": "ប្រភេទប្រតិបត្តការ",
@@ -823,7 +825,7 @@
       "promotion": "អាហារូបករណ៍",
       "netPrice": "តម្លៃសុទ្ធ",
       "generation": "ជំនាន់",
-      "year":"ឆ្នាំទី"
+      "year": "ឆ្នាំទី"
     },
     "teacherActivity": {
       "run": "ដំណើរការរបាយការណ៍",

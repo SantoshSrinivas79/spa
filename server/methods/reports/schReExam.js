@@ -22,7 +22,7 @@ Meteor.methods({
 
         }
 
-        //registerParameter.generation = params.generation;
+        registerParameter.generation = params.generation;
 
 
         if (params.programId != "") {
@@ -41,9 +41,9 @@ Meteor.methods({
         let faildParam = {};
         faildParam["transcriptList.grade"] = "F";
 
-        /*if (params.year !== "") {
-            faildParam.year = params.year;
-        }*/
+        if (params.year !== "") {
+            faildParam['transcriptList.year'] = params.year;
+        }
         let data = {};
 
         let companyDoc = WB_waterBillingSetup.findOne({});
@@ -147,21 +147,6 @@ Meteor.methods({
             },
             {
                 $match: faildParam
-            },
-            {
-                $lookup: {
-                    from: 'sch_subject',
-                    localField: 'transcriptList.subjectId',
-                    foreignField: '_id',
-                    as: 'subjectDoc'
-                }
-            }
-            ,
-            {
-                $unwind: {
-                    path: "$subjectDoc",
-                    preserveNullAndEmptyArrays: true
-                }
             },
             {
                 $group: {

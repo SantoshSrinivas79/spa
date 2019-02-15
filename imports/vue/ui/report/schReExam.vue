@@ -60,7 +60,8 @@
 
                                     <el-col>
                                         <el-form-item :label="langConfig['generation']" prop="generation">
-                                            <el-input-number v-model="params.generation" controls-position="right"
+                                            <el-input-number v-model="params.generation"
+                                                             controls-position="right"
                                                              :min="1"></el-input-number>
                                         </el-form-item>
                                     </el-col>
@@ -69,7 +70,7 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['program']">
                                             <el-select filterable v-model="params.programId" clearable
-                                                       :placeholder="langConfig['all']"
+                                                       :placeholder="langConfig['selectOne']"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in programOptions"
@@ -83,7 +84,7 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['major']">
                                             <el-select filterable v-model="params.majorId" clearable
-                                                       :placeholder="langConfig['all']"
+                                                       :placeholder="langConfig['selectOne']"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in majorOptions"
@@ -97,7 +98,7 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['year']">
                                             <el-select filterable v-model="params.year" clearable
-                                                       :placeholder="langConfig['all']"
+                                                       :placeholder="langConfig['selectOne']"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in yearOptions"
@@ -363,6 +364,19 @@
                 })
             },
             handleRun() {
+                if (this.params.programId === "") {
+                    alertify.error("Program can't not empty!!");
+                    return false;
+                }
+                if (this.params.majorId === "") {
+                    alertify.error("Major can't not empty!!");
+                    return false;
+                }
+                if (this.params.year === "") {
+                    alertify.error("Year can't not empty!!");
+                    return false;
+                }
+
                 this.loading = true;
                 Meteor.call('schReExamReport', this.params, this.langConfig, (err, result) => {
                     if (result) {

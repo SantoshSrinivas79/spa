@@ -181,6 +181,7 @@ Meteor.methods({
         let startClassDate = data.startClassDate;
         let rolesArea = data.rolesArea;
         let registerDateName = data.registerDateName;
+        let generation = data.generation;
 
         if (data.classId && data.classId !== "") {
             let registerDoc = Sch_Register.findOne({_id: data._id});
@@ -259,6 +260,7 @@ Meteor.methods({
         data.startClassDate = startClassDate;
         data.rolesArea = rolesArea;
         data.registerDateName = registerDateName;
+        data.generation = generation;
         let id = data._id;
         let doc = Sch_Register.update({_id: data._id},
             {
