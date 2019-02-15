@@ -413,4 +413,37 @@
     .box-card {
         width: 100%;
     }
+
+    .verticalTableHeader {
+        text-align: left !important;
+        white-space: nowrap !important;
+        g-origin: 50% 50%;
+        -webkit-transform: rotate(270deg);
+        -moz-transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+        -o-transform: rotate(270deg);
+        transform: rotate(270deg);
+    }
+
+    .verticalTableHeader p {
+        margin: 0 -100%;
+        /*display:inline-block;*/
+        white-space: nowrap !important;
+    }
+
+    .verticalTableHeader p:before {
+        content: '';
+        width: 0;
+        padding-top: 100%; /* takes width as reference, + 10% for faking some extra padding */
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap !important;
+
+    }
+
+    table {
+        text-align: center;
+        table-layout: fixed;
+    }
+
 </style>

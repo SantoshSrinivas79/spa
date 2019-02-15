@@ -11,6 +11,7 @@ import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import {Sch_Transcript} from "../../../imports/collection/schTranscript";
 import {Sch_Register} from "../../../imports/collection/schRegister";
+import {Sch_Subject} from "../../../imports/collection/schSubject";
 
 Meteor.methods({
     schReExamReport(params, translate) {
@@ -40,9 +41,9 @@ Meteor.methods({
         let faildParam = {};
         faildParam["transcriptList.grade"] = "F";
 
-        if (params.year !== "") {
+        /*if (params.year !== "") {
             faildParam.year = params.year;
-        }
+        }*/
         let data = {};
 
         let companyDoc = WB_waterBillingSetup.findOne({});
@@ -172,47 +173,90 @@ Meteor.methods({
                         $push: '$$ROOT'
                     }
                 }
+            }, {
+                $sort: {
+                    "_id.studentDoc.personal.name": 1
+                }
             }
+
 
         ]);
 
 
         let i = 1;
-        console.log(reExamList);
+        let j = 1;
+        let subjectList = Sch_Subject.find({}).fetch();
         if (reExamList && reExamList.length > 0) {
-            reExamHTML += `<th>`;
-            reExamList[0]._id.rawTranscriptList.forEach((headData) => {
-                reExamHTML += `
-                    
-                        <td>${headData.subjectId}</td>
-                `;
-            })
-            reExamHTML += `</th>`;
-
+            reExamHTML += `<tr>
+                    <th style="text-align: center !important;vertical-align: middle !important;">ល.រ</th>
+                    <th style="text-align: center !important;vertical-align: middle !important;width: 150px !important;">ឈ្មោះ</th>
+            `;
             reExamList.forEach((obj) => {
-                if (obj.data && obj.data.length > 0) {
-                    obj.data.forEach((ob) => {
-                        /*reExamHTML += `
-                        <tr>
-                            <td style="text-align: center !important;">${i}</td>
-                            <td style="text-align: left !important;">${obj.studentDoc.personal.name}</td>
-                            <td style="text-align: center !important;">${obj.programDoc.name}</td>
-                            <td style="text-align: center !important;">${obj.majorDoc.name}</td>
-                            <td style="text-align: center !important;">${obj.levelDoc.name}</td>
-                            <td style="text-align: left !important;">${obj.note || ""}</td>
-                            <td>${formatCurrency(netPrice)}</td>
-
-                        </tr>
-                    `;*/
+                if (j === 1) {
+                    let sortTranscript = obj._id.rawTranscriptList.sort(compareASD);
+                    sortTranscript.forEach((ob) => {
+                        if (ob.year === params.year) {
+                            let subjectDoc = subjectList.find((sub) => sub._id === ob.subjectId);
+                            reExamHTML += `
+                        <th class="verticalTableHeader" style="text-align: left !important;"><p>${subjectDoc.name || ""}</p></th>
+                `;
+                        }
                     })
+                    j++;
                 }
+
+            })
+            reExamHTML += `
+                        <th style="text-align: center !important;vertical-align: middle !important;">សរុប</th>
+                    </tr>`;
+            reExamList.forEach((obj) => {
+                let numSubject = 0;
+                reExamHTML += `
+                        <tr>
+                           <td style="text-align: center !important;">${i}</td>
+                           <td style="text-align: left !important;">${obj._id.studentDoc.personal.name}</td>
+
+
+                    `;
+                let sortTranscript = obj._id.rawTranscriptList.sort(compareASD);
+                sortTranscript.forEach((ob) => {
+                        if (ob.year === params.year) {
+                            reExamHTML += `
+                                <td style="text-align: center !important;">${ob.grade === "F" ? 1 : ""}</td>
+                            `;
+                            numSubject += ob.grade === "F" ? 1 : 0;
+                        }
+                    }
+                )
+
+                reExamHTML += `
+                    <td>${numSubject}</td>
+                </tr>`;
+                i++;
             })
         }
-
-        console.log(reExamHTML);
-
         data.reExamHTML = reExamHTML;
         return data;
     }
 })
 ;
+
+let compareASD = function (a, b) {
+    if (a.year < b.year) {
+        return -1;
+    } else if (a.year === b.year && a.sem < b.sem) {
+        return -1;
+    } else if (a.year === b.year && a.sem === b.sem && a.ind < b.ind) {
+        return -1;
+    } else if (a.year === b.year && a.sem === b.sem && a.ind > b.ind) {
+        return 1;
+    } else if (a.year === b.year && a.sem > b.sem) {
+        return 1;
+    }
+    else if (a.year > b.year) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
