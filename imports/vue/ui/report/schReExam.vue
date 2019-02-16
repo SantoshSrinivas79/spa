@@ -455,9 +455,9 @@
 
     }
 
-    table {
+    /*table {
         text-align: center;
         table-layout: fixed;
-    }
+    }*/
 
 </style>

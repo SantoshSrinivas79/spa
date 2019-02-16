@@ -806,7 +806,7 @@ Meteor.methods({
                         let oldDoc = dataBeforeUpdate.item.find(function (element) {
                             return element.itemId === doc.itemId;
                         });
-                        if (onHandInventory === undefined || onHandInventory && onHandInventory.qtyEnding < doc.qty - oldDoc.qty) {
+                        if (onHandInventory === undefined || onHandInventory && onHandInventory.qtyEnding < doc.qty - (oldDoc && oldDoc.qty || 0)) {
                             i++;
                         }
                     } else {

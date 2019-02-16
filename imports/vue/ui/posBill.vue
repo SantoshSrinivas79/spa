@@ -216,7 +216,7 @@
                                 </td>
                                 <td>
                                     <el-input placeholder="Please input Qty" v-model.number=posBillDoc.qty type='number'
-                                              @keyup.native="updatePosBillDetail(posBillDoc, index)"
+                                              @keyup.native="updatePosBillDetail(posBillDoc, index)" :min="numMini"
                                               @change="updatePosBillDetail(posBillDoc, index)"
                                     >
                                         <template slot="append">{{posBillDoc.unitName || ""}}</template>
@@ -594,7 +594,7 @@
                                 </td>
                                 <td>
                                     <el-input placeholder="Please input Qty" v-model.number=posBillDoc.qty type='number'
-                                              @keyup.native="updatePosBillDetail(posBillDoc, index)"
+                                              @keyup.native="updatePosBillDetail(posBillDoc, index)" :min="numMini"
                                               @change="updatePosBillDetail(posBillDoc, index)"
                                     >
                                         <template slot="append">{{posBillDoc.unitName || ""}}</template>
@@ -1031,6 +1031,7 @@
                 isSearching: false,
                 currentPage: 1,
                 currentSize: 10,
+                numMini: 0,
                 count: 0,
                 dialogAddPosBill: false,
                 dialogUpdatePosBill: false,
@@ -2083,6 +2084,9 @@
             let ma = Manage_Module.findOne();
             if (ma && ma.feature) {
                 this.phoneShop = ma.feature.indexOf("Phone Shop") > -1 ? true : false;
+                if (this.phoneShop === true) {
+                    this.numMini = 1;
+                }
             }
 
         },

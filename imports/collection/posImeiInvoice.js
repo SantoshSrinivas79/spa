@@ -5,8 +5,11 @@ Pos_ImeiInvoice.schema = new SimpleSchema({
         type: String,
         label: "Name",
     },
-    invoiceId:{
-        type:String,
+    invoiceId: {
+        type: String,
+    },
+    itemId: {
+        type: String,
     },
     createdAt: {
         type: Date,

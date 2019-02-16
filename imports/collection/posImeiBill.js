@@ -9,6 +9,10 @@ Pos_ImeiBill.schema = new SimpleSchema({
         type:String,
         label:"Bill Id"
     },
+    itemId:{
+        type:String,
+        label:"Item Id"
+    },
     createdAt: {
         type: Date,
         optional: true,

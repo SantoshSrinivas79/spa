@@ -106,8 +106,8 @@ Meteor.methods({
 
         return data;
     },
-    queryPosImeiBillByImei(val) {
-        return Pos_ImeiBill.findOne({name: val});
+    queryPosImeiBillByImei(val, itemId) {
+        return Pos_ImeiBill.findOne({name: val, itemId: itemId});
     },
     queryPosBillByIdShow(id) {
         let data = Pos_Bill.findOne({_id: id});
@@ -342,6 +342,7 @@ let addImeiBill = function (imeiList, billId) {
             let data = {};
             data.name = obj.name;
             data.billId = billId;
+            data.itemId = obj.itemId;
             Pos_ImeiBill.insert(data);
             Pos_ImeiInvoice.remove({name: obj.name});
         })

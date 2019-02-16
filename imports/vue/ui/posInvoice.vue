@@ -245,6 +245,7 @@
 
                                 <td>
                                     <el-input placeholder="Please input Qty"
+                                              :min="numMini"
                                               v-model.number=posInvoiceDoc.qty type='number'
                                               @keyup.native="updatePosInvoiceDetail(posInvoiceDoc, index)"
                                               @change="updatePosInvoiceDetail(posInvoiceDoc, index)">
@@ -652,7 +653,7 @@
 
                                 <td>
                                     <el-input placeholder="Please input Qty" v-model.number=posInvoiceDoc.qty
-                                              type='number'
+                                              type='number' :min="numMini"
                                               @keyup.native="updatePosInvoiceDetail(posInvoiceDoc, index)"
                                               @change="updatePosInvoiceDetail(posInvoiceDoc, index)"
                                     >
@@ -1130,7 +1131,7 @@
                                 </td>
                                 <td>
                                     <el-input placeholder="Please input Qty"
-                                              v-model.number=posInvoiceDoc.qty type='number'
+                                              v-model.number=posInvoiceDoc.qty type='number' :min="numMini"
                                               @keyup.native="updatePosInvoiceDetailReceiveItemQty(posInvoiceDoc, index)"
                                               @change="updatePosInvoiceDetailReceiveItemQty(posInvoiceDoc, index)">
                                         <template slot="append">
@@ -1489,7 +1490,7 @@
                 posInvoiceData: [],
                 posInvoiceDataDisplay: [],
                 posInvoiceShowData: {},
-
+                numMini: 0,
                 multipleSelection: [],
                 posInvoiceId: "",
                 loading: false,
@@ -2792,7 +2793,7 @@
                     }
 
                     if (this.validateImei === true) {
-                        Meteor.call("queryPosImeiBillByImei", vm.imeiInput, (err, result) => {
+                        Meteor.call("queryPosImeiBillByImei", vm.imeiInput, vm.itemId, (err, result) => {
                             if (result) {
                                 let isFindImei = vm.imei.find((obj) => {
                                     return obj.name === vm.imeiInput;
@@ -2927,6 +2928,10 @@
                 this.phoneShop = ma.feature.indexOf("Phone Shop") > -1 ? true : false;
                 this.validateImei = ma.validateImei;
                 this.isMiniInvoice = ma.isMiniInvoice;
+
+                if (this.phoneShop === true) {
+                    this.numMini = 1;
+                }
             }
 
         },
