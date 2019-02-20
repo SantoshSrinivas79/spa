@@ -846,8 +846,12 @@
                     if (result) {
                         vm.schCiriculumnForm._id = result._id;
                         vm.schCiriculumnForm = result;
-                        vm.culumnData1 = result.culumnSemester1;
-                        vm.culumnData2 = result.culumnSemester2;
+                        vm.culumnData1 = result.culumnSemester1.length > 0 ? result.culumnSemester1 : [
+                            {year: "", subjectId: "", credit: 0}
+                        ];
+                        vm.culumnData2 = result.culumnSemester2.length > 0 ? result.culumnSemester2 : [
+                            {year: "", subjectId: "", credit: 0}
+                        ];
                         setTimeout(() => {
                             newloading.close();
                             vm.dialogUpdateSchCiriculumn = true;

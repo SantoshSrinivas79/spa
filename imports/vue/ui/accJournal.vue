@@ -161,9 +161,9 @@
                             <thead>
                             <tr>
                                 <th rowspan="2" style="vertical-align: middle; text-align: center">#</th>
-                                <th style="text-align: center">Account</th>
-                                <th style="text-align: center">Dr</th>
-                                <th style="text-align: center">Cr</th>
+                                <th style="text-align: center">Account (គណនី)</th>
+                                <th style="text-align: center">Dr​ (ឥណពន្ធ)</th>
+                                <th style="text-align: center">Cr (ឥណទាន)</th>
                                 <th style="text-align: center">Action</th>
                             </tr>
                             <tr>
@@ -347,8 +347,8 @@
                             </tr>
                             <tr>
                                 <th rowspan="2" style="vertical-align: middle; text-align: center">#</th>
-                                <th style="text-align: center">Chart Account</th>
-                                <th style="text-align: center">Amount</th>
+                                <th style="text-align: center">Chart Account (គណនី)</th>
+                                <th style="text-align: center">Amount (តម្លៃ)</th>
                                 <th style="text-align: center">Action</th>
                             </tr>
                             <tr>
@@ -495,9 +495,9 @@
                             <thead>
                             <tr>
                                 <th rowspan="2" style="vertical-align: middle; text-align: center">#</th>
-                                <th style="text-align: center">Account</th>
-                                <th style="text-align: center">Dr</th>
-                                <th style="text-align: center">Cr</th>
+                                <th style="text-align: center">Account (គណនី)</th>
+                                <th style="text-align: center">Dr (ឥណពន្ធ)</th>
+                                <th style="text-align: center">Cr (ឥណទាន)</th>
                                 <th style="text-align: center">Action</th>
                             </tr>
                             <tr>

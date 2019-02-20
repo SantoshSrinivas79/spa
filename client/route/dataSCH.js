@@ -178,6 +178,16 @@ schData.route('/schTeacher', {
         _Main('sch_teacher');
     }
 });
+import "../../imports/ui/sch_inputScore/sch_inputScore";
+//Student
+schData.route('/schInputScore', {
+    name: 'sch.inputScore',
+    title: "Input Score",
+    parent: "wb.home",
+    action: function (query, params) {
+        _Main('sch_inputScore');
+    }
+});
 
 import "../../imports/ui/sch_register/sch_register";
 //Student

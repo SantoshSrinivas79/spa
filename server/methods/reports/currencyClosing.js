@@ -56,9 +56,9 @@ Meteor.methods({
             currencyClosingListHTML += `
                             <tr>
                                  <th>#</th>
-                                 <th>Account</th>
-                                 <th>Dr</th>
-                                 <th>Cr</th>
+                                 <th>Account (គណនី)</th>
+                                 <th>Dr (ឥណពន្ធ)</th>
+                                 <th>Cr (ឥណទាន)</th>
                             </tr>
                      </thead>
                      <tbody style="margin-bottom: 5px;">

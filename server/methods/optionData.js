@@ -460,6 +460,19 @@ Meteor.methods({
         });
         return list;
     },
+    querySubjectOptionLimit(q) {
+        let selector = {};
+        if (q != "") {
+            q = q.replace(/[/\\]/g, '');
+            let reg = new RegExp(q, 'mi');
+            selector.$or = [
+                {name: {$regex: reg}},
+                {_id: q}
+            ];
+        }
+        return Sch_Subject.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
+
+    },
     queryPositionOption(selector) {
         let list = [];
 

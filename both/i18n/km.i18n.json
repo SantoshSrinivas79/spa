@@ -116,7 +116,8 @@
       "teacherLevelSalary": "របាយកាណ៍កាំប្រាក់បៀវត្សមន្ត្រីរាជការ",
       "teacherByLevel": "របាយកាណ៍គ្រូតាមកម្រិត",
       "teacherDevelopment": "របាយកាណ៍អភិវឌ្ឍធនធានមនុស្ស",
-      "reExam":"ប្រលងសង"
+      "reExam":"ប្រលងសង",
+      "inputScore":"បញ្ចូលពិន្ទុ"
     }
   },
   "acc": {

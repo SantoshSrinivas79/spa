@@ -908,3 +908,20 @@ function pad(number, length) {
     return str;
 
 }
+
+
+let convertToString = function (arr, desc) {
+    if (arr.length > 0) {
+        let list = "";
+        if (arr && arr.length > 0) {
+            arr.forEach((o) => {
+                list += `
+            <p>${o.name}</p>
+        `;
+            })
+        }
+        return list;
+    } else {
+        return desc;
+    }
+}
