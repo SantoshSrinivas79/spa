@@ -1551,7 +1551,7 @@
 
             handleAddCulumn2() {
                 this.culumnData2.push(
-                    {year: "", subjectId: "", credit: 0, grade: "Un Range", gradePoint: 0}
+                    {year: "", subjectId: "", credit: 0, grade: "Un Range", gradePoint: 0, ind: 1, sem: 2}
                 )
             },
             handleEditCulumn2(index, row) {

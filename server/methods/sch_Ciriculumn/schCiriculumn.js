@@ -49,7 +49,39 @@ Meteor.methods({
         return data;
     },
     insertSchCiriculumn(data) {
+        let i = 1;
+        let j = 1;
+        let cul1Dif = 0;
+        let cul2Dif = 0;
+
+        data.culumnSemester1 = data.culumnSemester1.map((obj) => {
+            if (cul1Dif !== obj.year) {
+                i = 1;
+            }
+            obj.ind = i;
+            obj.sem = 1;
+            cul1Dif = obj.year;
+            i++;
+            return obj;
+        });
+
+        data.culumnSemester2 = data.culumnSemester2.map((obj) => {
+            if (cul2Dif !== obj.year) {
+                j = 1;
+            }
+            obj.ind = j;
+            obj.sem = 2;
+
+            cul2Dif = obj.year;
+            j++;
+            return obj;
+        });
+
+
         let doc = Sch_Ciriculumn.insert(data);
+        if (data.status === true) {
+            Sch_Ciriculumn.update({majorId: data.majorId, _id: {$ne: doc}}, {$set: {status: false}});
+        }
         if (doc) {
             ciriculumnReact(doc);
         }
@@ -57,10 +89,43 @@ Meteor.methods({
     },
     updateSchCiriculumn(data) {
         let id = data._id;
+
+        let i = 1;
+        let j = 1;
+        let cul1Dif = 0;
+        let cul2Dif = 0;
+
+        data.culumnSemester1 = data.culumnSemester1.map((obj) => {
+            if (cul1Dif !== obj.year) {
+                i = 1;
+            }
+            obj.ind = i;
+            obj.sem = 1;
+            cul1Dif = obj.year;
+            i++;
+            return obj;
+        });
+
+        data.culumnSemester2 = data.culumnSemester2.map((obj) => {
+            if (cul2Dif !== obj.year) {
+                j = 1;
+            }
+            obj.ind = j;
+            obj.sem = 2;
+
+            cul2Dif = obj.year;
+            j++;
+            return obj;
+        });
+
         let doc = Sch_Ciriculumn.update({_id: data._id},
             {
                 $set: data
             });
+
+        if (data.status === true) {
+            Sch_Ciriculumn.update({majorId: data.majorId, _id: {$ne: id}}, {$set: {status: false}});
+        }
         if (doc) {
             ciriculumnReact(id);
         }

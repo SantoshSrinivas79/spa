@@ -12,6 +12,10 @@ Sch_Ciriculumn.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    status: {
+        type: Boolean,
+        defaultValue: false
+    },
     requiredCredit: {
         type: Number
     },
@@ -27,6 +31,12 @@ Sch_Ciriculumn.schema = new SimpleSchema({
     "culumnSemester1.$.credit": {
         type: Number
     },
+    "culumnSemester1.$.ind": {
+        type: Number
+    },
+    "culumnSemester1.$.sem": {
+        type: Number
+    },
     culumnSemester2: {
         type: [Object]
     },
@@ -37,6 +47,12 @@ Sch_Ciriculumn.schema = new SimpleSchema({
         type: String
     },
     "culumnSemester2.$.credit": {
+        type: Number
+    },
+    "culumnSemester2.$.ind": {
+        type: Number
+    },
+    "culumnSemester2.$.sem": {
         type: Number
     },
     rolesArea: {
@@ -52,7 +68,7 @@ Sch_Ciriculumn.schema = new SimpleSchema({
                 return moment().toDate();
             }
         },
-        index:true
+        index: true
     },
     updatedAt: {
         type: Date,

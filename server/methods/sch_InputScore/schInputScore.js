@@ -122,6 +122,7 @@ Meteor.methods({
                 rolesArea: 1
             }).fetch().map((obj) => {
 
+
             list.push({
                 _id: obj.studentId + obj.programId + params.subjectId + params.year + params.semester,
                 programId: obj.programId,
@@ -134,7 +135,7 @@ Meteor.methods({
                 score: "",
                 grade: "Un Range",
                 gradePoint: "Un Range",
-                registerId: obj._id + "",
+                registerId: obj._id,
                 rolesArea: obj.rolesArea,
             })
 
@@ -146,17 +147,32 @@ Meteor.methods({
             return true;
         }
     },
-    inputSchScore(data, params) {
+    inputSchScore(data, params, curiculmnDoc) {
         //Meteor.defer(function () {
         let dataTranscript = {};
         dataTranscript.year = params.year;
         dataTranscript.subjectId = params.subjectId;
-        dataTranscript.credit = params.credit || 0;
         dataTranscript.score = data.score;
         dataTranscript.grade = data.grade;
         dataTranscript.gradePoint = data.gradePoint;
         dataTranscript.sem = params.semester;
-        dataTranscript.ind = 1;
+
+        if (params.semester === 1) {
+            let subDoc = curiculmnDoc.culumnSemester1.find((obj) => {
+                return obj.subjectId === params.subjectId;
+            })
+            dataTranscript.ind = subDoc.ind;
+            dataTranscript.credit = subDoc.credit || 0;
+
+
+        } else if (params.semester === 2) {
+            let subDoc = curiculmnDoc.culumnSemester2.find((obj) => {
+                return obj.subjectId === params.subjectId;
+            })
+            dataTranscript.ind = subDoc.ind;
+            dataTranscript.credit = subDoc.credit || 0;
+
+        }
 
         let tranDoc = Sch_Transcript.findOne({studentId: data.studentId, majorId: data.majorId});
         if (tranDoc) {
@@ -190,7 +206,6 @@ Meteor.methods({
                         });
 
                 } else {
-                    dataTranscript.ind = tranDoc.culumnSemester1.length + 1;
                     Sch_Transcript.update(
                         {studentId: data.studentId, majorId: data.majorId, registerId: data.registerId},
                         {
@@ -231,7 +246,6 @@ Meteor.methods({
                         });
 
                 } else {
-                    dataTranscript.ind = tranDoc.culumnSemester2.length + 1;
                     Sch_Transcript.update(
                         {studentId: data.studentId, majorId: data.majorId, registerId: data.registerId},
                         {
@@ -244,20 +258,21 @@ Meteor.methods({
 
             }
         } else {
+
             let culumnSemester1 = [];
             let culumnSemester2 = [];
-
 
             if (params.semester === 1) {
                 culumnSemester1.push(dataTranscript);
             } else if (params.semester === 2) {
                 culumnSemester2.push(dataTranscript);
             }
+
             Sch_Transcript.insert({
                 studentId: data.studentId,
                 majorId: data.majorId,
                 registerId: data.registerId,
-                curiculumnId: "no",
+                curiculumnId: curiculmnDoc._id || "",
                 state: [],
                 culumnSemester1: culumnSemester1,
                 culumnSemester2: culumnSemester2,
@@ -277,6 +292,9 @@ Meteor.methods({
 
     getTranscript(data) {
         return Sch_Transcript.findOne({studentId: data.studentId, majorId: data.majorId});
+    },
+    getCuriculmnByMajor(majorId) {
+        return Sch_Ciriculumn.findOne({majorId: majorId, status: true});
     }
 
 });

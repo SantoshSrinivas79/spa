@@ -36,7 +36,6 @@ Sch_InputScore.schema = new SimpleSchema({
         type: Number,
         decimal: true
     },
-
     rolesArea: {
         type: String,
         label: "Role Area"

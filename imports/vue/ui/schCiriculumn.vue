@@ -49,6 +49,19 @@
                             sortable>
                     </el-table-column>
                     <el-table-column
+                            prop="status"
+                            :label="langConfig['status']"
+                            width="150"
+                            filter-placement="bottom-end">
+                        <template slot-scope="scope">
+                            <el-tag
+                                    :type="scope.row.status=== true ? 'success' : 'warning'"
+                                    close-transition>{{scope.row.status}}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
                             prop="note"
                             :label="langConfig['desc']">
                     </el-table-column>
@@ -99,12 +112,12 @@
                      class="schCiriculumnForm" :label-position="labelPosition">
 
                 <el-row>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['name']" prop="name" style="width: 90%">
                             <el-input v-model="schCiriculumnForm.name"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['major']" prop="majorId" style="width: 90%">
                             <el-select style="display: block !important;"
                                        filterable
@@ -120,15 +133,27 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['requiredCredit']" prop="requiredCredit" style="width: 90%">
                             <el-input v-model="schCiriculumnForm.requiredCredit"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['desc']" prop="desc" style="width: 90%">
                             <el-input v-model="schCiriculumnForm.desc"></el-input>
                         </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item :label="langConfig['status']" prop="status">
+                            <el-switch
+                                    v-model="schCiriculumnForm.status"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+
                     </el-col>
                 </el-row>
                 <el-row>
@@ -309,12 +334,12 @@
                      class="schCiriculumnForm" :label-position="labelPosition">
 
                 <el-row>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['name']" prop="name" style="width: 90%">
                             <el-input v-model="schCiriculumnForm.name"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['major']" prop="majorId" style="width: 90%">
                             <el-select style="display: block !important;"
                                        filterable
@@ -330,15 +355,27 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['requiredCredit']" prop="requiredCredit" style="width: 90%">
                             <el-input v-model="schCiriculumnForm.requiredCredit"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <el-form-item :label="langConfig['desc']" prop="desc" style="width: 90%">
                             <el-input v-model="schCiriculumnForm.desc"></el-input>
                         </el-form-item>
+                    </el-col>
+
+                    <el-col :span="4">
+                        <el-form-item :label="langConfig['status']" prop="status">
+                            <el-switch
+                                    v-model="schCiriculumnForm.status"
+                                    active-color="#13ce66"
+                                    inactive-color="#ff4949"
+                            >
+                            </el-switch>
+                        </el-form-item>
+
                     </el-col>
                 </el-row>
                 <el-row>
@@ -568,7 +605,8 @@
                     desc: "",
                     _id: "",
                     requiredCredit: "",
-                    culumn: []
+                    culumn: [],
+                    status: false
                 },
                 rules: {
                     name: [{required: true, message: 'Please input name', trigger: 'blur'}],
@@ -706,6 +744,7 @@
                         let schCiriculumnDoc = {
                             name: vm.schCiriculumnForm.name,
                             desc: vm.schCiriculumnForm.desc,
+                            status: vm.schCiriculumnForm.status,
                             requiredCredit: vm.schCiriculumnForm.requiredCredit,
                             culumnSemester1: culumnData1Temp,
                             culumnSemester2: culumnData2Temp,
@@ -758,6 +797,7 @@
                             _id: vm.schCiriculumnForm._id,
                             name: vm.schCiriculumnForm.name,
                             desc: vm.schCiriculumnForm.desc,
+                            status: vm.schCiriculumnForm.status,
                             requiredCredit: vm.schCiriculumnForm.requiredCredit,
                             culumnSemester1: culumnData1Temp,
                             culumnSemester2: culumnData2Temp,

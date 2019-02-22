@@ -589,7 +589,8 @@
       "subject": "Subject",
       "credit": "Credit",
       "major": "Major",
-      "requiredCredit": "Required Credit"
+      "requiredCredit": "Required Credit",
+      "status":"Status"
     },
     "subject": {
       "searchHere": "Search Here ...",
@@ -1419,7 +1420,8 @@
       "subject": "មុខវិជ្ជា",
       "credit": "Credit",
       "major": "ជំនាញ",
-      "requiredCredit": "ទាមទារចំនួនក្រេឌីត"
+      "requiredCredit": "ទាមទារចំនួនក្រេឌីត",
+      "status":"ស្ថានភាព"
     },
     "subject": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",

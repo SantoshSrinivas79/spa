@@ -95,13 +95,6 @@
                         </el-form-item>
                     </el-col>
                     <el-col>
-                        <el-form-item :label="langConfig['credit']" prop="credit">
-                            <el-input-number v-model="params.credit"
-                                             controls-position="right"
-                                             :min="1"></el-input-number>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
                         <el-form-item :label="langConfig['subject']" prop="subjectId">
                             <el-select filterable v-model="params.subjectId" clearable
                                        :placeholder="langConfig['selectOne']" :remote-method="fetchSubject"
@@ -250,7 +243,6 @@
                     majorId: "",
                     year: "",
                     generation: 1,
-                    credit: 1,
                     subjectId: "",
                     semester: "",
 
@@ -307,17 +299,11 @@
                             type: "number",
                             message: 'Please choose generation',
                             trigger: 'blur'
-                        }],
-                    credit:
-                        [{
-                            required: true,
-                            type: "number",
-                            message: 'Please choose credit',
-                            trigger: 'blur'
-                        }],
+                        }]
                 },
                 skip: 0,
-                mentionRange: []
+                mentionRange: [],
+                curiculmnDoc: {}
             }
         },
         watch: {
@@ -377,6 +363,7 @@
                             }
                             vm.isSearching = false;
                             vm.loading = false;
+                            vm.getCuriculmnByMajorId(vm.params.majorId);
 
                         });
                     }
@@ -398,6 +385,11 @@
                     if (result) {
                         this.majorOptions = result;
                     }
+                })
+            },
+            getCuriculmnByMajorId(majorId) {
+                Meteor.call("getCuriculmnByMajor", majorId, (err, result) => {
+                    this.curiculmnDoc = result;
                 })
             },
             fetchSubject(query) {
@@ -467,7 +459,7 @@
                     row.grade = gradeDoc.grade;
                     row.gradePoint = gradeDoc.gradePoint;
                     this.schInputScoreData[row._id] = row;
-                    Meteor.call("inputSchScore", row, vm.params, (err, result) => {
+                    Meteor.call("inputSchScore", row, vm.params, vm.curiculmnDoc, (err, result) => {
                         if (err) {
                             console.log(err.message);
                         }
