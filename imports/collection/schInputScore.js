@@ -1,6 +1,9 @@
 export const Sch_InputScore = new Mongo.Collection('sch_inputScore');
 
 Sch_InputScore.schema = new SimpleSchema({
+    registerId: {
+        type: String,
+    },
     programId: {
         type: String,
     },

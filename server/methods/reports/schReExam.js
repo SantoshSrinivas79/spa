@@ -44,6 +44,9 @@ Meteor.methods({
         if (params.year !== "") {
             faildParam['transcriptList.year'] = params.year;
         }
+        if (params.semester != "") {
+            faildParam['transcriptList.sem'] = params.semester;
+        }
         let data = {};
 
         let companyDoc = WB_waterBillingSetup.findOne({});
@@ -134,6 +137,7 @@ Meteor.methods({
                     majorDoc: 1,
                     studentDoc: 1,
                     promotionDoc: 1,
+                    registerDate: 1,
                     rawTranscriptList: {$concatArrays: ["$transcriptDoc.culumnSemester1", "$transcriptDoc.culumnSemester2"]},
                     transcriptList: {$concatArrays: ["$transcriptDoc.culumnSemester1", "$transcriptDoc.culumnSemester2"]},
 
@@ -154,6 +158,9 @@ Meteor.methods({
                         studentDoc: "$studentDoc",
                         rawTranscriptList: "$rawTranscriptList"
                     },
+                    programDoc: {$last: "$programDoc"},
+                    majorDoc: {$last: "$majorDoc"},
+                    registerDate: {$last: "$registerDate"},
                     data: {
                         $push: '$$ROOT'
                     }
@@ -167,48 +174,80 @@ Meteor.methods({
 
         ]);
 
-
         let i = 1;
         let j = 1;
         let subjectList = Sch_Subject.find({}).fetch();
         if (reExamList && reExamList.length > 0) {
-            reExamHTML += `<tr>
-                    <th style="text-align: center !important;vertical-align: middle !important;">ល.រ</th>
-                    <th style="text-align: center !important;vertical-align: middle !important;width: 150px !important;">ឈ្មោះ</th>
+            reExamHTML += `<thead><tr>
+                   
+                    <th style="text-align: center !important;vertical-align: middle !important; width: 60px !important;" class="row-header" rowspan="3">ល.រ</th>
+                    <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">គោត្តនាម និងនាម</th>
+                    <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">ភេទ</th>
             `;
+
+            reExamHTML += `
+                        <th style="text-align: center !important;" class="row-header" colspan="${reExamList[0]._id.rawTranscriptList.length}">ក្រេឌីត</th>
+                        <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">សរុប</th>
+                    </tr>`;
+
+
             reExamList.forEach((obj) => {
                 if (j === 1) {
+                    data.programName = obj.programDoc.name;
+                    data.majorName = obj.majorDoc.name;
+                    data.yearStudy = moment(obj.registerDate).add(params.year - 1, "year").format("YYYY") + " - " + moment(obj.registerDate).add(params.year, "year").format("YYYY");
+
+
                     let sortTranscript = obj._id.rawTranscriptList.sort(compareASD);
+                    reExamHTML += `<tr>`;
                     sortTranscript.forEach((ob) => {
                         if (ob.year === params.year) {
                             let subjectDoc = subjectList.find((sub) => sub._id === ob.subjectId);
                             reExamHTML += `
-                        <th class="verticalTableHeader" style="text-align: left !important;"><p>${subjectDoc.name || ""}</p></th>
+                        <th style="text-align: right !important;" class="rotate" height="270px !important;"><div style="text-orientation: mixed;writing-mode: vertical-rl; transform: rotate(180deg)"><span>${subjectDoc.name || ""}</span></div></th>
                 `;
                         }
                     })
+
+                    reExamHTML += `</tr><tr>`;
+                    let k = 1;
+                    sortTranscript.forEach((ob) => {
+                        if (ob.year === params.year) {
+                            reExamHTML += `
+                        <th style="text-align: center !important;"><div><span>${k}</span></div></th>
+                         `;
+                        }
+                        k++;
+                    })
+
                     j++;
                 }
 
             })
-            reExamHTML += `
-                        <th style="text-align: center !important;vertical-align: middle !important;">សរុប</th>
-                    </tr>`;
+            reExamHTML += `</tr></thead><tbody>`;
             reExamList.forEach((obj) => {
                 let numSubject = 0;
                 reExamHTML += `
                         <tr>
                            <td style="text-align: center !important;">${i}</td>
                            <td style="text-align: left !important;">${obj._id.studentDoc.personal.name}</td>
+                           <td style="text-align: left !important;">${obj._id.studentDoc.personal.gender === "Male" ? "ប្រុស" : "ស្រី"}</td>
 
 
                     `;
                 let sortTranscript = obj._id.rawTranscriptList.sort(compareASD);
                 sortTranscript.forEach((ob) => {
                         if (ob.year === params.year) {
-                            reExamHTML += `
-                                <td style="text-align: center !important;">${ob.grade === "F" ? 1 : ""}</td>
+                            if (ob.grade === "F") {
+                                reExamHTML += `
+                                <td style="text-align: center !important;"><i class="el-icon-info"></i></td>
                             `;
+                            } else {
+                                reExamHTML += `
+                                <td style="text-align: center !important;"></td>
+                            `;
+                            }
+
                             numSubject += ob.grade === "F" ? 1 : 0;
                         }
                     }
@@ -220,6 +259,8 @@ Meteor.methods({
                 i++;
             })
         }
+        reExamHTML += `</tbody>`;
+
         data.reExamHTML = reExamHTML;
         return data;
     }

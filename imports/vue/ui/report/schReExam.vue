@@ -110,6 +110,17 @@
 
                                     </el-col>
                                     <el-col>
+                                        <el-form-item :label="langConfig['semester']">
+                                            <el-select filterable v-model="params.semester" clearable
+                                                       :placeholder="langConfig['all']"
+                                                       style="width: 95%">
+                                                <el-option
+                                                        v-for="item in semesterOptions"
+                                                        :label="item.label"
+                                                        :value="item.value" :key="item._id">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
                                     </el-col>
                                 </el-row>
                             </el-form>
@@ -120,50 +131,45 @@
                 </el-row>
             </div>
             <span slot="content" style="margin: 0px !important;">
-                <table class="table table-report-block-summary table-bordered">
+                <table class="table table-bordered table-header-rotated table-hover">
                       <caption>
-
                           <div class="row">
-                                <div class="col-md-12" style="text-align: center !important;">
-                                    <img style="width: auto;height: 100px; float: left;padding-top: 20px !important;"
-                                         src="/mih.png"
-                                         alt=""
-                                         :onLoad="onLoadHandler()">
-                                        <span class="blueOnPrint"
-                                              style="font-family:Khmer os muol; font-size: 15px  !important;padding-top: 15px !important;float: left;text-align: left !important;">
+                                <div class="col-md-4"
+                                     style="text-align: center !important;width: 33% !important; justify-content: center !important;float: left !important;">
 
+                                        <span class="blueOnPrint"
+                                              style="font-family:Khmer os muol; font-size: 15px  !important;padding-top: 15px !important;">
+ <img style="width: auto;height: 100px; padding-top: 20px !important;"
+      src="/mih.png"
+      alt=""
+      :onLoad="onLoadHandler()">
 
                                               <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">{{waterBillingSetup.ministryKhName || ""}}</p>
-                                              <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">{{waterBillingSetup.ministryEnName || ""}}</p>
                                               <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">{{waterBillingSetup.khName}}</p>
-                                              <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">    {{waterBillingSetup.enName}}</p>
-                                              <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">    លេខ៖ .............................{{waterBillingSetup.khShortName}}</p>
-
                                             </span>
-
-                              <span style="text-align: center;font-size: 15px; border: 0px !important; float: right;"
-                              >
+                              </div>
+                              <div class="col-md-4"
+                                   style="text-align: center !important;width: 33% !important;float: left !important;">
+                                   <span style="text-align: center;font-size: 15px; border: 0px !important;"
+                                   >
                                   <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">ព្រះរាជាណាចក្រកម្ពុជា</p>
-                                  <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">Kingdom Of Cambodia</p>
                                   <p style="font-family: 'Khmer OS Muol' !important;" class="blueOnPrint">ជាតិ សាសនា ព្រះមហាក្សត្រ</p>
-                                  <p style="font-family: 'Khmer OS Muol' !important; margin-bottom: 0px !important;"
-                                     class="blueOnPrint">Nation Religion King</p>
                                   <p style="font-family:tacteing;font-size: 40px; margin: 0px !important;">6</p>
 
                               </span>
                               </div>
+                              <div class="col-md-4" style="width: 33% !important;float: left !important;">&nbsp;</div>
                           </div>
                           <div class="row">
                               <div class="col-md-12  balckOnPrint" style="text-align: center;">
-                                                                   <p style="font-family: 'Khmer OS Moul'">របាយការណ៍</p>
+                                                                   <p style="font-family: 'Khmer OS Moul'">បញ្ចីឈ្មោះសិស្សប្រលងសង ឆមាសទី {{params.semester}} និស្សិតផ្នែក​ {{programName}}{{majorName}} ឆ្នាំទី {{params.year}} ជំនាន់ {{params.generation}} ឆ្នាំសិក្សា {{yearStudy}}</p>
 
-                                 {{langConfig['title']}}
-                                  <br>
+                                  <p>សម័យប្រលង៖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                                   <p style="font-family:tacteing ">rs</p>
                               </div>
                           </div>
                           <div class="row">
-                              <div style="widows: 50% !important; float:right">
+                              <div style="width: 50% !important; float:right">
                               </div>
                               <div style="width: 50% !important;">
                               </div>
@@ -179,15 +185,17 @@
             </table>
                  <div class="row" style="width: 100% !important;">
                     <div style="width: 50%;float: left !important;text-align: center !important;">
-                        បានឃើញ និង ពិនិត្យត្រឹមត្រូវ<br><br>
+                        <br>
+                        <br>
+                        បានឃើញ និង ឯកភាព<br><br>
                         ថ្ងៃ ........................    ខែ  ........................ឆ្នាំ .................................<br><br>
                         .......................... ថ្ងៃទី ............    ខែ  ....................  ឆ្នាំ ...................<br><span
-                            style="font-family: 'Khmer OS Muol'">នាយក</span>
+                            style="font-family: 'Khmer OS Muol'">ប្រធានគណៈកម្មការមណ្ឌលប្រឡង</span>
                     </div>
 
                     <div style="width: 50%;float: right !important;text-align: center !important;">
                           ថ្ងៃ ........................    ខែ  ........................ឆ្នាំ .................................<br><br>
-                        .......................... ថ្ងៃទី  ............ ខែ   ....................  ឆ្នាំ  ...................<br><br><b>រៀបចំដោយ</b><br><br>
+                        .......................... ថ្ងៃទី  ............ ខែ   ....................  ឆ្នាំ  ...................<br><br><b>ប្រធានអនុគណៈកម្មការសម្រង់ពិន្ទុ</b><br><br>
                     </div>
 
                 </div>
@@ -216,7 +224,8 @@
                     majorId: "",
                     year: "",
                     promotionId: "",
-                    generation: 1
+                    generation: 1,
+                    semester: 1
 
                 },
                 rolesArea: '',
@@ -287,7 +296,15 @@
                     {label: "2", value: 2},
                     {label: "3", value: 3},
                     {label: "4", value: 4},
-                ]
+                ],
+                semesterOptions: [
+                    {label: "1", value: 1},
+                    {label: "2", value: 2}
+                ],
+                programName: "",
+                majorName: "",
+                yearStudy: ""
+
             };
         },
         meteor: {
@@ -381,6 +398,9 @@
                 Meteor.call('schReExamReport', this.params, this.langConfig, (err, result) => {
                     if (result) {
                         this.reExamHtml = result.reExamHTML;
+                        this.programName = result.programName || "";
+                        this.majorName = result.majorName || "";
+                        this.yearStudy = result.yearStudy || "";
                     }
                     this.loading = false;
                 });
@@ -428,36 +448,45 @@
         width: 100%;
     }
 
-    .verticalTableHeader {
-        text-align: left !important;
-        white-space: nowrap !important;
-        g-origin: 50% 50%;
-        -webkit-transform: rotate(270deg);
-        -moz-transform: rotate(270deg);
-        -ms-transform: rotate(270deg);
-        -o-transform: rotate(270deg);
-        transform: rotate(270deg);
+    /*.table-header-rotated th.rotate {
+        height: 160px;
+        width: 40px;
+        min-width: 40px;
+        max-width: 40px;
+        position: relative;
+        vertical-align: bottom;
+        padding: 0;
+        font-size: 12px;
+        line-height: 0.8;
+    }*/
+
+    /*.table-header-rotated th.rotate > div {
+        position: relative;
+        top: 0px;
+        left: -80px; !* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*!
+        height: 100%;
+        -ms-transform: skew(45deg, 0deg);
+        -moz-transform: skew(45deg, 0deg);
+        -webkit-transform: skew(45deg, 0deg);
+        -o-transform: skew(45deg, 0deg);
+        transform: skew(45deg, 0deg);
+        overflow: hidden;
     }
 
-    .verticalTableHeader p {
-        margin: 0 -100%;
-        /*display:inline-block;*/
-        white-space: nowrap !important;
-    }
-
-    .verticalTableHeader p:before {
-        content: '';
-        width: 0;
-        padding-top: 100%; /* takes width as reference, + 10% for faking some extra padding */
+    .table-header-rotated th.rotate span {
+        -ms-transform: skew(-45deg, 0deg) rotate(45deg);
+        -moz-transform: skew(-45deg, 0deg) rotate(45deg);
+        -webkit-transform: skew(-45deg, 0deg) rotate(45deg);
+        -o-transform: skew(-45deg, 0deg) rotate(45deg);
+        transform: skew(-45deg, 0deg) rotate(45deg);
+        position: absolute;
+        bottom: 120px; !* 40 cos(45) = 28 with an additional 2px margin*!
+        left: -25px; !*Because it looked good, but there is probably a mathematical link here as well*!
         display: inline-block;
-        vertical-align: middle;
-        white-space: nowrap !important;
-
-    }
-
-    /*table {
-        text-align: center;
-        table-layout: fixed;
+        width: 100%;
+        width: 85px; !* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*!
+        text-align: left;
+        white-space: nowrap; !*whether to display in one line or not*!
     }*/
 
 </style>

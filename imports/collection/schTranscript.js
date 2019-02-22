@@ -16,7 +16,8 @@ Sch_Transcript.schema = new SimpleSchema({
         type: String
     },
     requiredCredit: {
-        type: Number
+        type: Number,
+        optional: true
     },
     isCompleted: {
         type: Boolean,
@@ -142,7 +143,6 @@ Sch_Transcript.schema = new SimpleSchema({
     createdUser: {
         type: String,
         optional: true,
-
         autoValue() {
             if (this.isInsert) {
                 return Meteor.userId();

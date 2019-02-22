@@ -97,7 +97,6 @@ Meteor.methods({
 
         ]);
         let transcriptDoc = transcriptList[0];
-
         let finalGPA = 0;
         let countFinalGPA = 0;
         let credit = 0;

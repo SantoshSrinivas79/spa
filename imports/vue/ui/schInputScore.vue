@@ -95,6 +95,13 @@
                         </el-form-item>
                     </el-col>
                     <el-col>
+                        <el-form-item :label="langConfig['credit']" prop="credit">
+                            <el-input-number v-model="params.credit"
+                                             controls-position="right"
+                                             :min="1"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                    <el-col>
                         <el-form-item :label="langConfig['subject']" prop="subjectId">
                             <el-select filterable v-model="params.subjectId" clearable
                                        :placeholder="langConfig['selectOne']" :remote-method="fetchSubject"
@@ -121,6 +128,7 @@
                 <el-table
                         :data="schInputScoreData"
                         stripe
+                        v-loading="loading"
                         border
                         style="width: 100%">
                     <el-table-column
@@ -137,13 +145,14 @@
                             :label="langConfig['score']"
                     >
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.score" type="number"
+                            <el-input v-model.number="scope.row.score" type="number"
                                       class="cursor-pointer"
                                       :ref="setTab(scope.$index)"
                                       :placeholder="langConfig['score']" :min="0"
                                       :controls=false
                                       @keyup.native.enter="moveDown(scope.$index)"
-                                      @blur="handleInputScore(scope.$index, scope.row)"
+                                      @keyup.native="handleInputScore(scope.$index, scope.row)"
+                                      @change.native="handleInputScore(scope.$index, scope.row)"
                             ></el-input>
                         </template>
                     </el-table-column>
@@ -152,19 +161,15 @@
                     >
                         <template slot-scope="scope">
                             <el-input v-model="scope.row.grade"
-                                      :placeholder="langConfig['grades']" disabled
-                                      @keyup.native="handleEditCulumn1(scope.$index, scope.row)"
-                                      @change="handleEditCulumn1(scope.$index, scope.row)"></el-input>
+                                      :placeholder="langConfig['grades']" disabled></el-input>
                         </template>
                     </el-table-column>
                     <el-table-column
                             :label="langConfig['gradePoint']"
                     >
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.gradePoint"
-                                      :placeholder="langConfig['gradePoint']" disabled
-                                      @keyup.native="handleEditCulumn1(scope.$index, scope.row)"
-                                      @change="handleEditCulumn1(scope.$index, scope.row)"></el-input>
+                            <el-input v-model.number="scope.row.gradePoint"
+                                      :placeholder="langConfig['gradePoint']" disabled></el-input>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -204,7 +209,7 @@
             },
             newRe() {
                 let vm = this;
-                vm.queryData(vm.searchData, vm.skip, vm.currentSize + vm.skip);
+                //vm.queryData(vm.searchData, vm.skip, vm.currentSize + vm.skip);
             }
         },
         mounted() {
@@ -219,7 +224,7 @@
                 labelPosition: "top",
                 isSearching: false,
                 currentPage: 1,
-                currentSize: 100,
+                currentSize: 200,
                 count: 0,
                 dialogAddSchInputScore: false,
                 dialogUpdateSchInputScore: false,
@@ -245,6 +250,7 @@
                     majorId: "",
                     year: "",
                     generation: 1,
+                    credit: 1,
                     subjectId: "",
                     semester: "",
 
@@ -302,8 +308,16 @@
                             message: 'Please choose generation',
                             trigger: 'blur'
                         }],
+                    credit:
+                        [{
+                            required: true,
+                            type: "number",
+                            message: 'Please choose credit',
+                            trigger: 'blur'
+                        }],
                 },
-                skip: 0
+                skip: 0,
+                mentionRange: []
             }
         },
         watch: {
@@ -342,22 +356,32 @@
                 vm.$refs["schInputScore"].validate((valid) => {
                     if (valid) {
                         vm.queryData();
+
                     }
                 })
             },
             queryData: _.debounce(function (val, skip, limit) {
-                Meteor.call('querySchInputScore', {
-                    q: val,
-                    params: this.params,
-                    filter: this.filter,
-                    options: {skip: skip || 0, limit: limit || 100}
-                }, (err, result) => {
+                let vm = this;
+                vm.loading = true;
+                Meteor.call("generateInsertSchInputScore", this.params, (err, re) => {
                     if (!err) {
-                        this.schInputScoreData = result.content;
-                        this.count = result.countSchInputScore;
+                        Meteor.call('querySchInputScore', {
+                            q: val,
+                            params: vm.params,
+                            filter: vm.filter,
+                            options: {skip: skip || 0, limit: limit || 200}
+                        }, (err, result) => {
+                            if (!err) {
+                                vm.schInputScoreData = result.content;
+                                vm.count = result.countSchInputScore;
+                            }
+                            vm.isSearching = false;
+                            vm.loading = false;
+
+                        });
                     }
-                    this.isSearching = false;
-                });
+                })
+
             }, 300),
             fetchProgram() {
                 let selector = {};
@@ -436,44 +460,43 @@
                 $("html, body").animate({scrollTop: scrollDown}, 500);
 
             },
-            saveSchInputScore(event) {
-                event.preventDefault();
-
+            handleInputScore: _.debounce(function (index, row) {
                 let vm = this;
-                this.$refs["schInputScoreFormAdd"].validate((valid) => {
-                    if (valid) {
-                        let schInputScoreDoc = {
-                            code: vm.schInputScoreForm.code,
-                            name: vm.schInputScoreForm.name,
-                            khName: vm.schInputScoreForm.khName,
-                            desc: vm.schInputScoreForm.desc,
-                            programId: vm.schInputScoreForm.programId,
-                            facultyId: vm.schInputScoreForm.facultyId,
-                            degree: vm.schInputScoreForm.degree,
-                            rolesArea: Session.get('area')
-                        };
+                if (row.score !== "") {
+                    let gradeDoc = this.getMentionByScore(row.score);
+                    row.grade = gradeDoc.grade;
+                    row.gradePoint = gradeDoc.gradePoint;
+                    this.schInputScoreData[row._id] = row;
+                    Meteor.call("inputSchScore", row, vm.params, (err, result) => {
+                        if (err) {
+                            console.log(err.message);
+                        }
+                    });
+                }
+            }, 300)
+            ,
+            getMentionByScore(val) {
+                val = parseFloat(val) || 0;
 
-                        Meteor.call("insertSchInputScore", schInputScoreDoc, (err, result) => {
-                            if (!err) {
-                                vm.$message({
-                                    duration: 1000,
-                                    message: `Save Successfully!`,
-                                    type: 'success'
-                                });
-                                vm.dialogAddSchInputScore = false;
+                function checkMention(range) {
+                    return range.from <= val && range.to >= val;
+                }
 
-                                vm.$refs["schInputScoreFormAdd"].resetFields();
-                            } else {
-                                vm.$message({
-                                    duration: 1000,
-                                    message: err.message,
-                                    type: 'error'
-                                });
-                            }
-                        })
+                let data = this.mentionRange.find(checkMention);
+                if (data === null || data === undefined) {
+                    let newData = {};
+                    newData.grade = "Un Range";
+                    newData.gradePoint = 0;
+                    return newData;
+                }
+                return data;
+            },
+            getMention() {
+                Meteor.call("querySchMentionByActive", Session.get("area"), (err, result) => {
+                    if (result) {
+                        this.mentionRange = result.range;
                     }
-                })
-
+                });
             },
             resetForm() {
                 this.schInputScoreForm._id = "";
@@ -485,16 +508,19 @@
                     this.$refs["schInputScoreFormUpdate"].resetFields();
                 }
 
-            }
-        },
+            },
+        }
+        ,
         created() {
             this.isSearching = true;
             this.fetchUser();
             this.fetchProgram();
             this.fetchSubject("");
-            this.queryData();
+            this.getMention();
 
-        },
+
+        }
+        ,
         computed: {
             langConfig() {
                 let data = compoLang.filter(config => config.lang === this.langSession)[0]['inputScore'];

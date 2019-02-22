@@ -104,7 +104,8 @@
       "promotion": "Scholarship",
       "netPrice": "Net Price",
       "generation": "Generation",
-      "year": "Year"
+      "year": "Year",
+      "semester": "Semester"
     },
     "teacherActivity": {
       "run": "RUN REPORT",
@@ -825,7 +826,8 @@
       "promotion": "អាហារូបករណ៍",
       "netPrice": "តម្លៃសុទ្ធ",
       "generation": "ជំនាន់",
-      "year": "ឆ្នាំទី"
+      "year": "ឆ្នាំទី",
+      "semester": "ឆមាស"
     },
     "teacherActivity": {
       "run": "ដំណើរការរបាយការណ៍",
