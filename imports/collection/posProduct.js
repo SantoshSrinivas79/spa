@@ -5,7 +5,6 @@ Pos_Product.schema = new SimpleSchema({
         type: String,
         label: "Code",
         // unique: true,
-        max: 7
     },
     name: {
         type: String,
