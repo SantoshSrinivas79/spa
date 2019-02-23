@@ -5,7 +5,7 @@ import {Pos_ReceivePayment} from '../../../imports/collection/posReceivePayment'
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
@@ -14,7 +14,7 @@ import {Sch_Register} from "../../../imports/collection/schRegister";
 import {Sch_Subject} from "../../../imports/collection/schSubject";
 
 Meteor.methods({
-    schReExamReport(params, translate) {
+    schResultReport(params, translate) {
         let registerParameter = {};
 
         if (params.area != "") {
@@ -38,23 +38,22 @@ Meteor.methods({
         }
 
 
-        let faildParam = {};
-        faildParam["transcriptList.grade"] = "F";
+        let yearParam = {};
 
         if (params.year !== "") {
-            faildParam['transcriptList.year'] = params.year;
+            yearParam['transcriptList.year'] = params.year;
         }
         if (params.semester != "") {
-            faildParam['transcriptList.sem'] = params.semester;
+            yearParam['transcriptList.sem'] = params.semester;
         }
         let data = {};
 
         let companyDoc = WB_waterBillingSetup.findOne({});
 
 
-        let reExamHTML = "";
+        let resultHTML = "";
 
-        let reExamList = Sch_Register.aggregate([
+        let resultList = Sch_Register.aggregate([
             {$match: registerParameter},
             {
                 $lookup: {
@@ -150,7 +149,7 @@ Meteor.methods({
                 }
             },
             {
-                $match: faildParam
+                $match: yearParam
             },
             {
                 $group: {
@@ -177,21 +176,21 @@ Meteor.methods({
         let i = 1;
         let j = 1;
         let subjectList = Sch_Subject.find({}).fetch();
-        if (reExamList && reExamList.length > 0) {
-            reExamHTML += `<thead><tr>
+        if (resultList && resultList.length > 0) {
+            resultHTML += `<thead><tr>
                    
                     <th style="text-align: center !important;vertical-align: middle !important; width: 60px !important;" class="row-header" rowspan="3">ល.រ</th>
                     <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">គោត្តនាម និងនាម</th>
                     <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">ភេទ</th>
             `;
 
-            reExamHTML += `
-                        <th style="text-align: center !important;" class="row-header" colspan="${reExamList[0]._id.rawTranscriptList.length}">ក្រេឌីត</th>
-                        <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">សរុប</th>
+            resultHTML += `
+                        <th style="text-align: center !important;" class="row-header" colspan="${resultList[0]._id.rawTranscriptList.length}">ក្រេឌីត</th>
+                        <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">មធ្យមភាគ</th>
                     </tr>`;
 
 
-            reExamList.forEach((obj) => {
+            resultList.forEach((obj) => {
                 if (j === 1) {
                     data.programName = obj.programDoc.name;
                     data.majorName = obj.majorDoc.name;
@@ -199,21 +198,21 @@ Meteor.methods({
 
 
                     let sortTranscript = obj._id.rawTranscriptList.sort(compareASD);
-                    reExamHTML += `<tr>`;
+                    resultHTML += `<tr>`;
                     sortTranscript.forEach((ob) => {
                         if (ob.year === params.year) {
                             let subjectDoc = subjectList.find((sub) => sub._id === ob.subjectId);
-                            reExamHTML += `
+                            resultHTML += `
                         <th style="text-align: right !important;" class="rotate" height="270px !important;"><div style="text-orientation: mixed;writing-mode: vertical-rl; transform: rotate(180deg)"><span>${subjectDoc.name || ""}</span></div></th>
                 `;
                         }
                     })
 
-                    reExamHTML += `</tr><tr>`;
+                    resultHTML += `</tr><tr>`;
                     let k = 1;
                     sortTranscript.forEach((ob) => {
                         if (ob.year === params.year) {
-                            reExamHTML += `
+                            resultHTML += `
                         <th style="text-align: center !important;"><div><span>${k}</span></div></th>
                          `;
                         }
@@ -224,10 +223,11 @@ Meteor.methods({
                 }
 
             })
-            reExamHTML += `</tr></thead><tbody>`;
-            reExamList.forEach((obj) => {
+            resultHTML += `</tr></thead><tbody>`;
+            resultList.forEach((obj) => {
                 let numSubject = 0;
-                reExamHTML += `
+                let totalScore = 0;
+                resultHTML += `
                         <tr>
                            <td style="text-align: center !important;">${i}</td>
                            <td style="text-align: left !important;">${obj._id.studentDoc.personal.name}</td>
@@ -238,30 +238,25 @@ Meteor.methods({
                 let sortTranscript = obj._id.rawTranscriptList.sort(compareASD);
                 sortTranscript.forEach((ob) => {
                         if (ob.year === params.year && (ob.sem === params.semester || params.semester === "")) {
-                            if (ob.grade === "F") {
-                                reExamHTML += `
-                                <td style="text-align: center !important;"><i class="el-icon-info"></i></td>
+                            resultHTML += `
+                                <td style="text-align: center !important;">${numeral(ob.score).format("0,00.00")}</td>
                             `;
-                            } else {
-                                reExamHTML += `
-                                <td style="text-align: center !important;"></td>
-                            `;
-                            }
 
-                            numSubject += ob.grade === "F" ? 1 : 0;
+                            numSubject += 1;
+                            totalScore += ob.score;
                         }
                     }
                 )
 
-                reExamHTML += `
-                    <td style="text-align: center">${numeral(numSubject).format("0,00.00")}</td>
+                resultHTML += `
+                    <td style="text-align: center">${numeral(totalScore / numSubject).format("0,00.00")}</td>
                 </tr>`;
                 i++;
             })
         }
-        reExamHTML += `</tbody>`;
+        resultHTML += `</tbody>`;
 
-        data.reExamHTML = reExamHTML;
+        data.resultHTML = resultHTML;
         return data;
     }
 })

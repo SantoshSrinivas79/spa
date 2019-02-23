@@ -7,6 +7,8 @@ import {Sch_Class} from "../../../imports/collection/schClass";
 import {Sch_Transcript} from "../../../imports/collection/schTranscript";
 import {Sch_Level} from "../../../imports/collection/schLevel";
 import {Sch_PromotionReact} from "../../../imports/collection/schPromotion";
+import {Pos_Customer} from "../../../imports/collection/posCustomer";
+import {Sch_Student} from "../../../imports/collection/schStudent";
 
 Meteor.methods({
     querySchRegister({q, filter, options = {limit: 10, skip: 0}}) {
@@ -21,8 +23,23 @@ Meteor.methods({
                 if (!!filter) {
                     selector[filter] = {$regex: reg, $options: 'mi'}
                 } else {
+                    let studentList = Sch_Student.find({
+                            "personal.name": {
+                                $regex: reg,
+                                $options: 'mi'
+                            }
+                        }, {_id: true},
+                        {
+                            $limit: options.limit
+                        },
+                        {
+                            $skip: options.skip
+                        }).fetch().map((obj) => {
+                        return obj._id;
+                    });
+
                     selector.$or = [
-                        {"studentDoc.name": {$regex: reg, $options: 'mi'}},
+                        {studentId: {$in: studentList}},
                         {
                             "levelDoc.name": {
                                 $regex: reg,
@@ -162,21 +179,24 @@ Meteor.methods({
             }
             return data;
         }
-    },
+    }
+    ,
     querySchRegisterById(id) {
         let data = Sch_Register.findOne({_id: id});
         if (data.startClassDate === undefined) {
             data.startClassDate = "";
         }
         return data;
-    },
+    }
+    ,
     insertSchRegister(data) {
         let doc = Sch_Register.insert(data);
         if (doc) {
             registerReact(doc);
         }
         return doc;
-    },
+    }
+    ,
     updateSchRegister(data) {
         let startClassDate = data.startClassDate;
         let rolesArea = data.rolesArea;
@@ -271,7 +291,8 @@ Meteor.methods({
             registerReact(id);
         }
         return doc;
-    },
+    }
+    ,
     removeSchRegister(id) {
         let registerDoc = Sch_Register.findOne({_id: id});
         if (registerDoc.classId) {

@@ -133,6 +133,17 @@ schReport.route('/schReExamReport', {
     }
 
 });
+import '../../imports/ui/report/schResult/schResult';
+
+schReport.route('/schResultReport', {
+    name: 'sch.schResultReport',
+    title: "Result Report",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('sch_resultReport');
+    }
+
+});
 import '../../imports/ui/report/schPayment/schPayment';
 
 schReportPayment.route('/schPaymentReport', {
