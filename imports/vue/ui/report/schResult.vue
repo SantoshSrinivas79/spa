@@ -162,7 +162,7 @@
                           </div>
                           <div class="row">
                               <div class="col-md-12  balckOnPrint" style="text-align: center;">
-                                                                   <p style="font-family: 'Khmer OS Moul'">បញ្ចីឈ្មោះសិស្សប្រលងសង ឆមាសទី {{params.semester}} និស្សិតផ្នែក​ {{programName}}{{majorName}} ឆ្នាំទី {{params.year}} ជំនាន់ {{params.generation}} ឆ្នាំសិក្សា {{yearStudy}}</p>
+                                                                   <p style="font-family: 'Khmer OS Moul'">លទ្ធផលសិស្សប្រលង ឆមាសទី {{params.semester}} និស្សិតផ្នែក​ {{programName}}{{majorName}} ឆ្នាំទី {{params.year}} ជំនាន់ {{params.generation}} ឆ្នាំសិក្សា {{yearStudy}}</p>
 
                                   <p>សម័យប្រលង៖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                                   <p style="font-family:tacteing ">rs</p>
