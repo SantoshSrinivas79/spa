@@ -250,6 +250,61 @@ Meteor.methods({
             return {};
         }
     },
+    getFeeNeedToPaid(disbursementId) {
+        let selector = {};
+        selector._id = disbursementId;
+        selector.feeAmount = {$gt: 0};
+
+        let repayFee = Loan_Disbursement.aggregate([
+            {$match: selector},
+            {
+                $lookup: {
+                    from: "loan_product",
+                    localField: "productId",
+                    foreignField: "_id",
+                    as: "productDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$productDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_penalty",
+                    localField: "productDoc.penaltyId",
+                    foreignField: "_id",
+                    as: "penaltyDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$penaltyDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "pos_customer",
+                    localField: "clientId",
+                    foreignField: "_id",
+                    as: "clientDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$clientDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }
+        ]);
+        if (repayFee && repayFee.length > 0) {
+            return repayFee[0];
+        } else {
+            return {};
+        }
+
+    },
     loan_getVoucherNoByRoleAndDate(rolesAreas, date) {
         let startDate = moment(date).startOf("year").toDate();
         let endDate = moment(date).endOf("year").toDate();
