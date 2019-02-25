@@ -148,7 +148,8 @@
       "netPrice": "Net Price",
       "generation": "Generation",
       "year": "Year",
-      "semester": "Semester"
+      "semester": "Semester",
+      "sortRank":"Sort Rank"
     },
     "teacherActivity": {
       "run": "RUN REPORT",
@@ -914,7 +915,8 @@
       "netPrice": "តម្លៃសុទ្ធ",
       "generation": "ជំនាន់",
       "year": "ឆ្នាំទី",
-      "semester": "ឆមាស"
+      "semester": "ឆមាស",
+      "sortRank":"តម្រៀបចំណាត់ថ្នាក់"
     },
     "teacherActivity": {
       "run": "ដំណើរការរបាយការណ៍",

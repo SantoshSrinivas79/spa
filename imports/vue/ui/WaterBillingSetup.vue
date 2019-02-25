@@ -192,6 +192,9 @@
                                     <el-form-item label="Password">
                                         <el-input v-model="form.password" type="password"></el-input>
                                     </el-form-item>
+                                    <el-form-item label="Pass If Greater Than Or Equal">
+                                        <el-input v-model="form.passIfGreaterThan" type="Number"></el-input>
+                                    </el-form-item>
                                 </el-col>
                             </el-row>
 
@@ -301,7 +304,8 @@
                     depreciationType: "",
                     depreciationPerTime: 12,
                     password: "",
-                    validateStock: false
+                    validateStock: false,
+                    passIfGreaterThan: ""
                 },
                 rules: {
                     khName: [
@@ -404,7 +408,8 @@
                             province: '',
                             khAddress: "",
                             validateStock: "",
-                            password: ""
+                            password: "",
+                            passIfGreaterThan: ""
                         };
                         this.$message({
                             message: 'Successfully',

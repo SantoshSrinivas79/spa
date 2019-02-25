@@ -59,6 +59,28 @@
                         </el-form-item>
 
                     </el-col>
+
+                    <el-col>
+                        <el-form-item :label="langConfig['generation']" prop="generation">
+                            <el-input-number v-model="params.generation"
+                                             controls-position="right"
+                                             :min="1"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                    <el-col>
+                        <el-form-item :label="langConfig['examDate']" prop="examDate">
+                            <el-date-picker
+                                    align="right" style="width: 95%"
+                                    v-model="params.examDate"
+                                    type="daterange"
+                                    :placeholder="langConfig['pickDateRange']"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
+
+                </el-row>
+                <el-row type="flex" class="row-bg" justify="center">
                     <el-col>
                         <el-form-item :label="langConfig['year']" prop="year">
                             <el-select filterable v-model="params.year" clearable
@@ -88,13 +110,6 @@
                         </el-form-item>
                     </el-col>
                     <el-col>
-                        <el-form-item :label="langConfig['generation']" prop="generation">
-                            <el-input-number v-model="params.generation"
-                                             controls-position="right"
-                                             :min="1"></el-input-number>
-                        </el-form-item>
-                    </el-col>
-                    <el-col>
                         <el-form-item :label="langConfig['subject']" prop="subjectId">
                             <el-select filterable v-model="params.subjectId" clearable
                                        :placeholder="langConfig['selectOne']" :remote-method="fetchSubject"
@@ -107,6 +122,7 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
+                    <el-col></el-col>
                 </el-row>
             </el-form>
             <hr>
@@ -245,6 +261,8 @@
                     generation: 1,
                     subjectId: "",
                     semester: "",
+                    examDate: [],
+                    rolesArea: Session.get("area")
 
                 },
                 schInputScoreForm: {
@@ -271,6 +289,12 @@
                             type: "string",
                             message: 'Please choose major',
                             trigger: 'change'
+                        }],
+                    examDate:
+                        [{
+                            required: true,
+                            message: 'Please select exam date',
+                            trigger: 'blur'
                         }],
                     subjectId:
                         [{

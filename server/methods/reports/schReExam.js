@@ -12,6 +12,7 @@ import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import {Sch_Transcript} from "../../../imports/collection/schTranscript";
 import {Sch_Register} from "../../../imports/collection/schRegister";
 import {Sch_Subject} from "../../../imports/collection/schSubject";
+import {Sch_ExamDate} from "../../../imports/collection/schExamDate";
 
 Meteor.methods({
     schReExamReport(params, translate) {
@@ -184,9 +185,14 @@ Meteor.methods({
                     <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">គោត្តនាម និងនាម</th>
                     <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">ភេទ</th>
             `;
-
+            let subjectNum = 0;
+            reExamList[0]._id.rawTranscriptList.forEach((ob) => {
+                if (ob.year === params.year && (ob.sem === params.semester || params.semester === "")) {
+                    subjectNum++;
+                }
+            })
             reExamHTML += `
-                        <th style="text-align: center !important;" class="row-header" colspan="${reExamList[0]._id.rawTranscriptList.length}">ក្រេឌីត</th>
+                        <th style="text-align: center !important;" class="row-header" colspan="${subjectNum}">ក្រេឌីត</th>
                         <th style="text-align: center !important;vertical-align: middle !important;" class="row-header" rowspan="3">សរុប</th>
                     </tr>`;
 
@@ -201,7 +207,7 @@ Meteor.methods({
                     let sortTranscript = obj._id.rawTranscriptList.sort(compareASD);
                     reExamHTML += `<tr>`;
                     sortTranscript.forEach((ob) => {
-                        if (ob.year === params.year) {
+                        if (ob.year === params.year && (ob.sem === params.semester || params.semester === "")) {
                             let subjectDoc = subjectList.find((sub) => sub._id === ob.subjectId);
                             reExamHTML += `
                         <th style="text-align: right !important;" class="rotate" height="270px !important;"><div style="text-orientation: mixed;writing-mode: vertical-rl; transform: rotate(180deg)"><span>${subjectDoc.name || ""}</span></div></th>
@@ -212,12 +218,12 @@ Meteor.methods({
                     reExamHTML += `</tr><tr>`;
                     let k = 1;
                     sortTranscript.forEach((ob) => {
-                        if (ob.year === params.year) {
+                        if (ob.year === params.year && (ob.sem === params.semester || params.semester === "")) {
                             reExamHTML += `
                         <th style="text-align: center !important;"><div><span>${k}</span></div></th>
                          `;
+                            k++;
                         }
-                        k++;
                     })
 
                     j++;
@@ -240,7 +246,11 @@ Meteor.methods({
                         if (ob.year === params.year && (ob.sem === params.semester || params.semester === "")) {
                             if (ob.grade === "F") {
                                 reExamHTML += `
-                                <td style="text-align: center !important;"><i class="el-icon-info"></i></td>
+                                <td style="text-align: center !important;" class="backgroundGrey">1</td>
+                            `;
+                            } else if (ob.score === -1) {
+                                reExamHTML += `
+                                <td style="text-align: center !important;" class="backgroundGrey">1</td>
                             `;
                             } else {
                                 reExamHTML += `
@@ -248,19 +258,37 @@ Meteor.methods({
                             `;
                             }
 
-                            numSubject += ob.grade === "F" ? 1 : 0;
+                            numSubject += (ob.grade === "F" || ob.score === -1) ? 1 : 0;
                         }
                     }
                 )
 
                 reExamHTML += `
-                    <td style="text-align: center">${numeral(numSubject).format("0,00.00")}</td>
+                    <td style="text-align: center">${numSubject}</td>
                 </tr>`;
                 i++;
             })
         }
         reExamHTML += `</tbody>`;
 
+        let examSelector = {};
+        examSelector.programId = params.programId;
+        examSelector.majorId = params.majorId;
+        examSelector.generation = params.generation;
+        examSelector.year = params.year;
+        if (params.semester !== "") {
+            examSelector.semester = params.semester;
+        }
+        let examDateDoc = Sch_ExamDate.find(examSelector).fetch();
+        if (examDateDoc.length > 0) {
+            if (examDateDoc.length === 1) {
+                data.examDate = moment(examDateDoc[0].examDate[0]).format("DD/MM/YYYY") + " ដល់ថ្ងៃ " + moment(examDateDoc[0].examDate[1]).format("DD/MM/YYYY");
+            } else {
+                data.examDate = moment(examDateDoc[0].examDate[0]).format("DD/MM/YYYY") + " ដល់ថ្ងៃ " + moment(examDateDoc[0].examDate[1]).format("DD/MM/YYYY");
+                data.examDate += " និង " + moment(examDateDoc[1].examDate[0]).format("DD/MM/YYYY") + " ដល់ថ្ងៃ " + moment(examDateDoc[1].examDate[1]).format("DD/MM/YYYY");
+
+            }
+        }
         data.reExamHTML = reExamHTML;
         return data;
     }

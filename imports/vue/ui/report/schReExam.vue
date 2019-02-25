@@ -131,7 +131,7 @@
                 </el-row>
             </div>
             <span slot="content" style="margin: 0px !important;">
-                <table class="table table-bordered table-header-rotated table-hover">
+                <table class="table table-bordered table-header-rotated table-hover" style="overflow-x: scroll !important;width: 100% !important;display:grid !important;">
                       <caption>
                           <div class="row">
                                 <div class="col-md-4"
@@ -162,9 +162,9 @@
                           </div>
                           <div class="row">
                               <div class="col-md-12  balckOnPrint" style="text-align: center;">
-                                                                   <p style="font-family: 'Khmer OS Moul'">បញ្ចីឈ្មោះសិស្សប្រលងសង ឆមាសទី {{params.semester}} និស្សិតផ្នែក​ {{programName}}{{majorName}} ឆ្នាំទី {{params.year}} ជំនាន់ {{params.generation}} ឆ្នាំសិក្សា {{yearStudy}}</p>
+                                                                   <p style="font-family: 'Khmer OS Moul'">បញ្ចីឈ្មោះសិស្សប្រលងសង {{params.semester==="" ? "" : "ឆមាសទី "}}  {{params.semester}} និស្សិតផ្នែក​ {{programName}}{{majorName}} ឆ្នាំទី {{params.year}} ជំនាន់ {{params.generation}} ឆ្នាំសិក្សា {{yearStudy}}</p>
 
-                                  <p>សម័យប្រលង៖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                  <p>សម័យប្រលង៖ {{examDate}}</p>
                                   <p style="font-family:tacteing ">rs</p>
                               </div>
                           </div>
@@ -303,7 +303,8 @@
                 ],
                 programName: "",
                 majorName: "",
-                yearStudy: ""
+                yearStudy: "",
+                examDate: ""
 
             };
         },
@@ -401,6 +402,7 @@
                         this.programName = result.programName || "";
                         this.majorName = result.majorName || "";
                         this.yearStudy = result.yearStudy || "";
+                        this.examDate = result.examDate || "";
                     }
                     this.loading = false;
                 });

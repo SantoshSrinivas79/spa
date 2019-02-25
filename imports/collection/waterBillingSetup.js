@@ -32,6 +32,11 @@ WB_waterBillingSetup.schema = new SimpleSchema({
         type: String,
         optional: true
     },
+    passIfGreaterThan: {
+        type: Number,
+        optional: true,
+        decimal: true
+    },
     province: {
         type: String,
         optional: true

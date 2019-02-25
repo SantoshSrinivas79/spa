@@ -9,6 +9,7 @@ import {Sch_Level} from "../../../imports/collection/schLevel";
 import {Sch_PromotionReact} from "../../../imports/collection/schPromotion";
 import {Sch_Major} from "../../../imports/collection/schMajor";
 import {Sch_Ciriculumn} from "../../../imports/collection/schCiriculumn";
+import {Sch_ExamDate} from "../../../imports/collection/schExamDate";
 
 Meteor.methods({
     querySchInputScore({q, params, filter, options = {limit: 200, skip: 0}}) {
@@ -24,7 +25,29 @@ Meteor.methods({
             selector.generation = params.generation;
             selector.year = params.year;
             selector.semester = params.semester;
+            selector.rolesArea = params.rolesArea;
 
+            let examDateDoc = Sch_ExamDate.findOne({
+                programId: params.programId,
+                majorId: params.majorId,
+                generation: params.generation,
+                year: params.year,
+                semester: params.semester,
+                rolesArea: params.rolesArea
+            });
+            if (examDateDoc) {
+                Sch_ExamDate.update({_id: examDateDoc._id}, {$set: {examDate: params.examDate}});
+            } else {
+                Sch_ExamDate.insert({
+                    programId: params.programId,
+                    majorId: params.majorId,
+                    generation: params.generation,
+                    year: params.year,
+                    semester: params.semester,
+                    examDate: params.examDate,
+                    rolesArea: params.rolesArea
+                });
+            }
 
             let shcInputScore = Sch_InputScore.aggregate([
                     {
@@ -102,6 +125,7 @@ Meteor.methods({
         selector.programId = params.programId;
         selector.majorId = params.majorId;
         selector.generation = params.generation;
+        selector.rolesArea = params.rolesArea;
         let selectorInputScore = {};
         selectorInputScore.programId = params.programId;
         selectorInputScore.majorId = params.majorId;
@@ -161,16 +185,16 @@ Meteor.methods({
             let subDoc = curiculmnDoc.culumnSemester1.find((obj) => {
                 return obj.subjectId === params.subjectId;
             })
-            dataTranscript.ind = subDoc.ind;
-            dataTranscript.credit = subDoc.credit || 0;
+            dataTranscript.ind = subDoc.ind || 1;
+            dataTranscript.credit = subDoc.credit || 1;
 
 
         } else if (params.semester === 2) {
             let subDoc = curiculmnDoc.culumnSemester2.find((obj) => {
                 return obj.subjectId === params.subjectId;
             })
-            dataTranscript.ind = subDoc.ind;
-            dataTranscript.credit = subDoc.credit || 0;
+            dataTranscript.ind = subDoc.ind || 1;
+            dataTranscript.credit = subDoc.credit || 1;
 
         }
 
@@ -181,9 +205,13 @@ Meteor.methods({
                     studentId: data.studentId,
                     majorId: data.majorId,
                     registerId: data.registerId,
-                    "culumnSemester1.subjectId": params.subjectId,
-                    "culumnSemester1.sem": params.semester,
-                    "culumnSemester1.year": params.year
+                    culumnSemester1: {
+                        $elemMatch: {
+                            subjectId: params.subjectId,
+                            sem: params.semester,
+                            year: params.year
+                        }
+                    }
                 });
 
                 if (tran) {
@@ -192,15 +220,21 @@ Meteor.methods({
                             studentId: data.studentId,
                             majorId: data.majorId,
                             registerId: data.registerId,
-                            "culumnSemester1.subjectId": params.subjectId,
-                            "culumnSemester1.sem": params.semester,
-                            "culumnSemester1.year": params.year
+                            culumnSemester1: {
+                                $elemMatch: {
+                                    subjectId: params.subjectId,
+                                    sem: params.semester,
+                                    year: params.year
+                                }
+                            }
                         },
                         {
                             $set:
                                 {
                                     "culumnSemester1.$.score": data.score,
                                     "culumnSemester1.$.grade": data.grade,
+                                    "culumnSemester1.$.ind": dataTranscript.ind,
+                                    "culumnSemester1.$.credit": dataTranscript.credit,
                                     "culumnSemester1.$.gradePoint": data.gradePoint
                                 }
                         });
@@ -221,9 +255,13 @@ Meteor.methods({
                     studentId: data.studentId,
                     majorId: data.majorId,
                     registerId: data.registerId,
-                    "culumnSemester2.subjectId": params.subjectId,
-                    "culumnSemester2.sem": params.semester,
-                    "culumnSemester2.year": params.year
+                    culumnSemester2: {
+                        $elemMatch: {
+                            subjectId: params.subjectId,
+                            sem: params.semester,
+                            year: params.year
+                        }
+                    }
                 });
 
                 if (tran) {
@@ -232,15 +270,21 @@ Meteor.methods({
                             studentId: data.studentId,
                             majorId: data.majorId,
                             registerId: data.registerId,
-                            "culumnSemester2.subjectId": params.subjectId,
-                            "culumnSemester2.sem": params.semester,
-                            "culumnSemester2.year": params.year
+                            culumnSemester2: {
+                                $elemMatch: {
+                                    subjectId: params.subjectId,
+                                    sem: params.semester,
+                                    year: params.year
+                                }
+                            }
                         },
                         {
                             $set:
                                 {
                                     "culumnSemester2.$.score": data.score,
                                     "culumnSemester2.$.grade": data.grade,
+                                    "culumnSemester2.$.ind": dataTranscript.ind,
+                                    "culumnSemester2.$.credit": dataTranscript.credit,
                                     "culumnSemester2.$.gradePoint": data.gradePoint
                                 }
                         });

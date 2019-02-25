@@ -65,6 +65,15 @@
                                                              :min="1"></el-input-number>
                                         </el-form-item>
                                     </el-col>
+                                    <el-col>
+                                        <el-form-item :label="langConfig['sortRank']" prop="sortRank">
+                                            <el-switch
+                                                    v-model="params.sortRank"
+                                                    active-color="#ff4949"
+                                                    inactive-color="#13ce66">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </el-col>
                                 </el-row>
                                 <el-row type="flex" class="row-bg" justify="center">
                                     <el-col>
@@ -122,6 +131,7 @@
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
+                                    <el-col></el-col>
                                 </el-row>
                             </el-form>
 
@@ -130,8 +140,10 @@
                     </el-col>
                 </el-row>
             </div>
-            <span slot="content" style="margin: 0px !important;">
-                <table class="table table-bordered table-header-rotated table-hover">
+            <span slot="content"
+                  style="margin: 0px !important;">
+                <table class="table table-bordered table-header-rotated table-hover"
+                       style="overflow-x: scroll !important;width: 100% !important;display:grid !important;">
                       <caption>
                           <div class="row">
                                 <div class="col-md-4"
@@ -162,9 +174,9 @@
                           </div>
                           <div class="row">
                               <div class="col-md-12  balckOnPrint" style="text-align: center;">
-                                                                   <p style="font-family: 'Khmer OS Moul'">លទ្ធផលសិស្សប្រលង ឆមាសទី {{params.semester}} និស្សិតផ្នែក​ {{programName}}{{majorName}} ឆ្នាំទី {{params.year}} ជំនាន់ {{params.generation}} ឆ្នាំសិក្សា {{yearStudy}}</p>
+                                                                   <p style="font-family: 'Khmer OS Moul'">លទ្ធផលសិស្សប្រលង {{params.semester==="" ? "" : "ឆមាសទី "}} {{params.semester}} និស្សិតផ្នែក​ {{programName}}{{majorName}} ឆ្នាំទី {{params.year}} ជំនាន់ {{params.generation}} ឆ្នាំសិក្សា {{yearStudy}}</p>
 
-                                  <p>សម័យប្រលង៖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                  <p>សម័យប្រលង៖ {{examDate}}</p>
                                   <p style="font-family:tacteing ">rs</p>
                               </div>
                           </div>
@@ -225,7 +237,8 @@
                     year: "",
                     promotionId: "",
                     generation: 1,
-                    semester: 1
+                    semester: 1,
+                    sortRank: false
 
                 },
                 rolesArea: '',
@@ -303,7 +316,8 @@
                 ],
                 programName: "",
                 majorName: "",
-                yearStudy: ""
+                yearStudy: "",
+                examDate: ""
 
             };
         },
@@ -401,6 +415,7 @@
                         this.programName = result.programName || "";
                         this.majorName = result.majorName || "";
                         this.yearStudy = result.yearStudy || "";
+                        this.examDate = result.examDate || "";
                     }
                     this.loading = false;
                 });
