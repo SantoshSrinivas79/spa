@@ -40,18 +40,21 @@
                                     &nbsp;: {{repaymentDoc && repaymentDoc.installmentList || ""}}
                                 </el-form-item>
                                 <el-form-item :label="langConfig['principleDue']" style="text-align: left !important;">
-                                    &nbsp;: {{repaymentDoc && repaymentDoc.principleUnpaid || "" | numFormat}}
+                                    &nbsp;: {{repaymentDoc && repaymentDoc.principleUnpaid || "" |
+                                    numFormatBaseCurrency(currencyId)}}
                                     {{currencySymbol}}
                                 </el-form-item>
                                 <el-form-item :label="langConfig['interestDue']" style="text-align: left !important;">
-                                    &nbsp;: {{repaymentDoc && repaymentDoc.interestUnpaid || "" | numFormat}}
+                                    &nbsp;: {{repaymentDoc && repaymentDoc.interestUnpaid || "" |
+                                    numFormatBaseCurrency(currencyId)}}
                                     {{currencySymbol}}
                                 </el-form-item>
                                 <el-form-item :label="langConfig['dayLate']" style="text-align: left !important;">
                                     &nbsp;: {{dayLate}} ថ្ងៃ
                                 </el-form-item>
                                 <el-form-item :label="langConfig['totalDue']" style="text-align: left !important;">
-                                    <b>&nbsp;: {{repaymentDoc && repaymentDoc.balanceUnpaid || "" | numFormat}}
+                                    <b>&nbsp;: {{repaymentDoc && repaymentDoc.balanceUnpaid || "" |
+                                        numFormatBaseCurrency(currencyId)}}
                                         {{currencySymbol}}</b>
                                 </el-form-item>
                             </el-col>
@@ -79,7 +82,8 @@
                                     || ""}}
                                 </el-form-item>
                                 <el-form-item :label="langConfig['feeAmount']" style="text-align: left !important;">
-                                    <b>&nbsp;: {{repaymentDoc && repaymentDoc.feeAmount || "" | numFormat}}
+                                    <b>&nbsp;: {{repaymentDoc && repaymentDoc.feeAmount || "" |
+                                        numFormatBaseCurrency(currencyId)}}
                                         {{currencySymbol}}</b>
                                 </el-form-item>
                             </el-col>
@@ -131,27 +135,11 @@
                                     </el-input>
                                 </el-form-item>
                                 <hr>
-                                <el-form-item :label="langConfig['paidUSD']" prop="paidUSD">
-                                    <el-input v-model.number="loanRepaymentForm.paidUSD" type='number'
+                                <el-form-item :label="langConfig['paid']" prop="paid">
+                                    <el-input v-model.number="loanRepaymentForm.paid" type='number' :disabled="isFee"
                                               @keyup.native="getTotal()" @change.native="getTotal()">
                                         <el-button slot="append">
-                                            <b>{{loanRepaymentForm.remainUSD}} $</b>
-                                        </el-button>
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item :label="langConfig['paidKHR']" prop="paidKHR">
-                                    <el-input v-model.number="loanRepaymentForm.paidKHR" type='number'
-                                              @keyup.native="getTotal()" @change.native="getTotal()">
-                                        <el-button slot="append">
-                                            <b>{{loanRepaymentForm.remainKHR}} ៛</b>
-                                        </el-button>
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item :label="langConfig['paidTHB']" prop="paidTHB">
-                                    <el-input v-model.number="loanRepaymentForm.paidTHB" type='number'
-                                              @keyup.native="getTotal()" @change.native="getTotal()">
-                                        <el-button slot="append">
-                                            <b>{{loanRepaymentForm.remainKHR}} B</b>
+                                            <b>{{currencySymbol}}</b>
                                         </el-button>
                                     </el-input>
                                 </el-form-item>
@@ -217,12 +205,6 @@
                     currencyId: "",
                     repaymentDate: moment().toDate(),
                     paid: 0,
-                    paidUSD: 0,
-                    paidKHR: 0,
-                    paidTHB: 0,
-                    remainUSD: 0,
-                    remainKHR: 0,
-                    remainTHB: 0,
                     penalty: 0,
                     penaltyPaid: 0,
                     voucher: "",
@@ -241,6 +223,7 @@
                 repaymentDoc: {},
                 skip: 0,
                 currencySymbol: "",
+                currencyId: "",
                 dayLate: 0,
                 balance: 0,
                 balanceNeedToPaidShow: 0,
@@ -253,8 +236,12 @@
             },
             "loanRepaymentForm.repaymentDate"(val) {
                 this.getVoucherByRoleAndDate(val);
-                this.getDisbursementById(this.loanRepaymentForm.disbursementId);
                 this.loanRepaymentForm.repaymentDate = val;
+                this.getDisbursementById(this.loanRepaymentForm.disbursementId);
+            },
+            "loanRepaymentForm.type"(val) {
+                this.loanRepaymentForm.type = val;
+                this.getDisbursementById(this.loanRepaymentForm.disbursementId);
             }
         },
         methods: {
@@ -312,29 +299,26 @@
 
 
                         vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
-                        vm.loanRepaymentForm.remainUSD = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "USD", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "USD");
-                        vm.loanRepaymentForm.remainKHR = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "KHR", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "KHR");
-                        vm.loanRepaymentForm.remainTHB = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "THB", vm.$_numeral(result.balanceUnpaid).value(), Session.get("area")), "THB");
-                        if (result.currencyId === "USD") {
-                            vm.loanRepaymentForm.paidUSD = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, "USD")).value();
-                            vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = 0;
-                        } else if (result.currencyId === "KHR") {
-                            vm.loanRepaymentForm.paidUSD = 0;
-                            vm.loanRepaymentForm.paidKHR = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, "KHR")).value();
-                            vm.loanRepaymentForm.paidTHB = 0;
+                        vm.currencyId = result.currencyId;
+                        vm.loanRepaymentForm.penaltyPaid = vm.$_numeral(vm.loanRepaymentForm.penalty).value();
+                        vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, result.currencyId)).value();
+                        this.getTotal();
+                    }
+                })
+            },
+            getCalculatePrepayPaid(disbursementId) {
+                let vm = this;
+                Meteor.call("getPrepayToPaid", disbursementId, vm.loanRepaymentForm.repaymentDate, (err, result) => {
+                    if (result) {
+                        vm.repaymentDoc = result;
+                        vm.loanRepaymentForm.clientId = result.clientId;
 
+                        vm.dayLate = 0;
+                        vm.loanRepaymentForm.penalty = 0;
+                        vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
+                        vm.currencyId = result.currencyId;
 
-                        } else if (result.currencyId === "THB") {
-                            vm.loanRepaymentForm.paidUSD = 0;
-                            vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, "THB")).value();
-                        } else {
-                            vm.loanRepaymentForm.paidUSD = 0;
-                            ``
-                            vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = 0;
-                        }
+                        vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, result.currencyId)).value();
                         this.getTotal();
                     }
                 })
@@ -345,56 +329,22 @@
                     if (result) {
                         vm.repaymentDoc = result;
                         vm.loanRepaymentForm.clientId = result.clientId;
-
-                        if (vm.loanRepaymentForm.repaymentDate && result.date) {
-                            vm.dayLate = moment(vm.loanRepaymentForm.repaymentDate).startOf("days").add(12, "hours").diff(result.date, "days");
-                        }
-                        vm.dayLate = vm.dayLate > 0 ? vm.dayLate : 0;
+                        vm.dayLate = 0;
                         vm.loanRepaymentForm.penalty = 0;
 
 
                         vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
-                        vm.loanRepaymentForm.remainUSD = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "USD", vm.$_numeral(result.feeAmount).value(), Session.get("area")), "USD");
-                        vm.loanRepaymentForm.remainKHR = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "KHR", vm.$_numeral(result.feeAmount).value(), Session.get("area")), "KHR");
-                        vm.loanRepaymentForm.remainTHB = formatCurrencyLast(GeneralFunction.exchange(result.currencyId, "THB", vm.$_numeral(result.feeAmount).value(), Session.get("area")), "THB");
-                        if (result.currencyId === "USD") {
-                            vm.loanRepaymentForm.paidUSD = vm.$_numeral(formatCurrencyLast(result.feeAmount || 0, "USD")).value();
-                            vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = 0;
-                        } else if (result.currencyId === "KHR") {
-                            vm.loanRepaymentForm.paidUSD = 0;
-                            vm.loanRepaymentForm.paidKHR = vm.$_numeral(formatCurrencyLast(result.feeAmount || 0, "KHR")).value();
-                            vm.loanRepaymentForm.paidTHB = 0;
+                        vm.currencyId = result.currencyId;
 
+                        vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(result.feeAmount || 0, result.currencyId)).value();
 
-                        } else if (result.currencyId === "THB") {
-                            vm.loanRepaymentForm.paidUSD = 0;
-                            vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = vm.$_numeral(formatCurrencyLast(result.feeAmount || 0, "THB")).value();
-                        } else {
-                            vm.loanRepaymentForm.paidUSD = 0;
-                            ``
-                            vm.loanRepaymentForm.paidKHR = 0;
-                            vm.loanRepaymentForm.paidTHB = 0;
-                        }
                         vm.getTotal();
                     }
                 })
             },
             getTotal() {
                 let vm = this;
-                if (vm.isFee === false) {
-                    vm.balance = vm.repaymentDoc.balanceUnpaid - GeneralFunction.exchange("USD", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidUSD, Session.get("area")) - GeneralFunction.exchange("KHR", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidKHR, Session.get("area")) - GeneralFunction.exchange("THB", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidTHB, Session.get("area"));
-
-                } else {
-                    vm.balance = vm.repaymentDoc.feeAmount - GeneralFunction.exchange("USD", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidUSD, Session.get("area")) - GeneralFunction.exchange("KHR", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidKHR, Session.get("area")) - GeneralFunction.exchange("THB", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidTHB, Session.get("area"));
-                }
-
-                vm.loanRepaymentForm.remainUSD = formatCurrencyLast(GeneralFunction.exchange(vm.repaymentDoc.currencyId, "USD", vm.$_numeral(vm.balance).value(), Session.get("area")), "USD");
-                vm.loanRepaymentForm.remainKHR = formatCurrencyLast(GeneralFunction.exchange(vm.repaymentDoc.currencyId, "KHR", vm.$_numeral(vm.balance).value(), Session.get("area")), "KHR");
-                vm.loanRepaymentForm.remainTHB = formatCurrencyLast(GeneralFunction.exchange(vm.repaymentDoc.currencyId, "THB", vm.$_numeral(vm.balance).value(), Session.get("area")), "THB");
-
-                vm.balanceNeedToPaidShow = formatCurrencyLast(vm.loanRepaymentForm.penaltyPaid + GeneralFunction.exchange("USD", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidUSD, Session.get("area")) + GeneralFunction.exchange("KHR", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidKHR, Session.get("area")) + GeneralFunction.exchange("THB", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidTHB, Session.get("area")));
+                vm.balanceNeedToPaidShow = formatCurrencyLast(vm.loanRepaymentForm.penaltyPaid + vm.loanRepaymentForm.paid, vm.repaymentDoc.currencyId);
             },
             getVoucherByRoleAndDate(date) {
                 let vm = this;
@@ -409,16 +359,22 @@
                 Meteor.call("queryLoanDisbursementById", id, (err, result) => {
                     if (result) {
                         vm.isFee = math.round(result.feeAmount - result.paidFeeAmount) > 0;
-                        console.log(vm.isFee);
-                        console.log((result.feeAmount - result.paidFeeAmount));
                         if (vm.isFee === true) {
                             vm.repaymentDoc.disbursementDoc = result;
-                            vm.loanRepaymentForm.type = "Fee";
                             vm.dayLate = 0;
                             vm.getCalculateFeePaid(id);
+                            vm.loanRepaymentForm.type = "Fee";
                         } else {
-                            vm.getCalculateAmountPaid(id);
-                            vm.loanRepaymentForm.type = "Repayment";
+                            if (vm.loanRepaymentForm.type === "Repayment") {
+                                vm.getCalculateAmountPaid(id);
+                            } else if (vm.loanRepaymentForm.type === "Prepay") {
+                                vm.getCalculatePrepayPaid(id);
+                            } else {
+                                if (vm.isFee === false) {
+                                    vm.getCalculateAmountPaid(id);
+                                    vm.loanRepaymentForm.type = "Repayment";
+                                }
+                            }
 
                         }
                     }
@@ -429,32 +385,11 @@
                 let vm = this;
                 this.$refs["loanRepaymentForm"].validate((valid) => {
                     if (valid) {
-                        let paid = 0;
-                        let totalPaid = 0;
-
-                        if (vm.loanRepaymentForm.type === "Fee") {
-
-                            let temPaid = vm.$_numeral(vm.repaymentDoc.feeAmount).value() - vm.getRemainAmountByCurrency(vm.repaymentDoc.currencyId, vm.$_numeral(vm.loanRepaymentForm.remainUSD).value(), vm.$_numeral(vm.loanRepaymentForm.remainKHR).value(), vm.$_numeral(vm.loanRepaymentForm.remainTHB).value());
-                            paid = temPaid <= 0 ? 0 : temPaid;
-                            totalPaid = paid;
-                        } else {
-                            let temPaid = vm.$_numeral(vm.repaymentDoc.balanceUnpaid).value() - vm.getRemainAmountByCurrency(vm.repaymentDoc.currencyId, vm.$_numeral(vm.loanRepaymentForm.remainUSD).value(), vm.$_numeral(vm.loanRepaymentForm.remainKHR).value(), vm.$_numeral(vm.loanRepaymentForm.remainTHB).value());
-                            paid = temPaid <= 0 ? 0 : temPaid;
-
-                            totalPaid = paid + vm.$_numeral(vm.loanRepaymentForm.penaltyPaid).value();
-
-                        }
-
                         let loanRepaymentDoc = {
                             disbursementId: vm.loanRepaymentForm.disbursementId,
                             currencyId: vm.repaymentDoc.currencyId,
                             repaymentDate: vm.loanRepaymentForm.repaymentDate,
-                            paidUSD: vm.$_numeral(vm.loanRepaymentForm.paidUSD).value(),
-                            paidKHR: vm.$_numeral(vm.loanRepaymentForm.paidKHR).value(),
-                            paidTHB: vm.$_numeral(vm.loanRepaymentForm.paidTHB).value(),
-                            remainUSD: vm.$_numeral(vm.loanRepaymentForm.remainUSD).value(),
-                            remainKHR: vm.$_numeral(vm.loanRepaymentForm.remainKHR).value(),
-                            remainTHB: vm.$_numeral(vm.loanRepaymentForm.remainTHB).value(),
+                            remain: vm.$_numeral(vm.loanRepaymentForm.remain).value(),
                             penalty: vm.$_numeral(vm.loanRepaymentForm.penalty).value(),
                             penaltyPaid: vm.$_numeral(vm.loanRepaymentForm.penaltyPaid).value(),
                             voucher: vm.loanRepaymentForm.voucher,
@@ -462,10 +397,9 @@
                             type: vm.loanRepaymentForm.type,
                             dayLate: vm.dayLate,
                             clientId: vm.loanRepaymentForm.clientId,
-                            paid: vm.$_numeral(formatCurrencyLast(paid, vm.repaymentDoc.currencyId)).value(),
-                            totalPaid: vm.$_numeral(formatCurrencyLast(totalPaid, vm.repaymentDoc.currencyId)).value(),
+                            paid: vm.$_numeral(vm.loanRepaymentForm.paid).value(),
+                            totalPaid: vm.$_numeral(vm.loanRepaymentForm.paid + vm.loanRepaymentForm.penaltyPaid).value(),
                             rolesArea: Session.get('area')
-
                         };
 
                         Meteor.call("insertLoanRepayment", loanRepaymentDoc, (err, result) => {
@@ -506,13 +440,9 @@
             resetForm() {
                 this.loanRepaymentForm.disbursementId = "";
                 this.loanRepaymentForm.repaymentDate = moment().toDate();
-                this.loanRepaymentForm.paidUSD = 0;
-                this.loanRepaymentForm.paidKHR = 0;
-                this.loanRepaymentForm.paidTHB = 0;
+                this.loanRepaymentForm.paid = 0;
 
-                this.loanRepaymentForm.remainUSD = 0;
-                this.loanRepaymentForm.remainKHR = 0;
-                this.loanRepaymentForm.remainTHB = 0;
+                this.loanRepaymentForm.remain = 0;
                 this.loanRepaymentForm.penalty = 0;
                 this.loanRepaymentForm.penaltyPaid = 0;
                 this.balanceNeedToPaidShow = 0;

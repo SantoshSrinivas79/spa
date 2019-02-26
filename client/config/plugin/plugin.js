@@ -32,12 +32,30 @@ Vue.use(VeeValidate, {fieldsBagName: 'formFields'});
 Vue.use(numeral);
 Vue.use(math);
 // Vue.use($);
+import {WB_waterBillingSetup} from '../../../imports/collection/waterBillingSetup';
 
 Vue.filter('numFormat', (val) => {
     if (val === "") {
         return 0;
     }
     return numeral(val).format('0,0.00');
+});
+Vue.filter('numFormatBaseCurrency', (val, currencyId) => {
+    if (val === "") {
+        return 0;
+    }
+    if (currencyId === undefined) {
+        let settingDoc = WB_waterBillingSetup.findOne();
+        currencyId = settingDoc.baseCurrency;
+    }
+    if (currencyId === "KHR") {
+        return numeral(val).format('0,0');
+    } else if (currencyId === "USD") {
+        return numeral(val).format('0,0.00');
+    } else if (currencyId === "THB") {
+        return numeral(val).format('0,0');
+    }
+
 });
 
 Vue.filter('numFormatPercent', (val) => {

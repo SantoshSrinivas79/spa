@@ -28,18 +28,6 @@ Loan_Repayment.schema = new SimpleSchema({
         type: Number,
         decimal: true
     },
-    paidUSD: {
-        type: Number,
-        decimal: true
-    },
-    paidKHR: {
-        type: Number,
-        decimal: true
-    },
-    paidTHB: {
-        type: Number,
-        decimal: true
-    },
     penaltyPaid: {
         type: Number,
         decimal: true
