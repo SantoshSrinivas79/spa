@@ -197,7 +197,9 @@
       "penaltyDue": "Penalty Due",
       "totalDue": "Total Due",
       "dayLate": "Day Late",
-      "type":"Payment Type"
+      "type": "Payment Type",
+      "balanceDue": "Balance Due",
+      "amountNeedToPaid": "Amount Need To Paid"
     }
   },
   {
@@ -399,7 +401,9 @@
       "penaltyDue": "ពិន័យត្រូវបង់",
       "totalDue": "សរុបត្រូវបង់",
       "dayLate": "ចំនួនថ្ងៃយឺត",
-      "type":"ប្រភេទបង់ប្រាក់"
+      "type": "ប្រភេទបង់ប្រាក់",
+      "balanceDue": "សមតុល្យត្រូវបង់",
+      "amountNeedToPaid": "ទឹកប្រាក់ត្រូវបង់"
     }
   }
 ]

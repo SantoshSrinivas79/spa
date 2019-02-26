@@ -8,7 +8,17 @@
                     <el-form :model="loanRepaymentForm" :rules="rules" ref="loanRepaymentForm" label-width="120px"
                              class="loanRepaymentForm">
                         <el-row>
+
                             <el-col :span="12" v-if="!isFee">
+                                <div class="ui segments plan">
+                                    <div class="ui top attached segment teal inverted plan-title">
+                                        <span class="ui header">{{langConfig['amountNeedToPaid']}}</span>
+
+                                    </div>
+                                    <div class="ui  attached segment feature">
+                                        <div class="amount">{{balanceNeedToPaidShow}}{{currencySymbol}}</div>
+                                    </div>
+                                </div>
 
                                 <el-form-item :label="langConfig['loanAcc']" style="text-align: left !important;">
                                     &nbsp;: {{repaymentDoc && repaymentDoc.disbursementDoc &&
@@ -46,6 +56,14 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12" v-if="isFee">
+                                <div class="ui segments plan">
+                                    <div class="ui top attached segment teal inverted plan-title">
+                                        <span class="ui header">{{langConfig['amountNeedToPaid']}}</span>
+                                    </div>
+                                    <div class="ui  attached segment feature">
+                                        <div class="amount">{{balanceNeedToPaidShow}}{{currencySymbol}}</div>
+                                    </div>
+                                </div>
                                 <el-form-item :label="langConfig['loanAcc']" style="text-align: left !important;">
                                     &nbsp;: {{repaymentDoc && repaymentDoc &&
                                     repaymentDoc.loanAcc || ""}} => [{{repaymentDoc && repaymentDoc.loanAmount || "" |
@@ -105,9 +123,10 @@
 
                                 <el-form-item :label="langConfig['penalty']" prop="penalty">
                                     <el-input v-model.number="loanRepaymentForm.penaltyPaid" type='number'
+                                              @keyup.native="getTotal()" @change.native="getTotal()"
                                               :disabled="isFee">
                                         <el-button slot="append">
-                                            {{loanRepaymentForm.penalty}} {{currencySymbol}}
+                                            <b>{{loanRepaymentForm.penalty}} {{currencySymbol}}</b>
                                         </el-button>
                                     </el-input>
                                 </el-form-item>
@@ -116,7 +135,7 @@
                                     <el-input v-model.number="loanRepaymentForm.paidUSD" type='number'
                                               @keyup.native="getTotal()" @change.native="getTotal()">
                                         <el-button slot="append">
-                                            {{loanRepaymentForm.remainUSD}} $
+                                            <b>{{loanRepaymentForm.remainUSD}} $</b>
                                         </el-button>
                                     </el-input>
                                 </el-form-item>
@@ -124,7 +143,7 @@
                                     <el-input v-model.number="loanRepaymentForm.paidKHR" type='number'
                                               @keyup.native="getTotal()" @change.native="getTotal()">
                                         <el-button slot="append">
-                                            {{loanRepaymentForm.remainKHR}} ៛
+                                            <b>{{loanRepaymentForm.remainKHR}} ៛</b>
                                         </el-button>
                                     </el-input>
                                 </el-form-item>
@@ -132,7 +151,7 @@
                                     <el-input v-model.number="loanRepaymentForm.paidTHB" type='number'
                                               @keyup.native="getTotal()" @change.native="getTotal()">
                                         <el-button slot="append">
-                                            {{loanRepaymentForm.remainKHR}} B
+                                            <b>{{loanRepaymentForm.remainKHR}} B</b>
                                         </el-button>
                                     </el-input>
                                 </el-form-item>
@@ -224,6 +243,7 @@
                 currencySymbol: "",
                 dayLate: 0,
                 balance: 0,
+                balanceNeedToPaidShow: 0,
                 isFee: false
             }
         },
@@ -374,6 +394,7 @@
                 vm.loanRepaymentForm.remainKHR = formatCurrencyLast(GeneralFunction.exchange(vm.repaymentDoc.currencyId, "KHR", vm.$_numeral(vm.balance).value(), Session.get("area")), "KHR");
                 vm.loanRepaymentForm.remainTHB = formatCurrencyLast(GeneralFunction.exchange(vm.repaymentDoc.currencyId, "THB", vm.$_numeral(vm.balance).value(), Session.get("area")), "THB");
 
+                vm.balanceNeedToPaidShow = formatCurrencyLast(vm.loanRepaymentForm.penaltyPaid + GeneralFunction.exchange("USD", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidUSD, Session.get("area")) + GeneralFunction.exchange("KHR", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidKHR, Session.get("area")) + GeneralFunction.exchange("THB", vm.repaymentDoc.currencyId, vm.loanRepaymentForm.paidTHB, Session.get("area")));
             },
             getVoucherByRoleAndDate(date) {
                 let vm = this;
@@ -494,7 +515,9 @@
                 this.loanRepaymentForm.remainTHB = 0;
                 this.loanRepaymentForm.penalty = 0;
                 this.loanRepaymentForm.penaltyPaid = 0;
+                this.balanceNeedToPaidShow = 0;
                 this.loanRepaymentForm.note = "";
+                this.repaymentDoc = {};
 
             }
         },
