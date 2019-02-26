@@ -140,10 +140,13 @@ Meteor.methods({
     },
     queryLoanRepaymentById(id) {
         let data = Loan_Repayment.findOne({_id: id});
+        data.voucher = data && data.voucher.length > 9 ? parseInt((data && data.voucher || "0000000000000").substr(9, 13)) : parseInt(data && data.voucher || "0");
+        data.voucher = pad(data.voucher, 6);
         return data;
     },
     insertLoanRepayment(data) {
         data.repaymentDateName = moment(data.repaymentDate).format("DD/MM/YYYY");
+        data.voucher = data.rolesArea + "-" + moment(data.repaymentDate).format("YYYY") + pad(data.voucher, 6);
 
         let isInserted = Loan_Repayment.insert(data);
         if (isInserted) {
@@ -164,7 +167,11 @@ Meteor.methods({
         let isRemoved = Loan_Repayment.remove({_id: id});
         if (isRemoved) {
             repaymentReact(id);
-            removeRepayment(loanDoc);
+            if (loanDoc.type === "Fee") {
+                removeRepaymentFee(loanDoc);
+            } else {
+                removeRepayment(loanDoc);
+            }
             Loan_Disbursement.update({_id: loanDoc.disbursementId}, {$inc: {paymentNumber: -1}});
 
         }
@@ -371,6 +378,12 @@ let makeRepayment = function (disbursementId, doc, repaymentId) {
                 repaymentScheduleDoc.paid = paid;
 
                 Loan_RepaymentSchedule.update({_id: obj._id}, {$set: repaymentScheduleDoc});
+                Loan_Repayment.update({_id: repaymentId}, {
+                    $inc: {
+                        principlePaid: paidDoc.principlePaid,
+                        interestPaid: paidDoc.interestPaid
+                    }
+                });
             } else {
                 return false;
             }
@@ -391,7 +404,7 @@ let removeRepayment = function (repaymentDoc) {
                 obj.paid.forEach((ob) => {
                     if (ob.repaymentId === repaymentDoc._id) {
                         newRepaymentScheduleDoc.balanceUnpaid = newRepaymentScheduleDoc.balanceUnpaid + ob.principlePaid + ob.interestPaid;
-                        newRepaymentScheduleDoc.prinUnpaid = newRepaymentScheduleDoc.prinUnpaid + ob.principlePaid;
+                        newRepaymentScheduleDoc.principleUnpaid = newRepaymentScheduleDoc.principleUnpaid + ob.principlePaid;
                         newRepaymentScheduleDoc.interestUnpaid = newRepaymentScheduleDoc.interestUnpaid + ob.interestPaid;
                     } else {
                         newPaid.push(ob);
@@ -409,6 +422,19 @@ let removeRepayment = function (repaymentDoc) {
 
 
 let makeRepaymentFee = function (repaymentFeeDoc) {
-    console.log(repaymentFeeDoc);
     return Loan_Disbursement.update({_id: repaymentFeeDoc.disbursementId}, {$inc: {paidFeeAmount: repaymentFeeDoc.paid}});
+}
+let removeRepaymentFee = function (repaymentFeeDoc) {
+    return Loan_Disbursement.update({_id: repaymentFeeDoc.disbursementId}, {$inc: {paidFeeAmount: -repaymentFeeDoc.paid}});
+}
+
+
+function pad(number, length) {
+    let str = '' + number;
+    while (str.length < length) {
+        str = '0' + str;
+    }
+
+    return str;
+
 }

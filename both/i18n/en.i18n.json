@@ -118,7 +118,7 @@
       "teacherDevelopment": "Teacher Development",
       "reExam": "Re Exam",
       "result": "Result",
-      "inputScore":"Input Score"
+      "inputScore": "Input Score"
     }
   },
   "acc": {
@@ -142,7 +142,8 @@
       "client": "Client",
       "repayment": "Repayment",
       "repaymentForm": "Repayment Form",
-      "repaymentList": "Repayment List"
+      "repaymentList": "Repayment List",
+      "repaymentReport": "Repayment Report"
     }
   },
   "global": {

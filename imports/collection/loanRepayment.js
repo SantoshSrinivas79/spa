@@ -44,6 +44,18 @@ Loan_Repayment.schema = new SimpleSchema({
         type: Number,
         decimal: true
     },
+    principlePaid: {
+        type: Number,
+        decimal: true,
+        optional: true,
+        defaultValue: 0
+    },
+    interestPaid: {
+        type: Number,
+        decimal: true,
+        optional: true,
+        defaultValue: 0
+    },
     penalty: {
         type: Number,
         decimal: true

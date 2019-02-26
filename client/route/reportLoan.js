@@ -56,3 +56,14 @@ loanReport.route('/loanDisbursementReport', {
     }
 
 });
+import '../../imports/ui/report/loanRepayment/loanRepayment';
+
+loanReport.route('/loanRepaymentReport', {
+    name: 'loan.loanRepaymentReport',
+    title: "Repayment",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('loan_repaymentReport');
+    }
+
+});
