@@ -72,7 +72,7 @@ Meteor.methods({
                             vendorId: "$vendorId"
                         },
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"},
+                        total: {$sum: "$item.amount"},
                         discountValue: {$sum: "$discountValue"},
                         netTotal: {$sum: "$netTotal"},
                     }
@@ -177,7 +177,7 @@ Meteor.methods({
                     $group: {
                         _id: null,
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"},
+                        total: {$sum: "$item.amount"},
                         discountValue: {$sum: "$discountValue"},
                         netTotal: {$sum: "$netTotal"},
                     }
@@ -261,7 +261,7 @@ Meteor.methods({
                             transactionType: "$transactionType"
                         },
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"},
+                        total: {$sum: "$item.amount"},
                         discountValue: {$sum: "$discountValue"},
                         netTotal: {$sum: "$netTotal"},
                     }
@@ -447,7 +447,7 @@ Meteor.methods({
                             year: {$year: "$billDate"}
                         },
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"}
+                        total: {$sum: "$item.amount"}
                     }
                 },
                 {$sort: {"_id.year": 1, "_id.month": 1, "_id.day": 1}},
@@ -538,7 +538,7 @@ Meteor.methods({
                             year: {$year: "$billDate"}
                         },
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"}
+                        total: {$sum: "$item.amount"}
                     }
                 },
                 {$sort: {"_id.year": 1, "_id.month": 1, "_id.week": 1}},
@@ -630,7 +630,7 @@ Meteor.methods({
                             year: {$year: "$billDate"}
                         },
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"}
+                        total: {$sum: "$item.amount"}
                     }
                 },
                 {$sort: {"_id.year": 1, "_id.month": 1}},
@@ -732,7 +732,7 @@ Meteor.methods({
                             year: {$year: "$billDate"}
                         },
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"}
+                        total: {$sum: "$item.amount"}
                     }
                 },
                 {$sort: {"_id.year": 1, "_id.quarter": 1}},
@@ -821,7 +821,7 @@ Meteor.methods({
                             year: {$year: "$billDate"}
                         },
                         data: {$push: "$$ROOT"},
-                        total: {$sum: "$total"}
+                        total: {$sum: "$item.amount"}
                     }
                 },
                 {$sort: {"_id.year": 1, "_id.quarter": 1}},

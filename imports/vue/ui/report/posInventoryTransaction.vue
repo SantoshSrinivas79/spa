@@ -70,6 +70,38 @@
                                     </el-col>
 
                                 </el-row>
+                                <el-row type="flex" class="row-bg" justify="center">
+                                    <el-col>
+                                        <el-form-item :label="langConfig['category']">
+                                            <el-select filterable v-model="params.categoryId"
+                                                       :remote-method="categoryOpt"
+                                                       :placeholder="langConfig['all']" clearable
+                                                       style="width: 95%">
+                                                <el-option
+                                                        v-for="item in categoryOptions"
+                                                        :label="item.label"
+                                                        :value="item.value" :key="item._id">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col>
+                                        <el-form-item :label="langConfig['product']">
+                                            <el-select filterable v-model="params.productId" clearable
+                                                       :placeholder="langConfig['all']" :remote-method="productOpt"
+                                                       style="width: 95%">
+                                                <el-option
+                                                        v-for="item in productOptions"
+                                                        :label="item.label"
+                                                        :value="item.value" :key="item._id">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+
+                                    </el-col>
+                                    <el-col>&nbsp;</el-col>
+                                    <el-col>&nbsp;</el-col>
+                                </el-row>
                             </el-form>
 
                         </el-card>
@@ -184,7 +216,9 @@
                     branch: '',
                     area: '',
                     date: null,
-                    locationId: ""
+                    locationId: "",
+                    categoryId: "",
+                    productId: "",
                 },
                 rolesArea: '',
                 activeName: '1',
@@ -194,6 +228,8 @@
                 areaOptions: [],
                 locationOptions: [],
 
+                categoryOptions: [],
+                productOptions: [],
 
                 waterBillingSetup: {
                     khName: '',
@@ -261,6 +297,11 @@
             "params.branch"(val) {
                 this.params.area = "";
                 this.fetchArea(val);
+            },
+            "params.categoryId"(val) {
+                this.params.categoryId = val;
+                this.params.productId = "";
+                this.productOpt("");
             }
         },
         created() {
@@ -271,6 +312,7 @@
             })
             this.fetchBranch();
             this.fetchLocation();
+            this.categoryOpt();
         },
         methods: {
 
@@ -294,6 +336,47 @@
                         this.locationOptions = result;
                     }
                 })
+            },productOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryItemOptionReport', query, this.params.categoryId, (err, result) => {
+                            if (!err) {
+                                this.productOptions = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryItemOptionReport', "", this.params.categoryId, (err, result) => {
+                        if (!err) {
+                            this.productOptions = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+            },
+            categoryOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        Meteor.call('queryCategoryOptionReport', query, (err, result) => {
+                            if (!err) {
+                                this.categoryOptions = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryCategoryOptionReport', "", (err, result) => {
+                        if (!err) {
+                            this.categoryOptions = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
             },
             handleRun() {
                 this.loading = true;
