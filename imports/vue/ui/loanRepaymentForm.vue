@@ -104,7 +104,8 @@
                                 </el-form-item>
 
                                 <el-form-item :label="langConfig['penalty']" prop="penalty">
-                                    <el-input v-model.number="loanRepaymentForm.penaltyPaid" type='number'>
+                                    <el-input v-model.number="loanRepaymentForm.penaltyPaid" type='number'
+                                              :disabled="isFee">
                                         <el-button slot="append">
                                             {{loanRepaymentForm.penalty}} {{currencySymbol}}
                                         </el-button>
@@ -407,6 +408,22 @@
                 let vm = this;
                 this.$refs["loanRepaymentForm"].validate((valid) => {
                     if (valid) {
+                        let paid = 0;
+                        let totalPaid = 0;
+
+                        if (vm.loanRepaymentForm.type === "Fee") {
+
+                            let temPaid = vm.$_numeral(vm.repaymentDoc.feeAmount).value() - vm.getRemainAmountByCurrency(vm.repaymentDoc.currencyId, vm.$_numeral(vm.loanRepaymentForm.remainUSD).value(), vm.$_numeral(vm.loanRepaymentForm.remainKHR).value(), vm.$_numeral(vm.loanRepaymentForm.remainTHB).value());
+                            paid = temPaid <= 0 ? 0 : temPaid;
+                            totalPaid = paid;
+                        } else {
+                            let temPaid = vm.$_numeral(vm.repaymentDoc.balanceUnpaid).value() - vm.getRemainAmountByCurrency(vm.repaymentDoc.currencyId, vm.$_numeral(vm.loanRepaymentForm.remainUSD).value(), vm.$_numeral(vm.loanRepaymentForm.remainKHR).value(), vm.$_numeral(vm.loanRepaymentForm.remainTHB).value());
+                            paid = temPaid <= 0 ? 0 : temPaid;
+
+                            totalPaid = paid + vm.$_numeral(vm.loanRepaymentForm.penaltyPaid).value();
+
+                        }
+
                         let loanRepaymentDoc = {
                             disbursementId: vm.loanRepaymentForm.disbursementId,
                             currencyId: vm.repaymentDoc.currencyId,
@@ -421,10 +438,11 @@
                             penaltyPaid: vm.$_numeral(vm.loanRepaymentForm.penaltyPaid).value(),
                             voucher: vm.loanRepaymentForm.voucher,
                             note: vm.loanRepaymentForm.note,
+                            type: vm.loanRepaymentForm.type,
                             dayLate: vm.dayLate,
                             clientId: vm.loanRepaymentForm.clientId,
-                            paid: vm.$_numeral(vm.repaymentDoc.balanceUnpaid).value() - vm.getRemainAmountByCurrency(vm.repaymentDoc.currencyId, vm.$_numeral(vm.loanRepaymentForm.remainUSD).value(), vm.$_numeral(vm.loanRepaymentForm.remainKHR).value(), vm.$_numeral(vm.loanRepaymentForm.remainTHB).value()),
-                            totalPaid: vm.$_numeral(vm.repaymentDoc.balanceUnpaid).value() - vm.getRemainAmountByCurrency(vm.repaymentDoc.currencyId, vm.$_numeral(vm.loanRepaymentForm.remainUSD).value(), vm.$_numeral(vm.loanRepaymentForm.remainKHR).value(), vm.$_numeral(vm.loanRepaymentForm.remainTHB).value()) + vm.$_numeral(vm.loanRepaymentForm.penaltyPaid).value(),
+                            paid: vm.$_numeral(formatCurrencyLast(paid, vm.repaymentDoc.currencyId)).value(),
+                            totalPaid: vm.$_numeral(formatCurrencyLast(totalPaid, vm.repaymentDoc.currencyId)).value(),
                             rolesArea: Session.get('area')
 
                         };

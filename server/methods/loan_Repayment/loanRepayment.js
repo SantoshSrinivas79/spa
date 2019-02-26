@@ -144,11 +144,16 @@ Meteor.methods({
     },
     insertLoanRepayment(data) {
         data.repaymentDateName = moment(data.repaymentDate).format("DD/MM/YYYY");
+
         let isInserted = Loan_Repayment.insert(data);
         if (isInserted) {
-
             repaymentReact(isInserted);
-            makeRepayment(data.disbursementId, data, isInserted);
+            if (data.type === "Fee") {
+                makeRepaymentFee(data);
+            } else {
+                makeRepayment(data.disbursementId, data, isInserted);
+            }
+
             Loan_Disbursement.update({_id: data.disbursementId}, {$inc: {paymentNumber: 1}});
 
         }
@@ -400,4 +405,10 @@ let removeRepayment = function (repaymentDoc) {
             }
         })
     }
+}
+
+
+let makeRepaymentFee = function (repaymentFeeDoc) {
+    console.log(repaymentFeeDoc);
+    return Loan_Disbursement.update({_id: repaymentFeeDoc.disbursementId}, {$inc: {paidFeeAmount: repaymentFeeDoc.paid}});
 }

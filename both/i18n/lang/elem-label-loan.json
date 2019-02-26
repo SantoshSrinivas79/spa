@@ -196,7 +196,8 @@
       "interestDue": "Interest Due",
       "penaltyDue": "Penalty Due",
       "totalDue": "Total Due",
-      "dayLate": "Day Late"
+      "dayLate": "Day Late",
+      "type":"Payment Type"
     }
   },
   {
@@ -397,7 +398,8 @@
       "interestDue": "ការប្រាក់ត្រូវបង់",
       "penaltyDue": "ពិន័យត្រូវបង់",
       "totalDue": "សរុបត្រូវបង់",
-      "dayLate": "ចំនួនថ្ងៃយឺត"
+      "dayLate": "ចំនួនថ្ងៃយឺត",
+      "type":"ប្រភេទបង់ប្រាក់"
     }
   }
 ]

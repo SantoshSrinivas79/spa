@@ -61,7 +61,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="penalty"
-                            :label="langConfig['penalty']">
+                            :label="langConfig['penaltyPaid']">
                     </el-table-column>
                     <el-table-column
                             prop="totalPaid"
@@ -74,6 +74,10 @@
                     <el-table-column
                             prop="voucher"
                             :label="langConfig['voucher']">
+                    </el-table-column>
+                    <el-table-column
+                            prop="type"
+                            :label="langConfig['type']">
                     </el-table-column>
                     <el-table-column
                             prop="note"
