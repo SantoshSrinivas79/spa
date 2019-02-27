@@ -49,7 +49,7 @@
                                     numFormatBaseCurrency(currencyId)}}
                                     {{currencySymbol}}
 
-                                    <span v-if="isPayOff">&nbsp;&nbsp;&nbsp; ( {{langConfig['interestReminder']}} : {{interestReminder | numFormatBaseCurrency(currencyId)}}{{currencySymbol}} , {{langConfig['interestReminderCharge']}} : {{penaltyInterest | numFormatBaseCurrency(currencyId)}}{{currencySymbol}} )</span>
+                                    <span v-if="isPayOff">&nbsp;&nbsp;&nbsp; ( {{langConfig['interestReminder']}} : {{interestReminder | numFormatBaseCurrency(currencyId)}}{{currencySymbol}} , {{langConfig['interestReminderCharge']}} : {{loanRepaymentForm.interestReminderCharge | numFormatBaseCurrency(currencyId)}}{{currencySymbol}} )</span>
                                 </el-form-item>
                                 <el-form-item :label="langConfig['dayLate']" style="text-align: left !important;">
                                     &nbsp;: {{dayLate}} ថ្ងៃ
@@ -108,7 +108,8 @@
 
                                 <el-form-item :label="langConfig['client']" prop="loanDisbursementId">
                                     <el-select style="display: block !important;" filterable clearable
-                                               v-model="loanRepaymentForm.disbursementId" remote :remote-method="customerOpt"
+                                               v-model="loanRepaymentForm.disbursementId" remote
+                                               :remote-method="customerOpt"
                                                :placeholder="langConfig['client']">
                                         <el-option
                                                 v-for="item in disbursementOption"
@@ -145,13 +146,15 @@
                                 <el-form-item :label="langConfig['interestReminderChargeFull']"
                                               prop="interestReminderCharge"
                                               v-if="isPayOff">
-                                    <el-input v-model.number="loanRepaymentForm.interestReminderCharge" type='number'
+                                    <el-input v-model.number="loanRepaymentForm.interestReminderChargePaid"
+                                              type='number'
                                               @keyup.native="getTotal()" @change.native="getTotal()"
                                               :min="0"
-                                              :max="$_numeral(penaltyInterest).value()"
+                                              :max="$_numeral(loanRepaymentForm.interestReminderCharge).value()"
                                     >
                                         <el-button slot="append">
-                                            <b>{{penaltyInterest | numFormatBaseCurrency(currencyId)}}
+                                            <b>{{loanRepaymentForm.interestReminderCharge |
+                                                numFormatBaseCurrency(currencyId)}}
                                                 {{currencySymbol}}</b>
                                         </el-button>
                                     </el-input>
@@ -247,6 +250,7 @@
                     clientId: "",
                     type: "Repayment",
                     interestPaid: 0,
+                    interestReminderChargePaid: 0,
                     interestReminderCharge: 0,
                     _id: ""
                 },
@@ -269,7 +273,6 @@
                 isPayOff: false,
                 isDisablePenalty: false,
                 isDisablePaid: false,
-                penaltyInterest: 0,
                 interestReminder: 0
             }
         },
@@ -380,15 +383,14 @@
 
                         let totalPayOff = 0;
                         totalPayOff += result.principleUnpaid || 0;
-                        vm.penaltyInterest = 0;
                         if (result.isAllowClosing === false) {
                             let penaltyInterest = result.penaltyClosingDoc.interestReminderCharge * result.interestUnpaid / 100;
-                            vm.loanRepaymentForm.interestReminderCharge = penaltyInterest;
-                            vm.penaltyInterest = penaltyInterest;
+                            vm.loanRepaymentForm.interestReminderChargePaid = vm.$_numeral(formatCurrencyLast(penaltyInterest, result.currencyId)).value();
+                            vm.loanRepaymentForm.interestReminderCharge = formatCurrencyLast(penaltyInterest, result.currencyId);
                         }
 
-                        vm.interestReminder = result.interestReminder;
-                        vm.loanRepaymentForm.interestPaid = result.interestReminder;
+                        vm.interestReminder = formatCurrencyLast(result.interestReminder, result.currencyId);
+                        vm.loanRepaymentForm.interestPaid = vm.$_numeral(formatCurrencyLast(result.interestReminder, result.currencyId)).value();
 
                         if (vm.loanRepaymentForm.repaymentDate && result.date) {
                             vm.dayLate = moment(vm.loanRepaymentForm.repaymentDate).startOf("days").add(12, "hours").diff(result.date, "days");
@@ -441,7 +443,7 @@
             },
             getTotal() {
                 let vm = this;
-                vm.balanceNeedToPaidShow = formatCurrencyLast(vm.loanRepaymentForm.penaltyPaid + vm.loanRepaymentForm.paid + vm.loanRepaymentForm.interestPaid + vm.loanRepaymentForm.interestReminderCharge, vm.repaymentDoc.currencyId);
+                vm.balanceNeedToPaidShow = formatCurrencyLast((vm.loanRepaymentForm.penaltyPaid || 0) + (vm.loanRepaymentForm.paid || 0) + (vm.loanRepaymentForm.interestPaid || 0) + (vm.loanRepaymentForm.interestReminderChargePaid || 0), vm.repaymentDoc.currencyId);
             },
             getVoucherByRoleAndDate(date) {
                 let vm = this;
@@ -470,12 +472,24 @@
                                 vm.isDisablePenalty = false;
                                 vm.isPayOff = false;
                                 vm.isPrepay = false;
+
+
+                                vm.loanRepaymentForm.interestPaid = 0;
+                                vm.loanRepaymentForm.interestReminderCharge = 0;
+                                vm.loanRepaymentForm.interestReminderChargePaid = 0;
+
                             } else if (vm.loanRepaymentForm.type === "Prepay") {
                                 vm.isDisablePaid = false;
                                 vm.isDisablePenalty = true;
                                 vm.getCalculatePrepayPaid(id);
                                 vm.isPayOff = false;
                                 vm.isPrepay = true;
+
+
+                                vm.loanRepaymentForm.interestPaid = 0;
+                                vm.loanRepaymentForm.interestReminderCharge = 0;
+                                vm.loanRepaymentForm.interestReminderChargePaid = 0;
+
                             } else if (vm.loanRepaymentForm.type === "Pay Off") {
                                 vm.getCalculateClosingPaid(id);
                                 vm.isDisablePaid = true;
@@ -493,6 +507,11 @@
                                     vm.isDisablePenalty = false;
                                     vm.isPayOff = false;
                                     vm.isPrepay = false;
+
+                                    vm.loanRepaymentForm.interestPaid = 0;
+                                    vm.loanRepaymentForm.interestReminderCharge = 0;
+                                    vm.loanRepaymentForm.interestReminderChargePaid = 0;
+
                                 }
                             }
 
@@ -516,9 +535,12 @@
                             note: vm.loanRepaymentForm.note,
                             type: vm.loanRepaymentForm.type,
                             dayLate: vm.dayLate,
+                            interestReminderCharge: vm.$_numeral(vm.loanRepaymentForm.interestReminderCharge).value(),
+                            interestReminderChargePaid: vm.$_numeral(vm.loanRepaymentForm.interestReminderChargePaid).value(),
+                            interestPaid: vm.$_numeral(vm.loanRepaymentForm.interestPaid).value(),
                             clientId: vm.loanRepaymentForm.clientId,
                             paid: vm.$_numeral(vm.loanRepaymentForm.paid).value(),
-                            totalPaid: vm.$_numeral(vm.loanRepaymentForm.paid + vm.loanRepaymentForm.penaltyPaid).value(),
+                            totalPaid: vm.$_numeral(vm.loanRepaymentForm.paid + vm.loanRepaymentForm.penaltyPaid + vm.loanRepaymentForm.interestReminderChargePaid + vm.loanRepaymentForm.interestPaid).value(),
                             rolesArea: Session.get('area')
                         };
 
@@ -569,7 +591,7 @@
 
                 this.loanRepaymentForm.interestPaid = 0;
                 this.loanRepaymentForm.interestReminderCharge = 0;
-                this.penaltyInterest = 0;
+                this.loanRepaymentForm.interestReminderChargePaid = 0;
                 this.interestReminder = 0;
 
                 this.loanRepaymentForm.note = "";

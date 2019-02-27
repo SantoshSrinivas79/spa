@@ -111,7 +111,8 @@
       "collectAdminFee": "Admin Fee",
       "overAmount": "Over Amount",
       "clearPrepaid": "Clear Prepaid",
-      "collectPenalty": "Col Penalty"
+      "collectPenalty": "Col Penalty",
+      "totalCollect":"Total Collect"
     }
   },
   {
@@ -239,7 +240,8 @@
       "collectAdminFee": "ប្រមូលសេវារដ្ឋបាល",
       "overAmount": "ទឹកប្រាក់លើស",
       "clearPrepaid": "កាត់ជាមួយបង់ទុក",
-      "collectPenalty": "ប្រមូលពិន័យ"
+      "collectPenalty": "ប្រមូលពិន័យ",
+      "totalCollect":"សរុបប្រមូល"
     }
   }
 ]

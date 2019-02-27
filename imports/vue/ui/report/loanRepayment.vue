@@ -45,13 +45,12 @@
 
                                     </el-col>
                                     <el-col>
-                                        <el-form-item :label="langConfig['creditOfficer']">
-                                            <el-select filterable v-model="params.creditOfficerId" clearable
+                                        <el-form-item :label="langConfig['type']">
+                                            <el-select filterable v-model="params.paymentType" clearable
                                                        :placeholder="langConfig['all']"
-                                                       remote :remote-method="fetchCreditOfficer"
                                                        style="width: 95%">
                                                 <el-option
-                                                        v-for="item in creditOfficerOptions"
+                                                        v-for="item in paymentTypeOptions"
                                                         :label="item.label"
                                                         :value="item.value" :key="item._id">
                                                 </el-option>
@@ -158,15 +157,13 @@
                         <th>{{langConfig['loanAmount']}}</th>
                         <th>{{langConfig['projectInterest']}}</th>
                         <th>{{langConfig['collectDate']}}</th>
-                        <th>{{langConfig['clearDate']}}</th>
                         <th>{{langConfig['type']}}</th>
                         <th>{{langConfig['address']}}</th>
                         <th>{{langConfig['collectPrinciple']}}</th>
                         <th>{{langConfig['collectInterest']}}</th>
                         <th>{{langConfig['collectAdminFee']}}</th>
-                        <th>{{langConfig['overAmount']}}</th>
-                        <th>{{langConfig['clearPrepaid']}}</th>
                         <th>{{langConfig['collectPenalty']}}</th>
+                        <th>{{langConfig['totalCollect']}}</th>
                     </tr>
                 </thead>
                 <tbody style="margin-bottom: 5px;" v-html="repaymentHtml">
@@ -208,7 +205,7 @@
                     branch: '',
                     area: '',
                     date: null,
-                    creditOfficerId: "",
+                    paymentType: "",
                     exchangeId: ""
                 },
                 rolesArea: '',
@@ -233,6 +230,12 @@
                 isIndeterminate: true,
                 dateHeader: "",
                 currencyHeader: "",
+                paymentTypeOptions: [
+                    {label: "Fee", value: "Fee"},
+                    {label: "Repayment", value: "Repayment"},
+                    {label: "Prepay", value: "Prepay"},
+                    {label: "Pay Off", value: "Pay Off"},
+                ],
 
                 rules: {
                     exchangeId: [{required: true, message: 'Please input Exchange', trigger: 'change'}]

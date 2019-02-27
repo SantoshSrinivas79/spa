@@ -11,6 +11,7 @@ import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
 import moment from "moment";
 import {Pos_SaleOrder} from "../../../imports/collection/posSaleOrder";
+import {Acc_Exchange} from "../../../imports/collection/accExchange";
 
 Meteor.methods({
     loanDisbursementReport(params, translate) {
@@ -87,6 +88,10 @@ Meteor.methods({
                 }
             }
         ]);
+
+
+        let exchange = Acc_Exchange.findOne({_id: params.exchangeId});
+
         data.dateHeader = moment(params.date[0]).format("DD/MM/YYYY") + " To " + moment(params.date[1]).format("DD/MM/YYYY");
         data.currencyHeader = companyDoc.baseCurrency;
         let disbursementHTML = "";
@@ -152,9 +157,9 @@ Meteor.methods({
         }
 
 
-        let grandTotalAmount = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalAmountUSD, params.exchangeId) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalAmountTHB, params.exchangeId) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalAmountKHR, params.exchangeId);
-        let grandTotalFee = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalFeeUSD, params.exchangeId) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalFeeTHB, params.exchangeId) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalFeeKHR, params.exchangeId);
-        let grandTotalInterest = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalInterestUSD, params.exchangeId) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalInterestTHB, params.exchangeId) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalInterestKHR, params.exchangeId);
+        let grandTotalAmount = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalAmountUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalAmountTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalAmountKHR, params.exchangeId, exchange);
+        let grandTotalFee = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalFeeUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalFeeTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalFeeKHR, params.exchangeId, exchange);
+        let grandTotalInterest = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalInterestUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalInterestTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalInterestKHR, params.exchangeId, exchange);
 
 
         disbursementHTML += `

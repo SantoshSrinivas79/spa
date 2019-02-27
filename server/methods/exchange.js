@@ -7,15 +7,17 @@ import {moment} from 'meteor/momentjs:moment';
 import {Acc_Exchange} from '../../imports/collection/accExchange';
 
 Meteor.methods({
-    exchange: function (curFrom, curTo, amount, id) {
-        let ex = Acc_Exchange.findOne({
-            base: curTo,
-            _id: id
-        }, {
-            sort: {
-                _id: -1
-            }
-        });
+    exchange: function (curFrom, curTo, amount, id, ex) {
+        if (ex === undefined) {
+            ex = Acc_Exchange.findOne({
+                base: curTo,
+                _id: id
+            }, {
+                sort: {
+                    _id: -1
+                }
+            });
+        }
         if (curFrom != curTo) {
 
             if (curTo == "KHR") {

@@ -205,7 +205,8 @@
       "interestReminder": "Interest",
       "totalPayOff": "Total Pay Off",
       "interestReminderChargeFull": "Interest Charge",
-      "interestPaid": "Interest Paid"
+      "interestPaid": "Interest Paid",
+      "penaltyClosing": "Penalty Closing"
     }
   },
   {
@@ -415,7 +416,8 @@
       "interestReminder": "ការប្រាក់",
       "totalPayOff": "សរុបបង់ផ្តាច់",
       "interestReminderChargeFull": "ពិន័យការប្រាក់",
-      "interestPaid": "បង់ការប្រាក់"
+      "interestPaid": "បង់ការប្រាក់",
+      "penaltyClosing": "ពិន័យបង់ផ្តាច់"
     }
   }
 ]

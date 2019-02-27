@@ -172,6 +172,8 @@ Meteor.methods({
             repaymentReact(id);
             if (loanDoc.type === "Fee") {
                 removeRepaymentFee(loanDoc);
+            } else if (loanDoc.type === "Pay Off") {
+                removeRepaymentPayOff(loanDoc);
             } else {
                 removeRepayment(loanDoc);
             }
@@ -620,25 +622,28 @@ let makeRepaymentPayOff = function (disbursementId, doc, repaymentId) {
 
             paidDoc.interestPaid = interestPaid >= obj.interestUnpaid ? obj.interestUnpaid : interestPaid;
             interestPaid = interestPaid - paidDoc.interestPaid;
+            interestPaid = interestPaid <= 0 ? 0 : interestPaid;
 
             repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.balanceUnpaid - paidDoc.interestPaid;
             repaymentScheduleDoc.interestUnpaid = repaymentScheduleDoc.interestUnpaid - paidDoc.interestPaid;
 
             paidDoc.principlePaid = amountPaid >= obj.principleUnpaid ? obj.principleUnpaid : amountPaid;
             amountPaid = amountPaid - paidDoc.principlePaid;
+            amountPaid = amountPaid <= 0 ? 0 : amountPaid;
 
             repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.balanceUnpaid - paidDoc.principlePaid;
             repaymentScheduleDoc.principleUnpaid = repaymentScheduleDoc.principleUnpaid - paidDoc.principlePaid;
 
             paid.push(paidDoc);
-            repaymentScheduleDoc.isPaid = !(math.round(repaymentScheduleDoc.balanceUnpaid, 2) > 0);
+            repaymentScheduleDoc.isPaid = true;
             repaymentScheduleDoc.paid = paid;
 
             Loan_RepaymentSchedule.update({_id: obj._id}, {$set: repaymentScheduleDoc});
+
             Loan_Repayment.update({_id: repaymentId}, {
                 $inc: {
                     principlePaid: paidDoc.principlePaid,
-                    interestPaid: paidDoc.interestPaid
+                    paid: paidDoc.interestPaid
                 }
             });
         })
@@ -651,6 +656,36 @@ let makeRepaymentPayOff = function (disbursementId, doc, repaymentId) {
 }
 
 let removeRepayment = function (repaymentDoc) {
+    let repaymentScheduleList = Loan_RepaymentSchedule.find({
+        "paid.repaymentId": repaymentDoc._id,
+        loanId: repaymentDoc.disbursementId
+    }).fetch();
+    if (repaymentScheduleList.length > 0) {
+        repaymentScheduleList.forEach((obj) => {
+            let newRepaymentScheduleDoc = obj;
+            let newPaid = [];
+            if (obj.paid.length > 0) {
+                obj.paid.forEach((ob) => {
+                    if (ob.repaymentId === repaymentDoc._id) {
+                        newRepaymentScheduleDoc.balanceUnpaid = newRepaymentScheduleDoc.balanceUnpaid + ob.principlePaid + ob.interestPaid;
+                        newRepaymentScheduleDoc.principleUnpaid = newRepaymentScheduleDoc.principleUnpaid + ob.principlePaid;
+                        newRepaymentScheduleDoc.interestUnpaid = newRepaymentScheduleDoc.interestUnpaid + ob.interestPaid;
+                    } else {
+                        newPaid.push(ob);
+                    }
+                })
+
+                newRepaymentScheduleDoc.isPaid = !(math.round(newRepaymentScheduleDoc.balanceUnpaid, 2) > 0);
+
+                newRepaymentScheduleDoc.paid = newPaid;
+                Loan_RepaymentSchedule.update({_id: obj._id}, {$set: newRepaymentScheduleDoc});
+            }
+        })
+        Loan_Disbursement.update({_id: repaymentDoc.disbursementId}, {$set: {status: "Active"}});
+    }
+}
+
+let removeRepaymentPayOff = function (repaymentDoc) {
     let repaymentScheduleList = Loan_RepaymentSchedule.find({
         "paid.repaymentId": repaymentDoc._id,
         loanId: repaymentDoc.disbursementId

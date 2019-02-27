@@ -64,6 +64,10 @@
                             :label="langConfig['penaltyPaid']">
                     </el-table-column>
                     <el-table-column
+                            prop="interestReminderChargePaid"
+                            :label="langConfig['penaltyClosing']">
+                    </el-table-column>
+                    <el-table-column
                             prop="totalPaid"
                             :label="langConfig['totalPaid']">
                     </el-table-column>
