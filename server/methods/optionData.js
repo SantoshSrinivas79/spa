@@ -151,7 +151,13 @@ Meteor.methods({
             q = q.replace(/[/\\]/g, '');
             let reg = new RegExp(q, 'mi');
             selector.$or = [
-                {name: {$regex: reg}},
+                {name: {$regex: reg, $options: 'mi'}},
+                {
+                    code: {
+                        $regex: reg,
+                        $options: 'mi'
+                    }
+                },
                 {_id: q}
             ];
         }

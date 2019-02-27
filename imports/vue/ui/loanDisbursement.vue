@@ -133,7 +133,7 @@
 
                         <el-form-item :label="langConfig['client']" prop="clientId">
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
+                                       v-model="loanDisbursementForm.clientId" remote :remote-method="customerOpt"
                                        :placeholder="langConfig['client']">
                                 <el-option
                                         v-for="item in clientOption"
@@ -146,7 +146,7 @@
                         </el-form-item>
                         <el-form-item :label="langConfig['product']" prop="productId">
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="loanDisbursementForm.productId" :remote-method="productOpt"
+                                       v-model="loanDisbursementForm.productId" remote :remote-method="productOpt"
                                        :placeholder="langConfig['product']">
                                 <el-option
                                         v-for="item in productOption"
@@ -159,7 +159,7 @@
                         </el-form-item>
                         <el-form-item :label="langConfig['creditOfficer']" prop="coId">
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
+                                       v-model="loanDisbursementForm.coId" remote :remote-method="creditOfficerOpt"
                                        :placeholder="langConfig['creditOfficer']">
                                 <el-option
                                         v-for="item in creditOfficerOption"
@@ -243,7 +243,7 @@
                         </el-form-item>
                         <el-form-item :label="langConfig['client']" prop="clientId">
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="loanDisbursementForm.clientId" :remote-method="customerOpt"
+                                       v-model="loanDisbursementForm.clientId" remote :remote-method="customerOpt"
                                        :placeholder="langConfig['client']">
                                 <el-option
                                         v-for="item in clientOption"
@@ -256,7 +256,7 @@
                         </el-form-item>
                         <el-form-item :label="langConfig['product']" prop="productId">
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="loanDisbursementForm.productId" :remote-method="productOpt"
+                                       v-model="loanDisbursementForm.productId" remote :remote-method="productOpt"
                                        :placeholder="langConfig['product']">
                                 <el-option
                                         v-for="item in productOption"
@@ -270,7 +270,7 @@
 
                         <el-form-item :label="langConfig['creditOfficer']" prop="coId">
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="loanDisbursementForm.coId" :remote-method="creditOfficerOpt"
+                                       v-model="loanDisbursementForm.coId" remote :remote-method="creditOfficerOpt"
                                        :placeholder="langConfig['creditOfficer']">
                                 <el-option
                                         v-for="item in creditOfficerOption"

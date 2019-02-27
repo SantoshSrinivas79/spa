@@ -163,10 +163,11 @@
                                         </el-input>
                                     </el-form-item>
                                 </th>
+
                                 <th style="width: 20% !important;">
                                     <el-form-item label="">
                                         <el-select style="display: block !important;"
-                                                   filterable clearable :remote-method="itemOpt"
+                                                   filterable clearable remote :remote-method="itemOpt"
                                                    v-model="posBillForm.itemId" :disabled="disabledItem"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
@@ -542,7 +543,7 @@
                                     <el-form-item label="">
                                         <el-select style="display: block !important;" :disabled="disabledItem"
                                                    filterable clearable
-                                                   v-model="posBillForm.itemId" :remote-method="itemOpt"
+                                                   v-model="posBillForm.itemId" remote :remote-method="itemOpt"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
                                                     v-for="item in itemOption"

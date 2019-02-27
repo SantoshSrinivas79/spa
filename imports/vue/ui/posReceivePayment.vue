@@ -337,7 +337,7 @@
                                            filterable clearable
                                            v-model="posReceivePaymentForm.customerId" remote
                                            :disabled="disabledCustomer"
-                                           :remote-method="customerOpt"
+                                           remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
                                     <el-option
@@ -551,7 +551,7 @@
                                            filterable clearable
                                            v-model="posReceivePaymentForm.customerId" remote
                                            :disabled="disabledCustomer"
-                                           :remote-method="customerSaleOrderOpt"
+                                           remote :remote-method="customerSaleOrderOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
                                     <el-option

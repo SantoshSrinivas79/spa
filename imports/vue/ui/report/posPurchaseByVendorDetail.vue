@@ -87,7 +87,7 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['category']">
                                             <el-select filterable v-model="params.categoryId"
-                                                       :remote-method="categoryOpt"
+                                                       remote :remote-method="categoryOpt"
                                                        :placeholder="langConfig['all']" clearable
                                                        style="width: 95%">
                                                 <el-option
@@ -101,7 +101,7 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['product']">
                                             <el-select filterable v-model="params.productId" clearable
-                                                       :placeholder="langConfig['all']" :remote-method="productOpt"
+                                                       :placeholder="langConfig['all']" remote :remote-method="productOpt"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in productOptions"

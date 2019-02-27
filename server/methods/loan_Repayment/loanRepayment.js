@@ -153,6 +153,9 @@ Meteor.methods({
             repaymentReact(isInserted);
             if (data.type === "Fee") {
                 makeRepaymentFee(data);
+            } else if (data.type === "Pay Off") {
+                makeRepaymentPayOff(data.disbursementId, data, isInserted);
+
             } else {
                 makeRepayment(data.disbursementId, data, isInserted);
             }
@@ -359,17 +362,17 @@ Meteor.methods({
     getClosingPaid(disbursementId, date) {
         let selector = {};
         selector.loanId = disbursementId;
-        selector.date = {$gt: moment(date).endOf("day").toDate()};
+        //selector.date = {$gt: moment(date).endOf("day").toDate()};
         selector.isPaid = false;
 
-        let haveRepayLessThanDoc = Loan_RepaymentSchedule.find({
+        /*let haveRepayLessThanDoc = Loan_RepaymentSchedule.find({
             loanId: disbursementId,
             isPaid: false,
             date: {$lte: moment(date).endOf("day").toDate()}
         }).fetch();
         if (haveRepayLessThanDoc.length > 0) {
             return [];
-        }
+        }*/
 
         let repay = Loan_RepaymentSchedule.aggregate([
             {$match: selector},
@@ -383,6 +386,7 @@ Meteor.methods({
                     balanceUnpaid: {$sum: "$balanceUnpaid"},
                     principleUnpaid: {$sum: "$principleUnpaid"},
                     interestUnpaid: {$sum: "$interestUnpaid"},
+                    interestReminder: {$first: "$interestUnpaid"},
                     clientId: {$first: "$clientId"},
                     productId: {$first: "$productId"},
                     currencyId: {$first: "$currencyId"},
@@ -413,6 +417,19 @@ Meteor.methods({
             {
                 $unwind: {
                     path: "$penaltyDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_penaltyClosing",
+                    localField: "productDoc.penaltyClosingId",
+                    foreignField: "_id",
+                    as: "penaltyClosingDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$penaltyClosingDoc",
                     preserveNullAndEmptyArrays: true
                 }
             }, {
@@ -573,9 +590,63 @@ let makeRepayment = function (disbursementId, doc, repaymentId) {
                     }
                 });
             } else {
+                let checkPayOff = Loan_RepaymentSchedule.find({loanId: disbursementId, isPaid: false}).fetch();
+                if (checkPayOff.length === 0) {
+                    Loan_Disbursement.update({_id: disbursementId}, {$set: {status: "Pay Off"}});
+                }
                 return false;
             }
         })
+
+        let checkPayOff = Loan_RepaymentSchedule.find({loanId: disbursementId, isPaid: false}).fetch();
+        if (checkPayOff.length === 0) {
+            Loan_Disbursement.update({_id: disbursementId}, {$set: {status: "Pay Off"}});
+        }
+    }
+}
+
+let makeRepaymentPayOff = function (disbursementId, doc, repaymentId) {
+    let repaymentScheduleList = Loan_RepaymentSchedule.find({loanId: disbursementId, isPaid: false}).fetch();
+    let amountPaid = doc.paid;
+    let interestPaid = doc.interestPaid;
+    if (repaymentScheduleList.length > 0) {
+        repaymentScheduleList.forEach((obj) => {
+
+            let repaymentScheduleDoc = obj;
+            let paid = obj.paid || [];
+            let paidDoc = {};
+            paidDoc.repaymentDate = moment(doc.repaymentDate).startOf("day").add(12, "hour").toDate();
+            paidDoc.repaymentId = repaymentId;
+
+            paidDoc.interestPaid = interestPaid >= obj.interestUnpaid ? obj.interestUnpaid : interestPaid;
+            interestPaid = interestPaid - paidDoc.interestPaid;
+
+            repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.balanceUnpaid - paidDoc.interestPaid;
+            repaymentScheduleDoc.interestUnpaid = repaymentScheduleDoc.interestUnpaid - paidDoc.interestPaid;
+
+            paidDoc.principlePaid = amountPaid >= obj.principleUnpaid ? obj.principleUnpaid : amountPaid;
+            amountPaid = amountPaid - paidDoc.principlePaid;
+
+            repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.balanceUnpaid - paidDoc.principlePaid;
+            repaymentScheduleDoc.principleUnpaid = repaymentScheduleDoc.principleUnpaid - paidDoc.principlePaid;
+
+            paid.push(paidDoc);
+            repaymentScheduleDoc.isPaid = !(math.round(repaymentScheduleDoc.balanceUnpaid, 2) > 0);
+            repaymentScheduleDoc.paid = paid;
+
+            Loan_RepaymentSchedule.update({_id: obj._id}, {$set: repaymentScheduleDoc});
+            Loan_Repayment.update({_id: repaymentId}, {
+                $inc: {
+                    principlePaid: paidDoc.principlePaid,
+                    interestPaid: paidDoc.interestPaid
+                }
+            });
+        })
+
+        let checkPayOff = Loan_RepaymentSchedule.find({loanId: disbursementId, isPaid: false}).fetch();
+        if (checkPayOff.length === 0) {
+            Loan_Disbursement.update({_id: disbursementId}, {$set: {status: "Pay Off"}});
+        }
     }
 }
 
@@ -605,6 +676,7 @@ let removeRepayment = function (repaymentDoc) {
                 Loan_RepaymentSchedule.update({_id: obj._id}, {$set: newRepaymentScheduleDoc});
             }
         })
+        Loan_Disbursement.update({_id: repaymentDoc.disbursementId}, {$set: {status: "Active"}});
     }
 }
 

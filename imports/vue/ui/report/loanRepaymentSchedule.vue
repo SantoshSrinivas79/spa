@@ -47,7 +47,7 @@
                                     <el-col :span="12">
                                         <el-form-item :label="langConfig['client']" prop="disbursementId">
                                             <el-select filterable v-model="params.disbursementId" clearable
-                                                       :placeholder="langConfig['all']" :remote-method="clientOpt"
+                                                       :placeholder="langConfig['all']" remote :remote-method="clientOpt"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in clientOptions"

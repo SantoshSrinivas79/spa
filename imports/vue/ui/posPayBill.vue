@@ -315,7 +315,7 @@
                                 <el-select style="display: block !important;"
                                            filterable clearable
                                            v-model="posPayBillForm.vendorId" remote
-                                           :remote-method="vendorOpt"
+                                           remote :remote-method="vendorOpt"
                                            :loading="loading"
                                            :disabled="disabledVendor"
 

@@ -172,7 +172,7 @@
                         <template slot-scope="scope">
 
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="scope.row.productId" :remote-method="productOpt"
+                                       v-model="scope.row.productId" remote :remote-method="productOpt"
                                        :placeholder="langConfig['product']"
                                        @change="handleEditConvert(scope.$index, scope.row)"
                             >
@@ -281,7 +281,7 @@
                         <template slot-scope="scope">
 
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="scope.row.productId" :remote-method="productOpt"
+                                       v-model="scope.row.productId" remote :remote-method="productOpt"
                                        :placeholder="langConfig['product']"
                                        @change="handleEditConvert(scope.$index, scope.row)"
                             >

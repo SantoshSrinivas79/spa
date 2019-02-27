@@ -200,7 +200,12 @@
       "dayLate": "Day Late",
       "type": "Payment Type",
       "balanceDue": "Balance Due",
-      "amountNeedToPaid": "Amount Need To Paid"
+      "amountNeedToPaid": "Amount Need To Paid",
+      "interestReminderCharge": "Charge",
+      "interestReminder": "Interest",
+      "totalPayOff": "Total Pay Off",
+      "interestReminderChargeFull": "Interest Charge",
+      "interestPaid": "Interest Paid"
     }
   },
   {
@@ -405,7 +410,12 @@
       "dayLate": "ចំនួនថ្ងៃយឺត",
       "type": "ប្រភេទបង់ប្រាក់",
       "balanceDue": "សមតុល្យត្រូវបង់",
-      "amountNeedToPaid": "ទឹកប្រាក់ត្រូវបង់"
+      "amountNeedToPaid": "ទឹកប្រាក់ត្រូវបង់",
+      "interestReminderCharge": "ពិន័យការប្រាក់",
+      "interestReminder": "ការប្រាក់",
+      "totalPayOff": "សរុបបង់ផ្តាច់",
+      "interestReminderChargeFull": "ពិន័យការប្រាក់",
+      "interestPaid": "បង់ការប្រាក់"
     }
   }
 ]

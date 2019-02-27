@@ -262,7 +262,7 @@
                                 <el-select style="display: block !important;"
                                            filterable
                                            v-model="schBusPaymentForm.busRegisterId" remote
-                                           :remote-method="busRegisterOpt"
+                                           remote :remote-method="busRegisterOpt"
                                            :placeholder="langConfig['chooseItem']">
                                     <el-option
                                             v-for="item in busRegisterList"

@@ -112,7 +112,7 @@
                     <el-col>
                         <el-form-item :label="langConfig['subject']" prop="subjectId">
                             <el-select filterable v-model="params.subjectId" clearable
-                                       :placeholder="langConfig['selectOne']" :remote-method="fetchSubject"
+                                       :placeholder="langConfig['selectOne']" remote :remote-method="fetchSubject"
                                        style="width: 95%">
                                 <el-option
                                         v-for="item in subjectOptions"

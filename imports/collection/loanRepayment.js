@@ -48,6 +48,18 @@ Loan_Repayment.schema = new SimpleSchema({
         type: Number,
         decimal: true
     },
+    interestReminderCharge: {
+        type: Number,
+        decimal: true,
+        defaultValue: 0,
+        optional: true
+    },
+    interestReminderChargePaid: {
+        type: Number,
+        decimal: true,
+        defaultValue: 0,
+        optional: true
+    },
     totalPaid: {
         type: Number,
         decimal: true

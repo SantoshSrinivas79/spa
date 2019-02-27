@@ -45,7 +45,7 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['class']">
                                             <el-select filterable v-model="params.classId" clearable
-                                                       :remote-method="fetchClass"
+                                                       remote :remote-method="fetchClass"
                                                        :placeholder="langConfig['all']"
                                                        style="width: 95%">
                                                 <el-option

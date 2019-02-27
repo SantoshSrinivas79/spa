@@ -48,7 +48,7 @@
                                         <el-form-item :label="langConfig['creditOfficer']">
                                             <el-select filterable v-model="params.creditOfficerId" clearable
                                                        :placeholder="langConfig['all']"
-                                                       :remote-method="fetchCreditOfficer"
+                                                       remote :remote-method="fetchCreditOfficer"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in creditOfficerOptions"

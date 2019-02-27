@@ -149,7 +149,7 @@
                 </el-form-item>
                 <el-form-item :label="langConfig['product']" prop="productId">
                     <el-select style="display: block !important;" filterable clearable
-                               v-model="posConvertInventoryForm.productId" :remote-method="productOpt"
+                               v-model="posConvertInventoryForm.productId" remote :remote-method="productOpt"
                                :placeholder="langConfig['product']">
                         <el-option
                                 v-for="item in productOption"
@@ -179,7 +179,7 @@
                         <template slot-scope="scope">
 
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="scope.row.productId" :remote-method="productOpt"
+                                       v-model="scope.row.productId" remote :remote-method="productOpt"
                                        :placeholder="langConfig['product']"
                                        @change="handleEditConvert(scope.$index, scope.row)"
                             >
@@ -273,7 +273,7 @@
                 </el-form-item>
                 <el-form-item :label="langConfig['product']" prop="productId">
                     <el-select style="display: block !important;" filterable clearable
-                               v-model="posConvertInventoryForm.productId" :remote-method="productOpt"
+                               v-model="posConvertInventoryForm.productId" remote :remote-method="productOpt"
                                :placeholder="langConfig['product']">
                         <el-option
                                 v-for="item in productOption"
@@ -303,7 +303,7 @@
                         <template slot-scope="scope">
 
                             <el-select style="display: block !important;" filterable clearable
-                                       v-model="scope.row.productId" :remote-method="productOpt"
+                                       v-model="scope.row.productId" remote :remote-method="productOpt"
                                        :placeholder="langConfig['product']"
                                        @change="handleEditConvert(scope.$index, scope.row)"
                             >

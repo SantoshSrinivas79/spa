@@ -48,14 +48,19 @@
                                     &nbsp;: {{repaymentDoc && repaymentDoc.interestUnpaid || "" |
                                     numFormatBaseCurrency(currencyId)}}
                                     {{currencySymbol}}
+
+                                    <span v-if="isPayOff">&nbsp;&nbsp;&nbsp; ( {{langConfig['interestReminder']}} : {{interestReminder | numFormatBaseCurrency(currencyId)}}{{currencySymbol}} , {{langConfig['interestReminderCharge']}} : {{penaltyInterest | numFormatBaseCurrency(currencyId)}}{{currencySymbol}} )</span>
                                 </el-form-item>
                                 <el-form-item :label="langConfig['dayLate']" style="text-align: left !important;">
                                     &nbsp;: {{dayLate}} ថ្ងៃ
+                                    <span>&nbsp;&nbsp;&nbsp; ( {{langConfig['penalty']}} : {{loanRepaymentForm.penalty}} {{currencySymbol}})</span>
                                 </el-form-item>
                                 <el-form-item :label="langConfig['totalDue']" style="text-align: left !important;">
                                     <b>&nbsp;: {{repaymentDoc && repaymentDoc.balanceUnpaid || "" |
                                         numFormatBaseCurrency(currencyId)}}
-                                        {{currencySymbol}}</b>
+                                        {{currencySymbol}}
+                                        <span v-if="isPayOff">&nbsp;&nbsp;&nbsp; ( {{langConfig['totalPayOff']}} : {{loanRepaymentForm.paid | numFormatBaseCurrency(currencyId)}}{{currencySymbol}} )</span>
+                                    </b>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12" v-if="isFee">
@@ -103,7 +108,7 @@
 
                                 <el-form-item :label="langConfig['client']" prop="loanDisbursementId">
                                     <el-select style="display: block !important;" filterable clearable
-                                               v-model="loanRepaymentForm.disbursementId" :remote-method="customerOpt"
+                                               v-model="loanRepaymentForm.disbursementId" remote :remote-method="customerOpt"
                                                :placeholder="langConfig['client']">
                                         <el-option
                                                 v-for="item in disbursementOption"
@@ -128,16 +133,45 @@
                                 <el-form-item :label="langConfig['penalty']" prop="penalty">
                                     <el-input v-model.number="loanRepaymentForm.penaltyPaid" type='number'
                                               @keyup.native="getTotal()" @change.native="getTotal()"
-                                              :disabled="isFee"
+                                              :disabled="isDisablePenalty" :min="0"
+                                              :max="$_numeral(loanRepaymentForm.penalty).value()"
                                     >
-                                    <el-button slot="append">
-                                        <b>{{loanRepaymentForm.penalty}} {{currencySymbol}}</b>
-                                    </el-button>
+                                        <el-button slot="append">
+                                            <b>{{loanRepaymentForm.penalty}} {{currencySymbol}}</b>
+                                        </el-button>
+                                    </el-input>
+                                </el-form-item>
+
+                                <el-form-item :label="langConfig['interestReminderChargeFull']"
+                                              prop="interestReminderCharge"
+                                              v-if="isPayOff">
+                                    <el-input v-model.number="loanRepaymentForm.interestReminderCharge" type='number'
+                                              @keyup.native="getTotal()" @change.native="getTotal()"
+                                              :min="0"
+                                              :max="$_numeral(penaltyInterest).value()"
+                                    >
+                                        <el-button slot="append">
+                                            <b>{{penaltyInterest | numFormatBaseCurrency(currencyId)}}
+                                                {{currencySymbol}}</b>
+                                        </el-button>
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item :label="langConfig['interestPaid']" prop="interestPaid" v-if="isPayOff">
+                                    <el-input v-model.number="loanRepaymentForm.interestPaid" type='number'
+                                              @keyup.native="getTotal()" @change.native="getTotal()"
+                                              :min="0"
+                                              :max="$_numeral(interestReminder).value()"
+                                    >
+                                        <el-button slot="append">
+                                            <b>{{interestReminder | numFormatBaseCurrency(currencyId)}}
+                                                {{currencySymbol}}</b>
+                                        </el-button>
                                     </el-input>
                                 </el-form-item>
                                 <hr>
                                 <el-form-item :label="langConfig['paid']" prop="paid">
-                                    <el-input v-model.number="loanRepaymentForm.paid" type='number' :disabled="isFee"
+                                    <el-input v-model.number="loanRepaymentForm.paid" type='number'
+                                              :disabled="isDisablePaid" :min="0"
                                               @keyup.native="getTotal()" @change.native="getTotal()">
                                         <el-button slot="append">
                                             <b>{{currencySymbol}}</b>
@@ -212,6 +246,8 @@
                     note: "",
                     clientId: "",
                     type: "Repayment",
+                    interestPaid: 0,
+                    interestReminderCharge: 0,
                     _id: ""
                 },
                 rules: {},
@@ -229,7 +265,12 @@
                 balance: 0,
                 balanceNeedToPaidShow: 0,
                 isFee: false,
-                isPrepay: false
+                isPrepay: false,
+                isPayOff: false,
+                isDisablePenalty: false,
+                isDisablePaid: false,
+                penaltyInterest: 0,
+                interestReminder: 0
             }
         },
         watch: {
@@ -320,7 +361,7 @@
                         vm.loanRepaymentForm.penalty = 0;
                         vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
                         vm.currencyId = result.currencyId;
-
+                        vm.loanRepaymentForm.penaltyPaid = 0;
                         vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, result.currencyId)).value();
                         this.getTotal();
                     }
@@ -333,12 +374,48 @@
                         vm.repaymentDoc = result;
                         vm.loanRepaymentForm.clientId = result.clientId;
 
-                        vm.dayLate = 0;
                         vm.loanRepaymentForm.penalty = 0;
                         vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
                         vm.currencyId = result.currencyId;
 
-                        vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, result.currencyId)).value();
+                        let totalPayOff = 0;
+                        totalPayOff += result.principleUnpaid || 0;
+                        vm.penaltyInterest = 0;
+                        if (result.isAllowClosing === false) {
+                            let penaltyInterest = result.penaltyClosingDoc.interestReminderCharge * result.interestUnpaid / 100;
+                            vm.loanRepaymentForm.interestReminderCharge = penaltyInterest;
+                            vm.penaltyInterest = penaltyInterest;
+                        }
+
+                        vm.interestReminder = result.interestReminder;
+                        vm.loanRepaymentForm.interestPaid = result.interestReminder;
+
+                        if (vm.loanRepaymentForm.repaymentDate && result.date) {
+                            vm.dayLate = moment(vm.loanRepaymentForm.repaymentDate).startOf("days").add(12, "hours").diff(result.date, "days");
+                        }
+                        vm.dayLate = vm.dayLate > 0 ? vm.dayLate : 0;
+
+                        if (result && result.penaltyDoc && vm.dayLate > result.penaltyDoc.graceDay) {
+                            let penaltyPerday;
+                            if (result.currencyId === "USD") {
+                                penaltyPerday = result.penaltyDoc.amountUSD;
+                            } else if (result.currencyId === "KHR") {
+                                penaltyPerday = result.penaltyDoc.amountKHR;
+                            } else if (result.currencyId === "THB") {
+                                penaltyPerday = result.penaltyDoc.amountTHB;
+                            }
+
+                            if (result.penaltyDoc.type === "A") {
+                                vm.loanRepaymentForm.penalty = formatCurrencyLast((vm.dayLate - result.penaltyDoc.graceDay) * penaltyPerday, result.currencyId);
+                            } else if (result.penaltyDoc.type === "P") {
+                                vm.loanRepaymentForm.penalty = formatCurrencyLast((vm.dayLate - result.penaltyDoc.graceDay) * (penaltyPerday * result.principleUnpaid / 100), result.currencyId);
+                            }
+                        } else {
+                            vm.loanRepaymentForm.penalty = 0;
+                        }
+
+                        vm.loanRepaymentForm.penaltyPaid = vm.$_numeral(vm.loanRepaymentForm.penalty).value();
+                        vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(totalPayOff, result.currencyId)).value();
                         this.getTotal();
                     }
                 })
@@ -364,7 +441,7 @@
             },
             getTotal() {
                 let vm = this;
-                vm.balanceNeedToPaidShow = formatCurrencyLast(vm.loanRepaymentForm.penaltyPaid + vm.loanRepaymentForm.paid, vm.repaymentDoc.currencyId);
+                vm.balanceNeedToPaidShow = formatCurrencyLast(vm.loanRepaymentForm.penaltyPaid + vm.loanRepaymentForm.paid + vm.loanRepaymentForm.interestPaid + vm.loanRepaymentForm.interestReminderCharge, vm.repaymentDoc.currencyId);
             },
             getVoucherByRoleAndDate(date) {
                 let vm = this;
@@ -384,17 +461,38 @@
                             vm.dayLate = 0;
                             vm.getCalculateFeePaid(id);
                             vm.loanRepaymentForm.type = "Fee";
+                            vm.isDisablePaid = true;
+                            vm.isDisablePenalty = true;
                         } else {
                             if (vm.loanRepaymentForm.type === "Repayment") {
                                 vm.getCalculateAmountPaid(id);
+                                vm.isDisablePaid = false;
+                                vm.isDisablePenalty = false;
+                                vm.isPayOff = false;
+                                vm.isPrepay = false;
                             } else if (vm.loanRepaymentForm.type === "Prepay") {
+                                vm.isDisablePaid = false;
+                                vm.isDisablePenalty = true;
                                 vm.getCalculatePrepayPaid(id);
+                                vm.isPayOff = false;
+                                vm.isPrepay = true;
                             } else if (vm.loanRepaymentForm.type === "Pay Off") {
                                 vm.getCalculateClosingPaid(id);
+                                vm.isDisablePaid = true;
+                                vm.isDisablePenalty = false;
+                                vm.loanRepaymentForm.type = "Pay Off";
+                                vm.isPayOff = true;
+                                vm.isPrepay = false;
+
+
                             } else {
                                 if (vm.isFee === false) {
                                     vm.getCalculateAmountPaid(id);
                                     vm.loanRepaymentForm.type = "Repayment";
+                                    vm.isDisablePaid = false;
+                                    vm.isDisablePenalty = false;
+                                    vm.isPayOff = false;
+                                    vm.isPrepay = false;
                                 }
                             }
 
@@ -468,6 +566,12 @@
                 this.loanRepaymentForm.penalty = 0;
                 this.loanRepaymentForm.penaltyPaid = 0;
                 this.balanceNeedToPaidShow = 0;
+
+                this.loanRepaymentForm.interestPaid = 0;
+                this.loanRepaymentForm.interestReminderCharge = 0;
+                this.penaltyInterest = 0;
+                this.interestReminder = 0;
+
                 this.loanRepaymentForm.note = "";
                 this.repaymentDoc = {};
 

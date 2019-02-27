@@ -174,7 +174,7 @@
                                 <th style="width: 20% !important;">
                                     <el-form-item label="">
                                         <el-select style="display: block !important;"
-                                                   filterable clearable :remote-method="itemOpt"
+                                                   filterable clearable remote :remote-method="itemOpt"
                                                    v-model="posSaleOrderForm.itemId" :disabled="disabledItem"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
@@ -362,7 +362,7 @@
                             <el-form-item :label="langConfig['customer']" prop="customerId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posSaleOrderForm.customerId" remote :remote-method="customerOpt"
+                                           v-model="posSaleOrderForm.customerId" remote remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
                                     <el-option
@@ -532,7 +532,7 @@
                                     <el-form-item label="">
                                         <el-select style="display: block !important;"
                                                    filterable clearable
-                                                   v-model="posSaleOrderForm.itemId" :remote-method="itemOpt"
+                                                   v-model="posSaleOrderForm.itemId" remote :remote-method="itemOpt"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
                                                     v-for="item in itemOption"
@@ -715,7 +715,7 @@
                             <el-form-item :label="langConfig['customer']" prop="customerId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posSaleOrderForm.customerId" remote :remote-method="customerOpt"
+                                           v-model="posSaleOrderForm.customerId" remote remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
                                     <el-option

@@ -138,7 +138,7 @@
                                     <el-form-item label="">
 
                                         <el-select style="display: block !important;"
-                                                   filterable clearable :remote-method="itemOpt"
+                                                   filterable clearable remote :remote-method="itemOpt"
                                                    v-model="posTransferInventoryForm.itemId" :disabled="disableItem"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
@@ -340,7 +340,7 @@
                                     <el-form-item label="">
 
                                         <el-select style="display: block !important;"
-                                                   filterable clearable :remote-method="itemOpt"
+                                                   filterable clearable remote :remote-method="itemOpt"
                                                    v-model="posTransferInventoryForm.itemId" :disabled="disableItem"
                                                    :placeholder="langConfig['chooseItem']">
                                             <el-option
