@@ -286,6 +286,100 @@ Meteor.methods({
                         loanId: "$loanId"
                     },
                     isAllowClosing: {$first: "$isAllowClosing"},
+                    balanceUnpaid: {$first: "$balanceUnpaid"},
+                    principleUnpaid: {$first: "$principleUnpaid"},
+                    interestUnpaid: {$first: "$interestUnpaid"},
+                    clientId: {$first: "$clientId"},
+                    productId: {$first: "$productId"},
+                    currencyId: {$first: "$currencyId"},
+                    date: {$first: "$date"},
+                    installmentList: {$first: "$installment"}
+                }
+            }, {
+                $lookup: {
+                    from: "loan_product",
+                    localField: "productId",
+                    foreignField: "_id",
+                    as: "productDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$productDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_penalty",
+                    localField: "productDoc.penaltyId",
+                    foreignField: "_id",
+                    as: "penaltyDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$penaltyDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "pos_customer",
+                    localField: "clientId",
+                    foreignField: "_id",
+                    as: "clientDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$clientDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_disbursement",
+                    localField: "_id.loanId",
+                    foreignField: "_id",
+                    as: "disbursementDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$disbursementDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+        ]);
+
+        if (repay && repay.length > 0) {
+            return repay[0];
+        } else {
+            return {};
+        }
+    },
+    getClosingPaid(disbursementId, date) {
+        let selector = {};
+        selector.loanId = disbursementId;
+        selector.date = {$gt: moment(date).endOf("day").toDate()};
+        selector.isPaid = false;
+
+        let haveRepayLessThanDoc = Loan_RepaymentSchedule.find({
+            loanId: disbursementId,
+            isPaid: false,
+            date: {$lte: moment(date).endOf("day").toDate()}
+        }).fetch();
+        if (haveRepayLessThanDoc.length > 0) {
+            return [];
+        }
+
+        let repay = Loan_RepaymentSchedule.aggregate([
+            {$match: selector},
+            {$sort: {installment: 1}},
+            {
+                $group: {
+                    _id: {
+                        loanId: "$loanId"
+                    },
+                    isAllowClosing: {$first: "$isAllowClosing"},
                     balanceUnpaid: {$sum: "$balanceUnpaid"},
                     principleUnpaid: {$sum: "$principleUnpaid"},
                     interestUnpaid: {$sum: "$interestUnpaid"},

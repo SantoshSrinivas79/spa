@@ -120,7 +120,7 @@
                                         <el-radio-button label="Fee" v-if="isFee"></el-radio-button>
                                         <el-radio-button label="Repayment" v-if="!isFee"></el-radio-button>
                                         <el-radio-button label="Prepay" v-if="!isFee"></el-radio-button>
-                                        <el-radio-button label="Closing" v-if="!isFee"></el-radio-button>
+                                        <el-radio-button label="Pay Off" v-if="!isFee"></el-radio-button>
                                         <el-radio-button label="Write Off" v-if="!isFee"></el-radio-button>
                                     </el-radio-group>
                                 </el-form-item>
@@ -128,10 +128,11 @@
                                 <el-form-item :label="langConfig['penalty']" prop="penalty">
                                     <el-input v-model.number="loanRepaymentForm.penaltyPaid" type='number'
                                               @keyup.native="getTotal()" @change.native="getTotal()"
-                                              :disabled="isFee">
-                                        <el-button slot="append">
-                                            <b>{{loanRepaymentForm.penalty}} {{currencySymbol}}</b>
-                                        </el-button>
+                                              :disabled="isFee"
+                                    >
+                                    <el-button slot="append">
+                                        <b>{{loanRepaymentForm.penalty}} {{currencySymbol}}</b>
+                                    </el-button>
                                     </el-input>
                                 </el-form-item>
                                 <hr>
@@ -227,7 +228,8 @@
                 dayLate: 0,
                 balance: 0,
                 balanceNeedToPaidShow: 0,
-                isFee: false
+                isFee: false,
+                isPrepay: false
             }
         },
         watch: {
@@ -310,6 +312,24 @@
                 let vm = this;
                 Meteor.call("getPrepayToPaid", disbursementId, vm.loanRepaymentForm.repaymentDate, (err, result) => {
                     if (result) {
+                        vm.isPrepay = true;
+                        vm.repaymentDoc = result;
+                        vm.loanRepaymentForm.clientId = result.clientId;
+
+                        vm.dayLate = 0;
+                        vm.loanRepaymentForm.penalty = 0;
+                        vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
+                        vm.currencyId = result.currencyId;
+
+                        vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, result.currencyId)).value();
+                        this.getTotal();
+                    }
+                })
+            },
+            getCalculateClosingPaid(disbursementId) {
+                let vm = this;
+                Meteor.call("getClosingPaid", disbursementId, vm.loanRepaymentForm.repaymentDate, (err, result) => {
+                    if (result) {
                         vm.repaymentDoc = result;
                         vm.loanRepaymentForm.clientId = result.clientId;
 
@@ -369,6 +389,8 @@
                                 vm.getCalculateAmountPaid(id);
                             } else if (vm.loanRepaymentForm.type === "Prepay") {
                                 vm.getCalculatePrepayPaid(id);
+                            } else if (vm.loanRepaymentForm.type === "Pay Off") {
+                                vm.getCalculateClosingPaid(id);
                             } else {
                                 if (vm.isFee === false) {
                                     vm.getCalculateAmountPaid(id);
