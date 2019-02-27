@@ -44,7 +44,7 @@ Meteor.methods({
                 printInvoiceSmallRestaurantHtml += `
                     <tr style="padding: 2px !important;">
                             <td style="border: 0px !important;">${ind}</td>
-                            <td style="text-align: left !important;border: 0px !important;">${obj.itemName}</td>
+                            <td style="text-align: left !important;border: 0px !important;">${obj.itemName.split(":")[1].trim()}</td>
                             <td style="border: 0px !important;">${obj.totalUnit}</td>
                             <td style="border: 0px !important;">${formatCurrency(obj.price, companyDoc.baseCurrency)}</td>
                             <td style="border: 0px !important;">${formatCurrency(obj.amount, companyDoc.baseCurrency)}</td>
