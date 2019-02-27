@@ -335,8 +335,7 @@
                             <el-form-item :label="langConfig['customer']" prop="customerId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posReceivePaymentForm.customerId" remote
-                                           :disabled="disabledCustomer"
+                                           v-model="posReceivePaymentForm.customerId"                                            :disabled="disabledCustomer"
                                            remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">

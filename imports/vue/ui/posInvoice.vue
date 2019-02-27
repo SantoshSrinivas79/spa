@@ -422,7 +422,7 @@
                             <el-form-item :label="langConfig['customer']" prop="customerId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posInvoiceForm.customerId" remote remote :remote-method="customerOpt"
+                                           v-model="posInvoiceForm.customerId" remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
                                     <el-option
@@ -825,7 +825,7 @@
                             <el-form-item :label="langConfig['customer']" prop="customerId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posInvoiceForm.customerId" remote remote :remote-method="customerOpt"
+                                           v-model="posInvoiceForm.customerId" remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
                                     <el-option
@@ -1274,7 +1274,7 @@
                             <el-form-item :label="langConfig['customer']" prop="customerId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posInvoiceForm.customerId" remote remote :remote-method="customerOpt"
+                                           v-model="posInvoiceForm.customerId" remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
                                     <el-option

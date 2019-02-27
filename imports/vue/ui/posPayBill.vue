@@ -314,8 +314,7 @@
                             <el-form-item :label="langConfig['vendor']" prop="vendorId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posPayBillForm.vendorId" remote
-                                           remote :remote-method="vendorOpt"
+                                           v-model="posPayBillForm.vendorId" remote :remote-method="vendorOpt"
                                            :loading="loading"
                                            :disabled="disabledVendor"
 

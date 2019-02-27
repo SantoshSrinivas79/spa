@@ -152,7 +152,7 @@
                         <el-form-item :label="langConfig['student']" prop="studentId">
                             <el-select style="display: block !important;"
                                        filterable
-                                       v-model="schBusRegisterForm.studentId" remote remote :remote-method="studentOpt"
+                                       v-model="schBusRegisterForm.studentId" remote :remote-method="studentOpt"
                                        :placeholder="langConfig['chooseItem']">
                                 <el-option
                                         v-for="item in studentList"
@@ -269,7 +269,7 @@
                         <el-form-item :label="langConfig['student']" prop="studentId">
                             <el-select style="display: block !important;"
                                        filterable
-                                       v-model="schBusRegisterForm.studentId" remote remote :remote-method="studentOpt"
+                                       v-model="schBusRegisterForm.studentId" remote :remote-method="studentOpt"
                                        :placeholder="langConfig['chooseItem']">
                                 <el-option
                                         v-for="item in studentList"
