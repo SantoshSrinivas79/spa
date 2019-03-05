@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schFacultyData"
                         stripe
                         border
@@ -178,6 +179,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 schFacultyData: [],
                 loading: false,
                 searchData: '',
@@ -225,6 +227,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchFaculty', {
                     q: val,
                     filter: this.filter,
@@ -235,6 +238,7 @@
                         this.count = result.countSchFaculty;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
 

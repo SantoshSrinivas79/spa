@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schTeacherActivityData"
                         stripe
                         border
@@ -388,6 +389,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 schTeacherActivityData: [],
                 loading: false,
                 searchData: '',
@@ -468,6 +470,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchTeacherActivity', {
                     q: val,
                     filter: this.filter,
@@ -478,6 +481,7 @@
                         this.count = result.countSchTeacherActivity;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             indexMethod(index) {

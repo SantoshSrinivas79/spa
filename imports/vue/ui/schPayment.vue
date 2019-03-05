@@ -40,6 +40,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schPaymentDataDisplay"
                         stripe
                         border
@@ -412,6 +413,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 schPaymentData: [],
                 schPaymentDataDisplay: [],
                 multipleSelection: [],
@@ -682,6 +684,7 @@
                 }, 200)*/
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchPayment', {
                     q: val,
                     filter: this.filter,
@@ -692,6 +695,7 @@
                         this.count = result.countSchPayment;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             classOpt() {

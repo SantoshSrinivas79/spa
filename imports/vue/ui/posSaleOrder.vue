@@ -41,6 +41,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posSaleOrderDataDisplay"
                         stripe
                         border
@@ -959,6 +960,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 keyCode: [],
                 refForm: '',
                 posSaleOrderData: [],
@@ -1264,6 +1266,7 @@
                 }
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryPosSaleOrder', {
                     q: val,
                     filter: this.filter,
@@ -1275,6 +1278,7 @@
                         this.count = result.countPosSaleOrder;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             itemOpt(query) {

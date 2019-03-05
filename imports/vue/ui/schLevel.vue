@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schLevelData"
                         stripe
                         border
@@ -293,6 +294,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 ref: "",
                 schLevelData: [],
                 loading: false,
@@ -390,6 +392,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchLevel', {
                     q: val,
                     filter: this.filter,
@@ -400,6 +403,7 @@
                         this.count = result.countSchLevel;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
 

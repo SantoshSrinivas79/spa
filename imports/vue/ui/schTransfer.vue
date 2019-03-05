@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schTransferData"
                         stripe
                         border
@@ -298,6 +299,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 ref: "",
                 schTransferData: [],
                 loading: false,
@@ -395,6 +397,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchTransfer', {
                     q: val,
                     filter: this.filter,
@@ -405,6 +408,7 @@
                         this.count = result.countSchTransfer;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
 

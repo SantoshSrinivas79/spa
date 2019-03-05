@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="closingEntryData"
                         stripe
                         border
@@ -173,6 +174,7 @@
     export default {
         data() {
             return {
+                newLoading: true,
                 closingEntryData: [],
                 journalClosingEntry: [],
                 exchangeOptions: [],
@@ -262,6 +264,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryClosingEntry', {
                     q: val,
                     filter: this.filter,
@@ -273,6 +276,7 @@
                         this.count = result.countClosingEntry;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
 

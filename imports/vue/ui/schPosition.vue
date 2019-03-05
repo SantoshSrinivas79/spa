@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schPositionData"
                         stripe
                         border
@@ -196,6 +197,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 schPositionData: [],
                 loading: false,
                 searchData: '',
@@ -245,6 +247,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchPosition', {
                     q: val,
                     filter: this.filter,
@@ -255,6 +258,7 @@
                         this.count = result.countSchPosition;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
 

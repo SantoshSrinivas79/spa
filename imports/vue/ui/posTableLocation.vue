@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posTableLocationData"
                         stripe
                         border
@@ -177,6 +178,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 dialogImageUrl: "",
                 dialogVisible: false,
                 posTableLocationData: [],
@@ -228,6 +230,7 @@
             },
 
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryPosTableLocation', {
                     q: val,
                     filter: this.filter,
@@ -239,6 +242,7 @@
                         this.count = result.countPosTableLocation;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             savePosTableLocation(event) {

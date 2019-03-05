@@ -254,6 +254,7 @@
     export default {
         data() {
             return {
+                newLoading: true,
                 isShowing: false,
                 tableData: [],
                 dialogFormVisible: false,
@@ -442,12 +443,14 @@
                 });
             },
             fetchWaterBillingSetup() {
+                this.newLoading = true;
                 Meteor.call('fetchWaterBillingSetup', (err, result) => {
                     if (!err) {
                         this.tableData = result;
                         this.form.cutValue = result[0] && result[0].cutValue || 0;
                         this.form.invoiceExpiredAfter = result[0] && result[0].invoiceExpiredAfter || 0;
                         this.form.enableZeroWaterConsumption = result[0] && result[0].enableZeroWaterConsumption || false;
+                        this.newLoading = false;
                     }
                 })
             },

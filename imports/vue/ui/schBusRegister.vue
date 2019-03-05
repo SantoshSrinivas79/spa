@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schBusRegisterData"
                         stripe
                         border
@@ -393,6 +394,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 ref: "",
                 fullscreen: true,
                 disableUpdateField: false,
@@ -516,6 +518,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchBusRegister', {
                     q: val,
                     filter: this.filter,
@@ -527,6 +530,7 @@
                         this.count = result.countSchBusRegister;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             indexMethod(index) {

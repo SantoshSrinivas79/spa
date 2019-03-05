@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="chartAccountData"
                         stripe
                         border
@@ -468,6 +469,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 chartAccountData: [],
                 loading: false,
                 searchData: '',
@@ -607,6 +609,7 @@
 
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryChartAccount', {
                     q: val,
                     filter: this.filter,
@@ -617,6 +620,7 @@
                         this.count = result.countChartAccount;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             accountTypeOption() {

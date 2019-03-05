@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schActivityData"
                         stripe
                         border
@@ -178,6 +179,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 schActivityData: [],
                 loading: false,
                 searchData: '',
@@ -225,6 +227,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchActivity', {
                     q: val,
                     filter: this.filter,
@@ -236,6 +239,7 @@
                         this.count = result.countSchActivity;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
 

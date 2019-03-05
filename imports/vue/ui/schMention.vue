@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schMentionData"
                         stripe
                         border
@@ -338,6 +339,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 schMentionData: [],
                 loading: false,
                 searchData: '',
@@ -389,6 +391,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchMention', {
                     q: val,
                     filter: this.filter,
@@ -399,6 +402,7 @@
                         this.count = result.countSchMention;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             indexMethod(index) {

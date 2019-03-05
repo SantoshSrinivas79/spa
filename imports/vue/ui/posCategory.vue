@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posCategoryData"
                         stripe
                         border
@@ -303,6 +304,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 dialogImageUrl: "",
                 dialogVisible: false,
                 posCategoryData: [],
@@ -367,6 +369,7 @@
             },
 
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryPosCategory', {
                     q: val,
                     filter: this.filter,
@@ -377,6 +380,7 @@
                         this.count = result.countPosCategory;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             parentPosCategoryOption() {

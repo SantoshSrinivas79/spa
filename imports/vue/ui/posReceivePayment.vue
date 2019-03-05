@@ -45,6 +45,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posReceivePaymentDataDisplay"
                         stripe
                         border
@@ -660,6 +661,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 posReceivePaymentData: [],
                 posReceivePaymentDataDisplay: [],
                 multipleSelection: [],
@@ -1003,6 +1005,7 @@
                 }, 200)*/
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryPosReceivePayment', {
                     q: val,
                     filter: this.filter,
@@ -1014,6 +1017,7 @@
                         this.count = result.countPosReceivePayment;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             itemOpt(query) {

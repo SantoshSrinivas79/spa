@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="wbUserSettingData"
                         stripe
                         border
@@ -138,6 +139,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 wbUserSettingData: [],
                 loading: false,
                 searchData: '',
@@ -172,6 +174,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryWbUserSetting', {
                     q: val,
                     filter: this.filter,
@@ -182,6 +185,7 @@
                         this.count = result.countWbUserSetting;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             removeWbUserSetting(index, row, rows) {

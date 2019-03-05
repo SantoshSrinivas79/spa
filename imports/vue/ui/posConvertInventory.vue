@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posConvertInventoryData"
                         stripe
                         border
@@ -388,6 +389,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 posConvertInventoryData: [],
                 loading: false,
                 searchData: '',
@@ -461,6 +463,7 @@
                 return index + 1;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryPosConvertInventory', {
                     q: val,
                     filter: this.filter,
@@ -472,6 +475,7 @@
                         this.count = result.countPosConvertInventory;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             productOpt(query) {

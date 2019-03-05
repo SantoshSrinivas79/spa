@@ -53,6 +53,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="journalDataDisplay"
                         stripe
                         border
@@ -745,6 +746,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 fullscreen: true,
                 journalData: [],
                 journalDataDisplay: [],
@@ -950,6 +952,7 @@
                 }, 200)
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryJournal', {
                     q: val,
                     filter: this.filter,
@@ -961,6 +964,7 @@
                         this.count = result.countJournal;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
 

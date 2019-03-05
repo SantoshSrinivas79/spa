@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="schRegisterData"
                         stripe
                         border
@@ -926,6 +927,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 ref: "",
                 fullscreen: true,
                 dialoginputTranscript: false,
@@ -1127,6 +1129,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('querySchRegister', {
                     q: val,
                     filter: this.filter,
@@ -1137,6 +1140,7 @@
                         this.count = result.countSchRegister;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             indexMethod(index) {

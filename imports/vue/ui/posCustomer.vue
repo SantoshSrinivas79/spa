@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posCustomerData"
                         stripe
                         border
@@ -299,6 +300,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 langSession: null,
                 posCustomerData: [],
                 loading: false,
@@ -362,6 +364,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryPosCustomer', {
                     q: val,
                     filter: this.filter,
@@ -373,6 +376,7 @@
                         this.count = result.countPosCustomer;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             posTermOption() {

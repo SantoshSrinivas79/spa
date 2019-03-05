@@ -41,6 +41,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="posTransferInventoryDataDisplay"
                         stripe
                         border
@@ -620,6 +621,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 keyCode: [],
                 timeStamp: [],
                 takeBarcode: '',
@@ -832,6 +834,7 @@
                 }
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryTransferInventory', {
                     q: val,
                     filter: this.filter,
@@ -843,6 +846,7 @@
                         this.count = result.countTransferInventory;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             itemOpt(query) {

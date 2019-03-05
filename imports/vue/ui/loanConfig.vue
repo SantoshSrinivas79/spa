@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="loanConfigData"
                         stripe
                         border
@@ -201,6 +202,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 dialogImageUrl: "",
                 dialogVisible: false,
                 loanConfigData: [],
@@ -255,6 +257,7 @@
             },
 
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryLoanConfig', {
                     q: val,
                     filter: this.filter,
@@ -265,6 +268,7 @@
                         this.count = result.countLoanConfig;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             saveLoanConfig(event) {

@@ -39,6 +39,7 @@
             </slot>
             <slot v-else>
                 <el-table
+                        v-loading="newLoading"
                         :data="loanCreditOfficerData"
                         stripe
                         border
@@ -265,6 +266,7 @@
         },
         data() {
             return {
+                newLoading: true,
                 langSession: null,
                 loanCreditOfficerData: [],
                 loading: false,
@@ -324,6 +326,7 @@
                 this.currentPage = val;
             },
             queryData: _.debounce(function (val, skip, limit) {
+                this.newLoading = true;
                 Meteor.call('queryLoanCreditOfficer', {
                     q: val,
                     filter: this.filter,
@@ -335,6 +338,7 @@
                         this.count = result.countLoanCreditOfficer;
                     }
                     this.isSearching = false;
+                    this.newLoading = false;
                 });
             }, 300),
             saveLoanCreditOfficer(event) {
