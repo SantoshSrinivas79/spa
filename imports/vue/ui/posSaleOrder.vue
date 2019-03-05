@@ -114,7 +114,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -1244,7 +1245,7 @@
                 }, 200)*/
             },
             barcodeScanSaleOrder(e) {
-                if (this.dialogAddPosSaleOrder === true || this.dialogUpdatePosSaleOrder === true) {
+                if ((this.dialogAddPosSaleOrder === true || this.dialogUpdatePosSaleOrder === true) && this.posSaleOrderForm.code === "") {
                     let scannerSensitivity = 100;
                     if (e.keyCode !== 13 && !isNaN(e.key)) {
                         this.takeBarcode += e.key;
@@ -1270,7 +1271,7 @@
                 Meteor.call('queryPosSaleOrder', {
                     q: val,
                     filter: this.filter,
-                    rolesArea:Session.get('area'),
+                    rolesArea: Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1313,7 +1314,7 @@
                     setTimeout(() => {
                         let lists = [];
                         this.loading = false;
-                        Meteor.call('queryPosCustomerOption', query,Session.get("area"), (err, result) => {
+                        Meteor.call('queryPosCustomerOption', query, Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerOption = result;
                             } else {
@@ -1322,7 +1323,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOption', "",Session.get("area"), (err, result) => {
+                    Meteor.call('queryPosCustomerOption', "", Session.get("area"), (err, result) => {
                         if (!err) {
                             this.customerOption = result;
                         } else {

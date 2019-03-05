@@ -127,6 +127,7 @@
                 :title="langConfig['addBill']"
                 :visible.sync="dialogAddPosBill"
                 :fullscreen="fullScreen"
+                :before-close="handleClose"
                 class="dialogBill"
         >
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
@@ -504,6 +505,7 @@
                 :title="langConfig['updateBill']"
                 :visible.sync="dialogUpdatePosBill"
                 :fullscreen="fullScreen"
+                :before-close="handleClose"
                 class="dialogBill"
         >
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
@@ -1278,6 +1280,14 @@
                 this.resetForm();
                 this.refForm = "";
             },
+            handleClose(done) {
+                this.$confirm('Are you sure to close this dialog?')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {
+                    });
+            },
             handleSizeChange(val) {
                 this.currentSize = val;
             },
@@ -1323,7 +1333,7 @@
                 }, 200)*/
             },
             barcodeScanBill(e) {
-                if (e.data.init(0).selector === "el-dialog.dialogBill" && this.dialogAddImei === false) {
+                if (e.data.init(0).selector === "el-dialog.dialogBill" && this.dialogAddImei === false && this.posBillForm.code === "") {
                     let vm = this;
                     if (this.dialogAddPosBill === true || this.dialogUpdatePosBill === true) {
                         let scannerSensitivity = 100;
@@ -1358,10 +1368,10 @@
                         }
                     }
 
-                    if (e.keyCode === 27 && !e.ctrlKey && !e.altKey) {
+                    /*if (e.keyCode === 27 && !e.ctrlKey && !e.altKey) {
                         e.preventDefault();
                         vm.dialogAddPosBill = false;
-                    }
+                    }*/
                 }
             },
             indexMethod(index) {

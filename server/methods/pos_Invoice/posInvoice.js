@@ -442,8 +442,8 @@ Meteor.methods({
         return invoiceNo + "";
     },
 
-    queryPosImeiInvoiceByImei(val) {
-        return Pos_ImeiInvoice.findOne({name: val});
+    queryPosImeiInvoiceByImei(val, itemId) {
+        return Pos_ImeiInvoice.findOne({name: val, itemId: itemId});
     },
     queryPosSaleOrderByCustomerId(customerId) {
         let data = Pos_SaleOrder.find({customerId: customerId, receiveStatus: {$ne: "Complete"}}).fetch();

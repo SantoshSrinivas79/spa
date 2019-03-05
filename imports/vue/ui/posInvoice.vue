@@ -140,6 +140,7 @@
                 :visible.sync="dialogAddPosInvoice"
                 :fullscreen="fullScreen"
                 class="dialogInvoice"
+                :before-close="handleClose"
 
         >
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
@@ -549,7 +550,7 @@
                 :visible.sync="dialogUpdatePosInvoice"
                 :fullscreen="fullScreen"
                 class="dialogInvoice"
-
+                :before-close="handleClose"
         >
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
             <el-form :model="posInvoiceForm" :rules="rules" :ref="refForm" label-width="120px"
@@ -1039,7 +1040,7 @@
                 :title="langConfig['receiveItem']"
                 :visible.sync="dialogAddPosReceiveItem"
                 :fullscreen="fullScreen"
-
+                :before-close="handleClose"
         >
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
             <el-form :model="posInvoiceForm" :rules="rules" :ref="refForm" label-width="120px"
@@ -1767,6 +1768,14 @@
                 this.resetForm();
                 this.refForm = "";
             },
+            handleClose(done) {
+                this.$confirm('Are you sure to close this dialog?')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {
+                    });
+            },
             handleSizeChange(val) {
                 this.currentSize = val;
             },
@@ -1814,7 +1823,7 @@
             },
             barcodeScanInvoice(e) {
                 let vm = this;
-                if ((this.dialogAddPosInvoice === true || this.dialogUpdatePosInvoice === true) && this.dialogAddImei === false) {
+                if ((this.dialogAddPosInvoice === true || this.dialogUpdatePosInvoice === true) && this.dialogAddImei === false && this.posInvoiceForm.code === "") {
                     let scannerSensitivity = 100;
                     let charCode = event.which || event.keyCode;
                     if (charCode !== 13 && charCode !== 16 && charCode !== 18 && charCode !== 17) {
@@ -2796,7 +2805,7 @@
                         Meteor.call("queryPosImeiBillByImei", vm.imeiInput, vm.itemId, (err, result) => {
                             if (result) {
                                 let isFindImei = vm.imei.find((obj) => {
-                                    return obj.name === vm.imeiInput;
+                                    return obj.name === vm.imeiInput && obj.itemId === vm.itemId;
                                 })
                                 if (isFindImei) {
                                     vm.$message({
@@ -2805,7 +2814,7 @@
                                     });
                                     return false;
                                 } else {
-                                    Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
+                                    Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, vm.itemId, (err, result) => {
                                         if (result) {
                                             vm.$message({
                                                 type: 'error',
@@ -2840,7 +2849,7 @@
                         })
                     } else {
                         let isFindImei = vm.imei.find((obj) => {
-                            return obj.name === vm.imeiInput;
+                            return obj.name === vm.imeiInput && obj.itemId === vm.itemId;
                         })
                         if (isFindImei) {
                             vm.$message({
@@ -2849,7 +2858,7 @@
                             });
                             return false;
                         } else {
-                            Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, (err, result) => {
+                            Meteor.call("queryPosImeiInvoiceByImei", vm.imeiInput, vm.itemId, (err, result) => {
                                 if (result) {
                                     vm.$message({
                                         type: 'error',

@@ -146,6 +146,7 @@ Meteor.methods({
     },
     insertLoanRepayment(data) {
         data.repaymentDateName = moment(data.repaymentDate).format("DD/MM/YYYY");
+        data.repaymentDate = moment(data.repaymentDate).startOf("days").add(12, "hour").toDate();
         data.voucher = data.rolesArea + "-" + moment(data.repaymentDate).format("YYYY") + pad(data.voucher, 6);
 
         let isInserted = Loan_Repayment.insert(data);

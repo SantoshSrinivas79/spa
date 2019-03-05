@@ -94,7 +94,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -812,7 +813,7 @@
                 }, 200)*/
             },
             barcodeScanTransferInventory(e) {
-                if (this.dialogAddTransferInventory === true || this.dialogUpdateTransferInventory === true) {
+                if ((this.dialogAddTransferInventory === true || this.dialogUpdateTransferInventory === true) && this.posTransferInventoryForm.code === "") {
                     let scannerSensitivity = 100;
                     if (e.keyCode !== 13 && !isNaN(e.key)) {
                         this.takeBarcode += e.key;
@@ -838,7 +839,7 @@
                 Meteor.call('queryTransferInventory', {
                     q: val,
                     filter: this.filter,
-                    rolesArea:Session.get('area'),
+                    rolesArea: Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
