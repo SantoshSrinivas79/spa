@@ -37,7 +37,8 @@
                                     || ""}}
                                 </el-form-item>
                                 <el-form-item :label="langConfig['installment']" style="text-align: left !important;">
-                                    &nbsp;: {{repaymentDoc && repaymentDoc.installmentList || ""}}
+                                    &nbsp;: {{repaymentDoc && repaymentDoc.installmentList || ""}}   ({{repaymentDoc &&
+                                    repaymentDoc.date | momentFormat}})
                                 </el-form-item>
                                 <el-form-item :label="langConfig['principleDue']" style="text-align: left !important;">
                                     &nbsp;: {{repaymentDoc && repaymentDoc.principleUnpaid || "" |
@@ -382,20 +383,38 @@
                         vm.currencyId = result.currencyId;
 
                         let totalPayOff = 0;
-                        totalPayOff += result.principleUnpaid || 0;
+                        totalPayOff += (result.principleUnpaid || 0);
                         if (result.isAllowClosing === false) {
                             let penaltyInterest = result.penaltyClosingDoc.interestReminderCharge * result.interestUnpaid / 100;
                             vm.loanRepaymentForm.interestReminderChargePaid = vm.$_numeral(formatCurrencyLast(penaltyInterest, result.currencyId)).value();
                             vm.loanRepaymentForm.interestReminderCharge = formatCurrencyLast(penaltyInterest, result.currencyId);
                         }
 
-                        vm.interestReminder = formatCurrencyLast(result.interestReminder, result.currencyId);
-                        vm.loanRepaymentForm.interestPaid = vm.$_numeral(formatCurrencyLast(result.interestReminder, result.currencyId)).value();
 
                         if (vm.loanRepaymentForm.repaymentDate && result.date) {
                             vm.dayLate = moment(vm.loanRepaymentForm.repaymentDate).startOf("days").add(12, "hours").diff(result.date, "days");
                         }
+
+                        let interestPerDay = result.interestReminder / result.dayRange;
+                        let dayForInterest = vm.dayLate > 0 ? result.dayRange : result.dayRange + vm.dayLate;
                         vm.dayLate = vm.dayLate > 0 ? vm.dayLate : 0;
+
+
+                        let intRemind = 0;
+                        result.scheduleList.forEach((obj) => {
+                            let dayLateInLine = moment(vm.loanRepaymentForm.repaymentDate).startOf("days").add(12, "hours").diff(obj.date, "days");
+                            if (dayLateInLine > 0) {
+                                let interestPerDay = obj.interestUnpaid / obj.dayRange;
+                                intRemind += interestPerDay * dayLateInLine;
+
+                            }
+                        })
+
+
+                        dayForInterest = dayForInterest > 0 ? dayForInterest : 0;
+                        vm.interestReminder = formatCurrencyLast(interestPerDay * dayForInterest + intRemind, result.currencyId);
+                        vm.loanRepaymentForm.interestPaid = vm.$_numeral(formatCurrencyLast(interestPerDay * dayForInterest + intRemind, result.currencyId)).value();
+
 
                         if (result && result.penaltyDoc && vm.dayLate > result.penaltyDoc.graceDay) {
                             let penaltyPerday;
@@ -418,6 +437,26 @@
 
                         vm.loanRepaymentForm.penaltyPaid = vm.$_numeral(vm.loanRepaymentForm.penalty).value();
                         vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(totalPayOff, result.currencyId)).value();
+                        this.getTotal();
+                    }
+                })
+            },
+            getCalculateWriteOff(disbursementId) {
+                let vm = this;
+                Meteor.call("getWriteOff", disbursementId, vm.loanRepaymentForm.repaymentDate, (err, result) => {
+                    if (result) {
+                        vm.repaymentDoc = result;
+                        vm.loanRepaymentForm.clientId = result.clientId;
+
+                        if (vm.loanRepaymentForm.repaymentDate && result.date) {
+                            vm.dayLate = moment(vm.loanRepaymentForm.repaymentDate).startOf("days").add(12, "hours").diff(result.date, "days");
+                        }
+                        vm.dayLate = vm.dayLate > 0 ? vm.dayLate : 0;
+
+                        vm.currencySymbol = getCurrencySymbolById(result && result.currencyId);
+                        vm.currencyId = result.currencyId;
+                        vm.loanRepaymentForm.penaltyPaid = 0;
+                        vm.loanRepaymentForm.paid = vm.$_numeral(formatCurrencyLast(result.balanceUnpaid || 0, result.currencyId)).value();
                         this.getTotal();
                     }
                 })
@@ -473,6 +512,19 @@
                                 vm.isPayOff = false;
                                 vm.isPrepay = false;
 
+
+                                vm.loanRepaymentForm.interestPaid = 0;
+                                vm.loanRepaymentForm.interestReminderCharge = 0;
+                                vm.loanRepaymentForm.interestReminderChargePaid = 0;
+
+                            } else if (vm.loanRepaymentForm.type === "Write Off") {
+                                vm.getCalculateWriteOff(id);
+                                vm.isDisablePaid = true;
+                                vm.isDisablePenalty = true;
+                                vm.isPayOff = false;
+                                vm.isPrepay = false;
+
+                                vm.loanRepaymentForm.type = "Write Off";
 
                                 vm.loanRepaymentForm.interestPaid = 0;
                                 vm.loanRepaymentForm.interestReminderCharge = 0;

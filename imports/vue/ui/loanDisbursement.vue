@@ -191,8 +191,22 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item :label="langConfig['installment']" prop="installment">
-                            <el-input v-model.number="loanDisbursementForm.installment" type='number'></el-input>
+                        <el-form-item :label="langConfig['term']" prop="term">
+                            <el-input v-model.number="loanDisbursementForm.term" type='number'></el-input>
+                        </el-form-item>
+
+                        <el-form-item :label="langConfig['repaidFrequency']" prop="repaidFrequency">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.repaidFrequency"
+                                       :placeholder="langConfig['repaidFrequency']">
+                                <el-option
+                                        v-for="item in repaidFrequencyOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
                             <el-date-picker
@@ -303,8 +317,22 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item :label="langConfig['installment']" prop="installment">
-                            <el-input v-model.number="loanDisbursementForm.installment" type='number'></el-input>
+                        <el-form-item :label="langConfig['term']" prop="term">
+                            <el-input v-model.number="loanDisbursementForm.term" type='number'></el-input>
+                        </el-form-item>
+
+                        <el-form-item :label="langConfig['repaidFrequency']" prop="repaidFrequency">
+                            <el-select style="display: block !important;" filterable clearable
+                                       v-model="loanDisbursementForm.repaidFrequency"
+                                       :placeholder="langConfig['repaidFrequency']">
+                                <el-option
+                                        v-for="item in repaidFrequencyOption"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                        :disabled="item.disabled">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item :label="langConfig['startPaidDate']" prop="startPaidDate">
                             <el-date-picker
@@ -389,7 +417,8 @@
                     description: "",
                     feeAmount: 0,
                     startPaidDate: "",
-                    installment: 0,
+                    term: 0,
+                    repaidFrequency: 1,
                     _id: ""
                 },
                 rules: {
@@ -417,6 +446,12 @@
                         message: 'Please choose credit officer',
                         trigger: 'change'
                     }],
+                    repaidFrequency: [{
+                        required: true,
+                        type: 'number',
+                        message: 'Please choose Repaid Frequency',
+                        trigger: 'change'
+                    }],
                     productType: [{
                         required: true,
                         type: 'string',
@@ -433,9 +468,9 @@
                         message: 'Please input Fee Amount',
                         trigger: 'blur'
                     }],
-                    installment: [{
+                    term: [{
                         required: true,
-                        message: 'Please input installment',
+                        message: 'Please input term',
                         trigger: 'blur'
                     }],
                     disbursementDate: [{
@@ -452,13 +487,19 @@
                     }],
                 },
                 clientOption: [],
+                repaidFrequencyOption: [
+                    {value: 1, label: 1}
+                ],
                 currencyOption: [
                     {label: "USD", value: "USD"},
                     {label: "KHR", value: "KHR"},
                     {label: "THB", value: "THB"},
                 ],
                 productTypeOption: [
+
+                    {label: "Daily", value: "Daily"},
                     {label: "Weekly", value: "Weekly"},
+                    {label: "BiWeekly", value: "BiWeekly"},
                     {label: "Monthly", value: "Monthly"},
                     {label: "Yearly", value: "Yearly"},
                 ],
@@ -482,6 +523,22 @@
                 this.isSearching = true;
                 this.skip = (this.currentPage - 1) * this.currentSize;
                 this.queryData(val, this.skip, this.currentSize + this.skip);
+            },
+            "loanDisbursementForm.term"(val) {
+                if (val && val > 1) {
+                    this.repaidFrequencyOption = [];
+                    for (let i = 1; i < val / 2; i++) {
+                        if (val % i === 0) {
+                            this.repaidFrequencyOption.push({
+                                label: i, value: i
+                            })
+                        }
+                    }
+                } else {
+                    this.repaidFrequencyOption = [
+                        {value: 1, label: 1}
+                    ];
+                }
             }
         },
         methods: {
@@ -582,7 +639,8 @@
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
                             disbursementDateName: moment(vm.loanDisbursementForm.disbursementDate).format("DD/MM/YYYY"),
                             coId: vm.loanDisbursementForm.coId,
-                            installment: vm.loanDisbursementForm.installment,
+                            term: vm.loanDisbursementForm.term,
+                            repaidFrequency: vm.loanDisbursementForm.repaidFrequency,
                             description: vm.loanDisbursementForm.description,
                             feeAmount: vm.loanDisbursementForm.feeAmount,
                             startPaidDate: vm.loanDisbursementForm.startPaidDate,
@@ -625,7 +683,8 @@
                             disbursementDate: vm.loanDisbursementForm.disbursementDate,
                             disbursementDateName: moment(vm.loanDisbursementForm.disbursementDate).format("DD/MM/YYYY"),
                             coId: vm.loanDisbursementForm.coId,
-                            installment: vm.loanDisbursementForm.installment,
+                            term: vm.loanDisbursementForm.term,
+                            repaidFrequency: vm.loanDisbursementForm.repaidFrequency,
                             description: vm.loanDisbursementForm.description,
                             feeAmount: vm.loanDisbursementForm.feeAmount,
                             startPaidDate: vm.loanDisbursementForm.startPaidDate,

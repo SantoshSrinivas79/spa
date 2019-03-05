@@ -156,7 +156,15 @@ Meteor.methods({
             } else if (data.type === "Pay Off") {
                 makeRepaymentPayOff(data.disbursementId, data, isInserted);
 
-            } else {
+            } else if (data.type === "Write Off") {
+                Loan_Disbursement.update({_id: data.disbursementId}, {
+                    $set: {
+                        status: "Write Off",
+                        writeOffDate: data.repaymentDate
+                    }
+                });
+            }
+            else {
                 makeRepayment(data.disbursementId, data, isInserted);
             }
 
@@ -174,6 +182,13 @@ Meteor.methods({
                 removeRepaymentFee(loanDoc);
             } else if (loanDoc.type === "Pay Off") {
                 removeRepaymentPayOff(loanDoc);
+            } else if (loanDoc.type === "Write Off") {
+                Loan_Disbursement.update({_id: loanDoc.disbursementId}, {
+                    $set: {
+                        status: "Active",
+                        writeOffDate: ""
+                    }
+                });
             } else {
                 removeRepayment(loanDoc);
             }
@@ -367,14 +382,106 @@ Meteor.methods({
         //selector.date = {$gt: moment(date).endOf("day").toDate()};
         selector.isPaid = false;
 
-        /*let haveRepayLessThanDoc = Loan_RepaymentSchedule.find({
-            loanId: disbursementId,
-            isPaid: false,
-            date: {$lte: moment(date).endOf("day").toDate()}
-        }).fetch();
-        if (haveRepayLessThanDoc.length > 0) {
-            return [];
-        }*/
+        let repay = Loan_RepaymentSchedule.aggregate([
+            {$match: selector},
+            {$sort: {installment: 1}},
+            {
+                $group: {
+                    _id: {
+                        loanId: "$loanId"
+                    },
+                    isAllowClosing: {$first: "$isAllowClosing"},
+                    balanceUnpaid: {$sum: "$balanceUnpaid"},
+                    principleUnpaid: {$sum: "$principleUnpaid"},
+                    //nterestNeedToPaid: {$sum: {$cond: [{$lte: ["$date", moment(date).endOf("days").toDate()]}, "$interestUnpaid", 0]}},
+                    interestUnpaid: {$sum: "$interestUnpaid"},
+                    dayRange: {$first: "$dayRange"},
+                    interestReminder: {$first: "$interestUnpaid"},
+                    clientId: {$first: "$clientId"},
+                    productId: {$first: "$productId"},
+                    currencyId: {$first: "$currencyId"},
+                    date: {$first: "$date"},
+                    scheduleList: {$push: "$$ROOT"},
+                    installmentList: {$push: "$installment"}
+                }
+            }, {
+                $lookup: {
+                    from: "loan_product",
+                    localField: "productId",
+                    foreignField: "_id",
+                    as: "productDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$productDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_penalty",
+                    localField: "productDoc.penaltyId",
+                    foreignField: "_id",
+                    as: "penaltyDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$penaltyDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_penaltyClosing",
+                    localField: "productDoc.penaltyClosingId",
+                    foreignField: "_id",
+                    as: "penaltyClosingDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$penaltyClosingDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "pos_customer",
+                    localField: "clientId",
+                    foreignField: "_id",
+                    as: "clientDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$clientDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            }, {
+                $lookup: {
+                    from: "loan_disbursement",
+                    localField: "_id.loanId",
+                    foreignField: "_id",
+                    as: "disbursementDoc"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$disbursementDoc",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+        ]);
+
+        if (repay && repay.length > 0) {
+            return repay[0];
+        } else {
+            return {};
+        }
+    },
+    getWriteOff(disbursementId, date) {
+        let selector = {};
+        selector.loanId = disbursementId;
+        selector.isPaid = false;
 
         let repay = Loan_RepaymentSchedule.aggregate([
             {$match: selector},
@@ -388,7 +495,6 @@ Meteor.methods({
                     balanceUnpaid: {$sum: "$balanceUnpaid"},
                     principleUnpaid: {$sum: "$principleUnpaid"},
                     interestUnpaid: {$sum: "$interestUnpaid"},
-                    interestReminder: {$first: "$interestUnpaid"},
                     clientId: {$first: "$clientId"},
                     productId: {$first: "$productId"},
                     currencyId: {$first: "$currencyId"},
@@ -650,7 +756,7 @@ let makeRepaymentPayOff = function (disbursementId, doc, repaymentId) {
 
         let checkPayOff = Loan_RepaymentSchedule.find({loanId: disbursementId, isPaid: false}).fetch();
         if (checkPayOff.length === 0) {
-            Loan_Disbursement.update({_id: disbursementId}, {$set: {status: "Pay Off"}});
+            Loan_Disbursement.update({_id: disbursementId}, {$set: {status: "Pay Off", payOffDate: doc.repaymentDate}});
         }
     }
 }
@@ -681,7 +787,12 @@ let removeRepayment = function (repaymentDoc) {
                 Loan_RepaymentSchedule.update({_id: obj._id}, {$set: newRepaymentScheduleDoc});
             }
         })
-        Loan_Disbursement.update({_id: repaymentDoc.disbursementId}, {$set: {status: "Active"}});
+        Loan_Disbursement.update({_id: repaymentDoc.disbursementId}, {
+            $set: {
+                status: "Active",
+                payOffDate: ""
+            }
+        });
     }
 }
 
@@ -711,7 +822,7 @@ let removeRepaymentPayOff = function (repaymentDoc) {
                 Loan_RepaymentSchedule.update({_id: obj._id}, {$set: newRepaymentScheduleDoc});
             }
         })
-        Loan_Disbursement.update({_id: repaymentDoc.disbursementId}, {$set: {status: "Active"}});
+        Loan_Disbursement.update({_id: repaymentDoc.disbursementId}, {$set: {status: "Active", payOffDate: ""}});
     }
 }
 

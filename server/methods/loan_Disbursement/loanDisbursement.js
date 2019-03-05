@@ -118,6 +118,12 @@ Meteor.methods({
 
         if (productDoc.rateType === "Monthly") {
             data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add(data.installment - 1, "month").toDate();
+        } else if (productDoc.rateType === "Weekly") {
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add((data.installment - 1) * 7, "days").toDate();
+        } else if (productDoc.rateType === "BiWeekly") {
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add((data.installment - 1) * 14, "days").toDate();
+        } else if (productDoc.rateType === "Yearly") {
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add((data.installment - 1), "year").toDate();
         }
 
         let isInserted = Loan_Disbursement.insert(data);
@@ -140,6 +146,14 @@ Meteor.methods({
 
         if (productDoc.rateType === "Monthly") {
             data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add(data.installment - 1, "month").toDate();
+        } else if (productDoc.rateType === "Weekly") {
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add((data.installment - 1) * 7, "days").toDate();
+        } else if (productDoc.rateType === "BiWeekly") {
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add((data.installment - 1) * 14, "days").toDate();
+        } else if (productDoc.rateType === "Daily") {
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add((data.installment - 1), "days").toDate();
+        } else if (productDoc.rateType === "Yearly") {
+            data.maturityDate = moment(data.startPaidDate).startOf("day").add(12, "hours").add((data.installment - 1), "year").toDate();
         }
 
         let isUpdated = Loan_Disbursement.update({_id: data._id},
@@ -184,23 +198,24 @@ let disbursementReact = function (id) {
 }
 
 let generateSchedulePayment = function (disbursementDoc, productDoc, id) {
+    let penaltyClosingDoc = Loan_PenaltyClosing.findOne({_id: productDoc.penaltyClosingId});
+    let installmentAllowClosing = math.round((disbursementDoc.term / disbursementDoc.repaidFrequency) * (penaltyClosingDoc.installmentTermLessThan / 100), 0);
+    let paidDate = disbursementDoc.startPaidDate;
+    let numDay = moment(disbursementDoc.startPaidDate).diff(disbursementDoc.disbursementDate, 'days');
+    let repaymentScheduleList = [];
+
     if (productDoc.methodType === "Straight Line") {
-        let amount = (disbursementDoc.loanAmount + disbursementDoc.projectInterest) / disbursementDoc.installment;
-        let principle = disbursementDoc.loanAmount / disbursementDoc.installment;
-        let penaltyClosingDoc = Loan_PenaltyClosing.findOne({_id: productDoc.penaltyClosingId});
-        let installmentAllowClosing = math.round(disbursementDoc.installment * (penaltyClosingDoc.installmentTermLessThan / 100), 0);
-        let paidDate = disbursementDoc.startPaidDate;
-        let numDay = moment(disbursementDoc.startPaidDate).diff(disbursementDoc.disbursementDate, 'days');
+        let amount = (disbursementDoc.loanAmount + disbursementDoc.projectInterest) / (disbursementDoc.term / disbursementDoc.repaidFrequency);
+        let principle = disbursementDoc.loanAmount / (disbursementDoc.term / disbursementDoc.repaidFrequency);
 
-        for (let i = 1; i <= disbursementDoc.installment; i++) {
+        for (let i = 1; i <= disbursementDoc.term / disbursementDoc.repaidFrequency; i++) {
             let repaymentScheduleDoc = {};
-
             if (i === 1) {
                 repaymentScheduleDoc.installment = i;
                 repaymentScheduleDoc.date = moment(paidDate).startOf("day").add(12, "hours").toDate();
                 repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");
-                repaymentScheduleDoc.amount = (disbursementDoc.loanAmount + disbursementDoc.projectInterest) - (math.round(amount, 0) * (disbursementDoc.installment - 1));
-                repaymentScheduleDoc.principle = disbursementDoc.loanAmount - (roundCurrency(principle, disbursementDoc.currencyId, disbursementDoc.rolesArea) * (disbursementDoc.installment - 1));
+                repaymentScheduleDoc.amount = (disbursementDoc.loanAmount + disbursementDoc.projectInterest) - (math.round(amount, 0) * ((disbursementDoc.term / disbursementDoc.repaidFrequency) - 1));
+                repaymentScheduleDoc.principle = disbursementDoc.loanAmount - (roundCurrency(principle, disbursementDoc.currencyId, disbursementDoc.rolesArea) * ((disbursementDoc.term / disbursementDoc.repaidFrequency) - 1));
                 repaymentScheduleDoc.interest = roundCurrency(repaymentScheduleDoc.amount - repaymentScheduleDoc.principle, disbursementDoc.currencyId, disbursementDoc.rolesArea);
                 repaymentScheduleDoc.isPaid = false;
                 repaymentScheduleDoc.isAllowClosing = i > installmentAllowClosing;
@@ -240,13 +255,89 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, id) {
 
 
             }
+
+
             if (productDoc.rateType === "Monthly") {
-                numDay = moment(moment(paidDate).add(1, "month").toDate()).diff(paidDate, 'days');
-                paidDate = moment(paidDate).add(1, "month").toDate();
+                numDay = moment(moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "month").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "month").toDate();
+            } else if (productDoc.rateType === "Weekly") {
+                numDay = moment(moment(paidDate).add(7 * disbursementDoc.repaidFrequency, "days").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(7 * disbursementDoc.repaidFrequency, "days").toDate();
+            } else if (productDoc.rateType === "Daily") {
+                numDay = moment(moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "days").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "days").toDate();
+            } else if (productDoc.rateType === "Yearly") {
+                numDay = moment(moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "year").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "year").toDate();
             }
 
-            Loan_RepaymentSchedule.insert(repaymentScheduleDoc);
+            repaymentScheduleList.push(repaymentScheduleDoc);
         }
+        Loan_RepaymentSchedule.rawCollection().insert(repaymentScheduleList);
+
+    } else if (productDoc.methodType === "Declining Balance") {
+        let balance = disbursementDoc.loanAmount;
+        let principle = disbursementDoc.loanAmount / (disbursementDoc.term / disbursementDoc.repaidFrequency);
+        let projectInterest = 0;
+        for (let i = 1; i <= disbursementDoc.term / disbursementDoc.repaidFrequency; i++) {
+            let repaymentScheduleDoc = {};
+            let interest = balance * (productDoc.rate / 100);
+            if (productDoc.rateType === "Monthly") {
+                interest = (interest / 30) * numDay;
+            } else if (productDoc.rateType === "Weekly") {
+                interest = (interest / 7) * numDay;
+            } else if (productDoc.rateType === "Daily") {
+                interest = (interest / 1) * numDay;
+            } else if (productDoc.rateType === "Yearly") {
+                interest = (interest / 365) * numDay;
+            }
+
+
+            repaymentScheduleDoc.installment = i;
+            repaymentScheduleDoc.date = moment(paidDate).startOf("day").add(12, "hours").toDate();
+            repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");
+            repaymentScheduleDoc.principle = roundCurrency(principle, disbursementDoc.currencyId, disbursementDoc.rolesArea);
+            repaymentScheduleDoc.interest = roundCurrency(interest, disbursementDoc.currencyId, disbursementDoc.rolesArea);
+            repaymentScheduleDoc.amount = repaymentScheduleDoc.principle + repaymentScheduleDoc.interest;
+            repaymentScheduleDoc.isPaid = false;
+            repaymentScheduleDoc.isAllowClosing = i > installmentAllowClosing;
+
+
+            repaymentScheduleDoc.loanId = id;
+            repaymentScheduleDoc.clientId = disbursementDoc.clientId;
+            repaymentScheduleDoc.productId = disbursementDoc.productId;
+            repaymentScheduleDoc.currencyId = disbursementDoc.currencyId;
+            repaymentScheduleDoc.rolesArea = disbursementDoc.rolesArea;
+
+            repaymentScheduleDoc.balanceUnpaid = repaymentScheduleDoc.amount;
+            repaymentScheduleDoc.principleUnpaid = repaymentScheduleDoc.principle;
+            repaymentScheduleDoc.interestUnpaid = repaymentScheduleDoc.interest;
+            repaymentScheduleDoc.dayRange = numDay;
+
+
+            if (productDoc.rateType === "Monthly") {
+                numDay = moment(moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "month").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "month").toDate();
+            } else if (productDoc.rateType === "Weekly") {
+                numDay = moment(moment(paidDate).add(7 * disbursementDoc.repaidFrequency, "days").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(7 * disbursementDoc.repaidFrequency, "days").toDate();
+            } else if (productDoc.rateType === "Daily") {
+                numDay = moment(moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "days").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "days").toDate();
+            } else if (productDoc.rateType === "Yearly") {
+                numDay = moment(moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "year").toDate()).diff(paidDate, 'days');
+                paidDate = moment(paidDate).add(1 * disbursementDoc.repaidFrequency, "year").toDate();
+            }
+
+            balance -= repaymentScheduleDoc.principle;
+            projectInterest += repaymentScheduleDoc.interest;
+
+            repaymentScheduleList.push(repaymentScheduleDoc);
+
+
+        }
+        Loan_Disbursement.update({_id: id}, {$set: {projectInterest: projectInterest}});
+        Loan_RepaymentSchedule.rawCollection().insert(repaymentScheduleList);
 
     }
 
@@ -256,7 +347,9 @@ let calculateProjectInterest = function (disbursementDoc, productDoc) {
     let projectInterest = 0;
 
     if (productDoc.methodType === "Straight Line") {
-        projectInterest = disbursementDoc.loanAmount * (productDoc.rate / 100) * disbursementDoc.installment;
+        projectInterest = disbursementDoc.loanAmount * (productDoc.rate / 100) * disbursementDoc.term;
+    } else {
+        return 0;
     }
 
 

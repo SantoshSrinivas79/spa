@@ -143,7 +143,9 @@
       "repayment": "Repayment",
       "repaymentForm": "Repayment Form",
       "repaymentList": "Repayment List",
-      "repaymentReport": "Repayment Report"
+      "repaymentReport": "Repayment ",
+      "loanOutstanding": "Loan Outstanding",
+      "collectionSheet": "Collection Sheet"
     }
   },
   "global": {

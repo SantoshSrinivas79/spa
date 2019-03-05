@@ -59,7 +59,7 @@
 
                                     </el-col>
                                     <el-col>
-                                        <el-form-item label="Exchange" prop="exchangeId">
+                                        <el-form-item :label="langConfig['exchange']" prop="exchangeId">
                                             <el-select filterable v-model="params.exchangeId"
                                                        placeholder="Select One" style="width: 95%">
                                                 <el-option
@@ -149,11 +149,11 @@
                         <th>{{langConfig['voucherCode']}}</th>
                         <th>{{langConfig['loanAccount']}}</th>
                         <th>{{langConfig['clientName']}}</th>
-                        <th>{{langConfig['productName']}}</th>
+                        <!--<th>{{langConfig['productName']}}</th>-->
                         <th>{{langConfig['currency']}}</th>
                         <th>{{langConfig['accType']}}</th>
-                        <th>{{langConfig['disbursementDate']}}</th>
-                        <th>{{langConfig['maturityDate']}}</th>
+                        <!--<th>{{langConfig['disbursementDate']}}</th>-->
+                        <!--<th>{{langConfig['maturityDate']}}</th>-->
                         <th>{{langConfig['loanAmount']}}</th>
                         <th>{{langConfig['projectInterest']}}</th>
                         <th>{{langConfig['collectDate']}}</th>

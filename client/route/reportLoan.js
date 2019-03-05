@@ -67,3 +67,26 @@ loanReport.route('/loanRepaymentReport', {
     }
 
 });
+import '../../imports/ui/report/loanOutstanding/loanOutstanding';
+
+loanReport.route('/loanOutstandingReport', {
+    name: 'loan.loanOutstandingReport',
+    title: "Outstanding",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('loan_outstandingReport');
+    }
+
+});
+
+import '../../imports/ui/report/loanCollectionSheet/loanCollectionSheet';
+
+loanReport.route('/loanCollectionSheetReport', {
+    name: 'loan.collectionSheetReport',
+    title: "Collection Sheet",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('loan_collectionSheetReport');
+    }
+
+});

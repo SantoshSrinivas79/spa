@@ -183,7 +183,7 @@ Meteor.methods({
                     <td colspan="13">${translate['grandTotalTHB']}</td>
                     <td>${formatCurrency(totalAmountTHB, "THB")}</td>
                     <td>${formatCurrency(totalInterestTHB, "THB")}</td>
-                    <td>${formatCurrency(totalFeeTHB, companyDoc.baseCurrency)}</td>
+                    <td>${formatCurrency(totalFeeTHB, "THB")}</td>
                     <td>${formatCurrency(totalAmountTHB + totalFeeTHB + totalInterestTHB, "THB")}</td>
                   
                 </tr> 

@@ -77,7 +77,11 @@ Meteor.methods({
                     preserveNullAndEmptyArrays: true
                 }
             },
-
+            {
+                $match: {
+                    "disbursementDoc.status": {$ne: "Write Off"}
+                }
+            },
 
             {
                 $lookup:
@@ -145,14 +149,14 @@ Meteor.methods({
                 repaymentHTML += `
                     <tr>
                             <td style="text-align: center !important;">${i}</td>
-                            <td style="text-align: left !important;">${obj.voucher}</td>
+                            <td style="text-align: left !important;">${obj.voucher.substr(9, 6)}</td>
                             <td style="text-align: left !important;">${obj.disbursementDoc.loanAcc}</td>
                             <td style="text-align: left !important;">${obj.clientDoc.name}</td>
-                            <td style="text-align: left !important;">${obj.productDoc.name}</td>
+                            <!--<td style="text-align: left !important;">${obj.productDoc.name}</td>-->
                             <td style="text-align: left !important;">${obj.currencyId}</td>
                             <td style="text-align: left !important;">${obj.productDoc.rateType}</td>
-                            <td style="text-align: left !important;">${obj.disbursementDoc.disbursementDateName}</td>
-                            <td style="text-align: left !important;">${moment(obj.disbursementDoc.maturityDate).format("DD/MM/YYYY")}</td>
+                            <!--<td style="text-align: left !important;">${obj.disbursementDoc.disbursementDateName}</td>-->
+                            <!--<td style="text-align: left !important;">${moment(obj.disbursementDoc.maturityDate).format("DD/MM/YYYY")}</td>-->
                             <td style="text-align: left !important;">${formatCurrencyLast(obj.disbursementDoc.loanAmount, obj.disbursementDoc.currencyId)}</td>
                             <td style="text-align: left !important;">${formatCurrencyLast(obj.disbursementDoc.projectInterest, obj.disbursementDoc.currencyId)}</td>
                             <td style="text-align: left !important;">${obj.repaymentDateName}</td>
@@ -192,16 +196,16 @@ Meteor.methods({
         }
 
 
-        totalPrinciple = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalPrincipleUSD, params.exchangeId,exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalPrincipleTHB, params.exchangeId,exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalPrincipleKHR, params.exchangeId,exchange);
-        totalInterest = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalInterestUSD, params.exchangeId,exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalInterestTHB, params.exchangeId,exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalInterestKHR, params.exchangeId,exchange);
-        totalFee = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalFeeUSD, params.exchangeId,exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalFeeTHB, params.exchangeId,exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalFeeKHR, params.exchangeId,exchange);
-        totalPenalty = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalPenaltyUSD, params.exchangeId,exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalPenaltyTHB, params.exchangeId,exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalPenaltyKHR, params.exchangeId,exchange);
-        total = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalUSD, params.exchangeId,exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalTHB, params.exchangeId,exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalKHR, params.exchangeId,exchange);
+        totalPrinciple = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalPrincipleUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalPrincipleTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalPrincipleKHR, params.exchangeId, exchange);
+        totalInterest = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalInterestUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalInterestTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalInterestKHR, params.exchangeId, exchange);
+        totalFee = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalFeeUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalFeeTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalFeeKHR, params.exchangeId, exchange);
+        totalPenalty = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalPenaltyUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalPenaltyTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalPenaltyKHR, params.exchangeId, exchange);
+        total = Meteor.call("exchange", "USD", companyDoc.baseCurrency, totalUSD, params.exchangeId, exchange) + Meteor.call("exchange", "THB", companyDoc.baseCurrency, totalTHB, params.exchangeId, exchange) + Meteor.call("exchange", "KHR", companyDoc.baseCurrency, totalKHR, params.exchangeId, exchange);
 
 
         repaymentHTML += `
                 <tr>
-                    <td colspan="14">${translate['grandTotalUSD']}</td>
+                    <td colspan="11">${translate['grandTotalUSD']}</td>
                     <td>${formatCurrency(totalPrincipleUSD, "USD")}</td>
                     <td>${formatCurrency(totalInterestUSD, "USD")}</td>
                     <td>${formatCurrency(totalFeeUSD, "USD")}</td>
@@ -210,7 +214,7 @@ Meteor.methods({
                   
                 </tr> 
                 <tr>
-                    <td colspan="14">${translate['grandTotalKHR']}</td>
+                    <td colspan="11">${translate['grandTotalKHR']}</td>
                     <td>${formatCurrency(totalPrincipleKHR, "KHR")}</td>
                     <td>${formatCurrency(totalInterestKHR, "KHR")}</td>
                     <td>${formatCurrency(totalFeeKHR, "KHR")}</td>
@@ -218,7 +222,7 @@ Meteor.methods({
                     <td>${formatCurrency(totalKHR, "KHR")}</td>
                   
                 </tr> <tr>
-                    <td colspan="14">${translate['grandTotalTHB']}</td>
+                    <td colspan="11">${translate['grandTotalTHB']}</td>
                     <td>${formatCurrency(totalPrincipleTHB, "THB")}</td>
                     <td>${formatCurrency(totalInterestTHB, "THB")}</td>
                     <td>${formatCurrency(totalFeeTHB, "THB")}</td>
@@ -227,12 +231,12 @@ Meteor.methods({
                   
                 </tr> 
                 <tr>
-                    <td colspan="14">${translate['grandTotal']}</td>
-                    <td>${formatCurrency(totalPrinciple, companyDoc.baseCurrency)}</td>
-                    <td>${formatCurrency(totalInterest, companyDoc.baseCurrency)}</td>
-                    <td>${formatCurrency(totalFee, companyDoc.baseCurrency)}</td>
-                    <td>${formatCurrency(totalPenalty, companyDoc.baseCurrency)}</td>
-                    <td>${formatCurrency(totalPrinciple + totalInterest + totalFee + totalPenalty, companyDoc.baseCurrency)}</td>
+                    <th colspan="11">${translate['grandTotal']}</th>
+                    <th>${formatCurrency(totalPrinciple, companyDoc.baseCurrency)}</th>
+                    <th>${formatCurrency(totalInterest, companyDoc.baseCurrency)}</th>
+                    <th>${formatCurrency(totalFee, companyDoc.baseCurrency)}</th>
+                    <th>${formatCurrency(totalPenalty, companyDoc.baseCurrency)}</th>
+                    <th>${formatCurrency(totalPrinciple + totalInterest + totalFee + totalPenalty, companyDoc.baseCurrency)}</th>
                   
                 </tr>
         `;

@@ -146,7 +146,8 @@
       "update": "Update Disbursement",
       "startPaidDate": "Start Paid Date",
       "productType": "Product Type",
-      "installment": "Installment",
+      "term": "Term",
+      "repaidFrequency":"Repaid Frequency",
       "feeAmount": "Fee",
       "paymentNumber": "Payment Number",
       "loanAcc": "Loan Account"
@@ -357,7 +358,8 @@
       "disbursementDate": "ថ្ងៃខ្ចី",
       "startPaidDate": "ថ្ងៃចាប់ផ្តើមបង់",
       "productType": "ប្រភេទកម្ចី",
-      "installment": "ចំនួនដំណាក់កាលត្រូវបង់",
+      "term": "រយៈពេលត្រូវបង់",
+      "repaidFrequency":"គម្លាតបង់ប្រាក់",
       "feeAmount": "តម្លៃរដ្ឋបាល",
       "paymentNumber": "ចំនួនដងបង់រួច",
       "loanAcc": "លេខគណនី"

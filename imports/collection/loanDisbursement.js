@@ -23,7 +23,10 @@ Loan_Disbursement.schema = new SimpleSchema({
         decimal: true,
         label: "Interest",
     },
-    installment: {
+    term: {
+        type: Number
+    },
+    repaidFrequency: {
         type: Number
     },
     disbursementDate: {
@@ -37,6 +40,16 @@ Loan_Disbursement.schema = new SimpleSchema({
     maturityDate: {
         type: Date,
         label: "Maturity Date",
+    },
+    payOffDate: {
+        type: Date,
+        label: "Pay Off Date",
+        optional: true
+    },
+    writeOffDate: {
+        type: Date,
+        label: "Write Off Date",
+        optional: true
     },
     startPaidDate: {
         type: Date,

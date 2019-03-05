@@ -47,7 +47,8 @@
                                     <el-col :span="12">
                                         <el-form-item :label="langConfig['client']" prop="disbursementId">
                                             <el-select filterable v-model="params.disbursementId" clearable
-                                                       :placeholder="langConfig['all']" remote :remote-method="clientOpt"
+                                                       :placeholder="langConfig['all']" remote
+                                                       :remote-method="clientOpt"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in clientOptions"
@@ -122,7 +123,7 @@
 
 
                               <div style="width: 25% !important;float:right">
-                                  ចំនួនដងត្រូវសង: {{disbursementDoc.installment}}
+                                  ចំនួនដងត្រូវសង: {{disbursementDoc.term/disbursementDoc.repaidFrequency || ""}}
                               </div>
 
                               <div style="width: 50% !important;">
@@ -133,7 +134,7 @@
                           </div>
                           <div class="row">
                               <div style="width: 25% !important;float: right">
-                                  លើកទី : {{clientDoc.loanCycle || ""}}
+                                  រយៈពេល : {{disbursementDoc.term || ""}} {{productDoc.rateType==="Monthly" ? "ខែ": productDoc.rateType==="Weekly" ? "សប្តាហ៍" : productDoc.rateType==="Yearly" ? " ឆ្នាំ" : "ថ្ងៃ" || ""}}
                               </div>
                               <div style="width: 25% !important;float: right">
                                   ទូរស័ព្ទ : {{clientDoc.phoneNumber || ""}}
@@ -271,7 +272,7 @@
                 if (!!query) {
                     setTimeout(() => {
                         let lists = [];
-                        Meteor.call('queryLoanDisbursementOption', query,Session.get("area"), (err, result) => {
+                        Meteor.call('queryLoanDisbursementOption', query, Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.clientOptions = result;
                             } else {
@@ -280,7 +281,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryLoanDisbursementOption', "",Session.get("area"), (err, result) => {
+                    Meteor.call('queryLoanDisbursementOption', "", Session.get("area"), (err, result) => {
                         if (!err) {
                             this.clientOptions = result;
                         } else {
