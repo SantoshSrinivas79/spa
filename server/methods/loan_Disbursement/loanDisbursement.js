@@ -1,7 +1,7 @@
 import {Loan_Disbursement} from '../../../imports/collection/loanDisbursement';
 import {Loan_DisbursementReact} from '../../../imports/collection/loanDisbursement';
 import {Loan_Product} from "../../../imports/collection/loanProduct";
-import {roundCurrency} from "../../../imports/api/methods/roundCurrency";
+import {roundCurrency, roundCurrencyNature} from "../../../imports/api/methods/roundCurrency";
 import math from "mathjs";
 import {Loan_PenaltyClosing} from "../../../imports/collection/loanPenaltyClosing";
 import {Loan_RepaymentSchedule} from "../../../imports/collection/loanRepaymentSchedule";
@@ -298,7 +298,8 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, id) {
             repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");
             repaymentScheduleDoc.principle = roundCurrency(principle, disbursementDoc.currencyId, disbursementDoc.rolesArea);
             repaymentScheduleDoc.interest = roundCurrency(interest, disbursementDoc.currencyId, disbursementDoc.rolesArea);
-            repaymentScheduleDoc.amount = repaymentScheduleDoc.principle + repaymentScheduleDoc.interest;
+            repaymentScheduleDoc.amount = roundCurrencyNature(repaymentScheduleDoc.principle + repaymentScheduleDoc.interest, disbursementDoc.currencyId, disbursementDoc.rolesArea);
+            repaymentScheduleDoc.interest = repaymentScheduleDoc.amount - repaymentScheduleDoc.principle;
             repaymentScheduleDoc.isPaid = false;
             repaymentScheduleDoc.isAllowClosing = i > installmentAllowClosing;
 

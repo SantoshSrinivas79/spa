@@ -192,7 +192,9 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="langConfig['term']" prop="term">
-                            <el-input v-model.number="loanDisbursementForm.term" type='number'></el-input>
+                            <el-input v-model.number="loanDisbursementForm.term" type='number'>
+                                <template slot="append">{{langConfig[time]}}</template>
+                            </el-input>
                         </el-form-item>
 
                         <el-form-item :label="langConfig['repaidFrequency']" prop="repaidFrequency">
@@ -318,7 +320,9 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="langConfig['term']" prop="term">
-                            <el-input v-model.number="loanDisbursementForm.term" type='number'></el-input>
+                            <el-input v-model.number="loanDisbursementForm.term" type='number'>
+                                <template slot="append">{{langConfig[time]}}</template>
+                            </el-input>
                         </el-form-item>
 
                         <el-form-item :label="langConfig['repaidFrequency']" prop="repaidFrequency">
@@ -505,7 +509,8 @@
                 ],
                 productOption: [],
                 creditOfficerOption: [],
-                skip: 0
+                skip: 0,
+                time: ""
             }
         },
         watch: {
@@ -538,6 +543,15 @@
                     this.repaidFrequencyOption = [
                         {value: 1, label: 1}
                     ];
+                }
+            },
+            "loanDisbursementForm.productId"(val) {
+                if (val) {
+                    let values = this.productOption.map(function (o) {
+                        return o.value;
+                    })
+                    let index = values.indexOf(val);
+                    this.time = this.productOption[index].label.split(":")[1].trim();
                 }
             }
         },
@@ -793,6 +807,7 @@
                 if (this.$refs["loanDisbursementFormUpdate"]) {
                     this.$refs["loanDisbursementFormUpdate"].resetFields();
                 }
+                this.time = "";
 
             }
         },

@@ -48,6 +48,52 @@ export const roundCurrency = (amount, currencyId, rolesArea) => {
     return newAmount;
 };
 
+export const roundCurrencyNature = (amount, currencyId, rolesArea) => {
+    let area;
+    if (rolesArea) {
+        area = rolesArea;
+    } else {
+        area = Session.get("area");
+    }
+    let settingDoc = WB_waterBillingSetup.findOne({rolesArea: area});
+    let newAmount;
+    settingDoc.usdDigit = 0;
+    settingDoc.khrDigit = settingDoc.khrDigit || -2;
+    settingDoc.thbDigit = settingDoc.thbDigit || 0;
+    if (settingDoc.roundType === "Normal") {
+        switch (currencyId) {
+            case "USD":
+                newAmount = math.round(amount, settingDoc.usdDigit);
+                break;
+            case "KHR":
+                newAmount = roundKhr(amount, settingDoc.khrDigit);
+                break;
+            case "THB":
+                newAmount = math.round(amount, settingDoc.thbDigit);
+        }
+    } else if (settingDoc.roundType === "Up") {
+        switch (currencyId) {
+            case "USD":
+                newAmount = Math.ceil(amount * digitToInt(settingDoc.usdDigit)) / digitToInt(settingDoc.usdDigit);
+            case "KHR":
+                newAmount = roundKhrUp(amount, settingDoc.khrDigit);
+            case "THB":
+                newAmount = Math.ceil(amount * digitToInt(settingDoc.thbDigit)) / digitToInt(settingDoc.thbDigit);
+        }
+
+    } else if (settingDoc.roundType === "Down") {
+        switch (currencyId) {
+            case "USD":
+                newAmount = Math.floor(amount * digitToInt(settingDoc.usdDigit)) / digitToInt(settingDoc.usdDigit);
+            case "KHR":
+                newAmount = roundKhrDown(amount, settingDoc.khrDigit);
+            case "THB":
+                newAmount = Math.floor(amount * digitToInt(settingDoc.thbDigit)) / digitToInt(settingDoc.thbDigit);
+        }
+    }
+    return newAmount;
+};
+
 
 export const formatCurrency = (amount, currencyId) => {
     let settingDoc = WB_waterBillingSetup.findOne();

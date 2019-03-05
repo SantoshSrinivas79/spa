@@ -2,17 +2,17 @@ module.exports = {
     servers: {
         one: {
             // TODO: set host address, username, and authentication method
-            host: '50.116.14.121',
+            host: '167.99.70.150',
             username: 'root',
             // pem: './path/to/pem'
-            password: 'h2e123456#'
+            password: 'rrqwer123#'
             // or neither for authenticate from ssh-agent
         }
     },
 
     meteor: {
         // TODO: change app name and path
-        name: 'thecakeoutlet',
+        name: 'test',
         //name: 'pos',
         path: '../.',
 
@@ -27,11 +27,11 @@ module.exports = {
         env: {
             // TODO: Change to your app's url
             // If you are using ssl, it needs to start with https://
-            PORT: 7728,
+            PORT: 4849,
             //PORT: 3636,
-            ROOT_URL: 'http://50.116.14.121',
-            MONGO_URL: 'mongodb://localhost/thecakeoutlet',
-            //MONGO_URL: 'mongodb://localhost/led',
+            ROOT_URL: 'http://167.99.70.150',
+            MONGO_URL: 'mongodb://localhost/test',
+            //MONGO_URL: 'mongodb://localhost/test',
             TZ: 'Asia/Bangkok',
         },
 

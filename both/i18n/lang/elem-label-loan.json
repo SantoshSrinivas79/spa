@@ -147,10 +147,15 @@
       "startPaidDate": "Start Paid Date",
       "productType": "Product Type",
       "term": "Term",
-      "repaidFrequency":"Repaid Frequency",
+      "repaidFrequency": "Repaid Frequency",
       "feeAmount": "Fee",
       "paymentNumber": "Payment Number",
-      "loanAcc": "Loan Account"
+      "loanAcc": "Loan Account",
+      "Monthly": "Month",
+      "Weekly": "Week",
+      "Daily": "Day",
+      "Yearly": "Year",
+      "": ""
     },
     "repayment": {
       "searchHere": "Search Here ...",
@@ -359,10 +364,15 @@
       "startPaidDate": "ថ្ងៃចាប់ផ្តើមបង់",
       "productType": "ប្រភេទកម្ចី",
       "term": "រយៈពេលត្រូវបង់",
-      "repaidFrequency":"គម្លាតបង់ប្រាក់",
+      "repaidFrequency": "គម្លាតបង់ប្រាក់",
       "feeAmount": "តម្លៃរដ្ឋបាល",
       "paymentNumber": "ចំនួនដងបង់រួច",
-      "loanAcc": "លេខគណនី"
+      "loanAcc": "លេខគណនី",
+      "Monthly": "ខែ",
+      "Weekly": "សប្តាហ៍",
+      "Daily": "ថ្ងៃ",
+      "Yearly": "ឆ្នាំ",
+      "": ""
     },
     "repayment": {
       "searchHere": "ស្វែងរក​នៅទីនេះ ...",
