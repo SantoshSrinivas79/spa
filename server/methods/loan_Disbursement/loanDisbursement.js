@@ -211,6 +211,7 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, id) {
         for (let i = 1; i <= disbursementDoc.term / disbursementDoc.repaidFrequency; i++) {
             let repaymentScheduleDoc = {};
             if (i === 1) {
+                repaymentScheduleDoc._id = id + i;
                 repaymentScheduleDoc.installment = i;
                 repaymentScheduleDoc.date = moment(paidDate).startOf("day").add(12, "hours").toDate();
                 repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");
@@ -232,6 +233,7 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, id) {
 
 
             } else {
+                repaymentScheduleDoc._id = id + i;
                 repaymentScheduleDoc.installment = i;
                 repaymentScheduleDoc.date = moment(paidDate).startOf("day").add(12, "hours").toDate();
                 repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");
@@ -292,7 +294,7 @@ let generateSchedulePayment = function (disbursementDoc, productDoc, id) {
                 interest = (interest / 365) * numDay;
             }
 
-
+            repaymentScheduleDoc._id = id + i;
             repaymentScheduleDoc.installment = i;
             repaymentScheduleDoc.date = moment(paidDate).startOf("day").add(12, "hours").toDate();
             repaymentScheduleDoc.dateName = moment(paidDate).startOf("day").add(12, "hours").format("DD/MM/YYYY");

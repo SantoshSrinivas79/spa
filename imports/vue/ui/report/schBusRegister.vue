@@ -232,8 +232,8 @@
                     shortcuts: [{
                         text: 'Last week',
                         onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
+                            const end = moment().endOf("day").toDate();
+                            const start= moment().startOf("day").toDate();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
                             picker.$emit('pick', [start, end]);
                         }
@@ -261,8 +261,8 @@
                     }, {
                         text: 'Today',
                         onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
+                            const end = moment().endOf("day").toDate();
+                            const start= moment().startOf("day").toDate();
                             picker.$emit('pick', [start, end]);
                         }
                     }]
