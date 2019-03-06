@@ -72,8 +72,7 @@ var posSale = FlowRouter.group({
         }
     }]
 });
-
-var posDirector= FlowRouter.group({
+var posDirector = FlowRouter.group({
     prefix: '/pos-sale',
     name: 'posSale',
     triggersEnter: [function (context, redirect) {
@@ -324,6 +323,8 @@ posSale.route('/posTableBoard', {
 });
 
 import "../../imports/ui/pos_dashboard/posDashBoard";
+import {Manage_Module} from "../../imports/collection/manageModule";
+import {WB_waterBillingSetup} from "../../imports/collection/waterBillingSetup";
 // Dash Board
 posDirector.route('/posDashboard', {
     name: 'pos.dashBoard',

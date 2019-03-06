@@ -484,6 +484,54 @@ Template.sidebar.events({
 
         });
     },
+    'click .receivePaymentWithPassword'(event, instance) {
+        let ma = Manage_Module.findOne();
+        let validateReceivePayment = ma.validateReceivePayment;
+        if (validateReceivePayment === true && validateReceivePayment !== undefined) {
+            //FlowRouter.go('/pos-sale/posReceivePayment');
+            alertify.prompt("Please Input Password", "", "",
+                function (evt, value) {
+                    let wb = WB_waterBillingSetup.findOne();
+                    if (value === wb.password) {
+                        alertify.success('Your Password is Correct');
+                        FlowRouter.go('/pos-sale/posReceivePayment');
+                    } else {
+                        alertify.error('Invalid Password !!!');
+                        return false;
+                    }
+                },
+                function () {
+                    alertify.error('Cancel');
+                }).set('type', 'password');
+
+            /*this.$prompt('Please input Password', 'Tip', {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+                inputType: "password",
+                inputErrorMessage: 'Invalid Password'
+            }).then(({value}) => {
+                let wb = WB_waterBillingSetup.findOne();
+                if (value === wb.password) {
+                    this.$message({
+                        type: 'success',
+                        message: 'Your Password is Correct'
+                    });
+                    FlowRouter.go('/pos-sale/posReceivePayment');
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: 'Invalid Password !!!'
+                    });
+                    return false;
+                }
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: 'Input canceled'
+                });
+            });*/
+        }
+    }
 });
 
 function go_full_screen() {

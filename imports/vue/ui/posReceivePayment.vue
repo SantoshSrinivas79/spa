@@ -116,7 +116,8 @@
                 <el-row type="flex" class="row-bg" justify="center">
                     <el-col :span="24" style="text-align: center;">
                         <div class="block">
-                            <el-pagination @size-change="handleSizeChange" background @current-change="handleCurrentChange"
+                            <el-pagination @size-change="handleSizeChange" background
+                                           @current-change="handleCurrentChange"
                                            :current-page.sync="currentPage" :page-sizes="[10,20, 50, 100,200]"
                                            :page-size="currentSize"
                                            layout="total, sizes, prev, pager, next, jumper" :total="count">
@@ -336,7 +337,7 @@
                             <el-form-item :label="langConfig['customer']" prop="customerId">
                                 <el-select style="display: block !important;"
                                            filterable clearable
-                                           v-model="posReceivePaymentForm.customerId"                                            :disabled="disabledCustomer"
+                                           v-model="posReceivePaymentForm.customerId" :disabled="disabledCustomer"
                                            remote :remote-method="customerOpt"
                                            :loading="loading"
                                            :placeholder="langConfig['customer']">
@@ -1009,7 +1010,7 @@
                 Meteor.call('queryPosReceivePayment', {
                     q: val,
                     filter: this.filter,
-                    rolesArea:Session.get('area'),
+                    rolesArea: Session.get('area'),
                     options: {skip: skip || 0, limit: limit || 10}
                 }, (err, result) => {
                     if (!err) {
@@ -1052,7 +1053,7 @@
                     setTimeout(() => {
                         let lists = [];
                         this.loading = false;
-                        Meteor.call('queryPosCustomerOptionUnPaid', query,Session.get("area"), (err, result) => {
+                        Meteor.call('queryPosCustomerOptionUnPaid', query, Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerOption = result;
                             } else {
@@ -1061,7 +1062,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerOptionUnPaid', "", Session.get("area"),(err, result) => {
+                    Meteor.call('queryPosCustomerOptionUnPaid', "", Session.get("area"), (err, result) => {
                         if (!err) {
                             this.customerOption = result;
                         } else {
@@ -1076,7 +1077,7 @@
                     setTimeout(() => {
                         let lists = [];
                         this.loading = false;
-                        Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', query,Session.get("area"), (err, result) => {
+                        Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', query, Session.get("area"), (err, result) => {
                             if (!err) {
                                 this.customerSaleOrderOption = result;
                             } else {
@@ -1085,7 +1086,7 @@
                         })
                     }, 200);
                 } else {
-                    Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', "",Session.get("area"), (err, result) => {
+                    Meteor.call('queryPosCustomerSaleOrderOptionUnPaid', "", Session.get("area"), (err, result) => {
                         if (!err) {
                             this.customerSaleOrderOption = result;
                         } else {
@@ -1319,71 +1320,22 @@
             },
             popupPosReceivePaymentAdd() {
                 let vm = this;
-                if (this.validateReceivePayment === true && this.validateReceivePayment !== undefined) {
-                    this.$prompt('Please input Password', 'Tip', {
-                        confirmButtonText: 'OK',
-                        cancelButtonText: 'Cancel',
-                        inputType: "password",
-                        inputErrorMessage: 'Invalid Password'
-                    }).then(({value}) => {
-                        let wb = WB_waterBillingSetup.findOne();
-                        if (value === wb.password) {
-                            this.$message({
-                                type: 'success',
-                                message: 'Your Password is Correct'
-                            });
 
-                            vm.dialogAddPosReceivePayment = true;
-                            vm.resetForm();
-                            vm.itemOpt();
-                            $(".el-dialog__title").text(this.langConfig['add']);
-                            vm.customerOpt();
-                            vm.termOpt();
+                vm.dialogAddPosReceivePayment = true;
+                vm.resetForm();
+                vm.itemOpt();
+                $(".el-dialog__title").text(this.langConfig['add']);
 
-                            Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
-                                if (re !== undefined) {
-                                    vm.closeDate = re.closeDate;
-                                } else {
-                                    vm.closeDate = "";
-                                }
-                            })
+                vm.customerOpt();
+                vm.termOpt();
 
-
-                        } else {
-                            this.$message({
-                                type: 'error',
-                                message: 'Invalid Password !!!'
-                            });
-                            return false;
-
-                        }
-
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: 'Input canceled'
-                        });
-                    });
-
-
-                } else {
-                    vm.dialogAddPosReceivePayment = true;
-                    vm.resetForm();
-                    vm.itemOpt();
-                    $(".el-dialog__title").text(this.langConfig['add']);
-
-                    vm.customerOpt();
-                    vm.termOpt();
-
-                    Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
-                        if (re !== undefined) {
-                            vm.closeDate = re.closeDate;
-                        } else {
-                            vm.closeDate = "";
-                        }
-                    })
-                }
-
+                Meteor.call("queryLastClosingEntry", Session.get("area"), function (err, re) {
+                    if (re !== undefined) {
+                        vm.closeDate = re.closeDate;
+                    } else {
+                        vm.closeDate = "";
+                    }
+                })
             },
             updatePosReceivePaymentDetail(row, index, type) {
                 let vm = this;
