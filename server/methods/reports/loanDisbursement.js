@@ -124,7 +124,7 @@ Meteor.methods({
                             <td style="text-align: left !important;">${obj.productDoc.rateType}</td>
                             <td style="text-align: left !important;">${obj.disbursementDateName}</td>
                             <td style="text-align: left !important;">${moment(obj.maturityDate).format("DD/MM/YYYY")}</td>
-                            <td style="text-align: left !important;">${obj.installment}</td>
+                            <td style="text-align: left !important;">${obj.term}</td>
                             <td style="text-align: left !important;">${obj.productDoc.rate} %</td>
                             <td style="text-align: left !important;">${obj.clientDoc.loanCycle}</td>
                             <td style="text-align: left !important;">${obj.clientDoc.address}</td>
