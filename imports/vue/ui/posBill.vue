@@ -1372,6 +1372,31 @@
                         e.preventDefault();
                         vm.dialogAddPosBill = false;
                     }*/
+                } else if (e.data.init(0).selector === "el-dialog.dialogBill" && this.dialogAddImei === true && this.imeiInput === "") {
+                    let vm = this;
+                    if (this.dialogAddImei === true) {
+                        let scannerSensitivity = 100;
+                        let charCode = event.which || event.keyCode;
+                        if (charCode !== 13 && charCode !== 16 && charCode !== 18 && charCode !== 17) {
+                            this.takeBarcode += String.fromCharCode(charCode);
+                        }
+                        this.timeStamp.push(Date.now());
+                        if (this.timeStamp.length > 1) {
+                            if (this.timeStamp[1] - this.timeStamp[0] >= scannerSensitivity) {
+                                this.takeBarcode = '';
+                                this.timeStamp = [];
+                            } else {
+                                if (e.keyCode === 13) {
+                                    this.imeiInput = this.takeBarcode;
+                                    if (this.takeBarcode !== "") {
+                                        vm.addImei();
+                                    }
+                                    this.timeStamp = [];
+                                    this.takeBarcode = ''
+                                }
+                            }
+                        }
+                    }
                 }
             },
             indexMethod(index) {
@@ -2006,8 +2031,9 @@
             },
             addImei() {
                 let vm = this;
+                let imeiInputTem = vm.imeiInput;
                 if (vm.imeiInput !== "") {
-
+                    vm.imeiInput = "";
                     if (this.rowDoc && vm.imeiShow.length >= this.rowDoc.qty) {
                         vm.$message({
                             type: 'error',
@@ -2016,7 +2042,7 @@
                         return false;
                     }
                     let isFindImei = vm.imei.find((obj) => {
-                        return obj.name === vm.imeiInput;
+                        return obj.name === imeiInputTem;
                     })
                     if (isFindImei) {
                         vm.$message({
@@ -2024,17 +2050,17 @@
                             message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
                         });
                     } else {
-                        Meteor.call("queryPosImeiBillByImei", vm.imeiInput, (err, result) => {
+                        Meteor.call("queryPosImeiBillByImei", imeiInputTem, (err, result) => {
                             if (result) {
                                 vm.$message({
                                     type: 'error',
                                     message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
                                 });
                             } else {
-                                vm.imei.push({name: vm.imeiInput, itemId: vm.itemId});
-                                vm.imeiShow.push({name: vm.imeiInput, itemId: vm.itemId});
+                                vm.imei.push({name: imeiInputTem, itemId: vm.itemId});
+                                vm.imeiShow.push({name: imeiInputTem, itemId: vm.itemId});
 
-                                vm.imeiInput = "";
+                                imeiInputTem = "";
                                 vm.rowDoc.desc = "";
                                 vm.imeiShow.forEach((o) => {
                                     vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
@@ -2044,7 +2070,7 @@
                                 vm.updatePosBillDetail(vm.rowDoc, vm.indexRow);
 
                                 vm.$message({
-                                    message: `បញ្ចូល ${vm.imeiInput} បានជោគជ័យ`,
+                                    message: `បញ្ចូល ${imeiInputTem} បានជោគជ័យ`,
                                     type: 'success'
                                 });
                             }
