@@ -217,6 +217,7 @@
                                             v-model="posInvoiceForm.isRetailAll"
                                             active-color="#13ce66"
                                             inactive-color="#ff4949"
+                                            @change="changeRetail"
                                     >
                                     </el-switch>
                                 </th>
@@ -628,12 +629,6 @@
                                 <th>{{langConfig['no']}}</th>
                                 <th style="min-width: 220px">{{langConfig['name']}}</th>
                                 <th>{{langConfig['retail']}}
-                                    <el-switch
-                                            v-model="posInvoiceForm.isRetailAll"
-                                            active-color="#13ce66"
-                                            inactive-color="#ff4949"
-                                    >
-                                    </el-switch>
                                 </th>
                                 <!--<th>{{langConfig['longitude']}}</th>
                                 <th>{{langConfig['width']}}</th>-->
@@ -1778,17 +1773,18 @@
             },
             "posInvoiceForm.isRetailAll"(val) {
                 let vm = this;
-                let ind = 0;
-                this.posInvoiceData.map((obj) => {
-                    obj.isRetail = val;
-                    vm.updatePosInvoiceDetailByRetail(obj, ind);
-                    ind++;
-                })
+                if (vm.dialogAddPosInvoice === true) {
+                    let ind = 0;
+                    this.posInvoiceData.map((obj) => {
+                        obj.isRetail = val;
+                        vm.updatePosInvoiceDetailByRetail(obj, ind);
+                        ind++;
+                    })
+                }
             },
         },
         methods: {
             handleCloseModal() {
-
                 this.resetForm();
                 this.refForm = "";
             },
@@ -1806,7 +1802,6 @@
             handleCurrentChange(val) {
                 this.currentPage = val;
             },
-
             clickTHB(val) {
                 this.posInvoiceForm.paidTHB = this.$_numeral(val).value();
                 this.getTotal();
