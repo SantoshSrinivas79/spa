@@ -114,7 +114,7 @@ Meteor.methods({
                                 }
 
                         },
-                        {$project: {_id: 0}}
+                        //{$project: {_id: 0}}
                     ],
                     as: 'payBillDoc'
                 }
@@ -136,6 +136,26 @@ Meteor.methods({
                 }
             },
             {
+                $group: {
+                    _id: {
+                        payBillId: "$payBillDoc._id",
+                        vendorId: "$_id.vendorId",
+
+                    },
+                    billTotal: {$last: "$billTotal"},
+                    billDiscount: {$last: "$billDiscount"},
+                    billPaid: {$last: "$billPaid"},
+                    billList: {$last: "$billList"},
+                    payBillDocBillId: {$last: "$payBillDoc.billId"},
+                    totalPaidFromBill: {$last: {$cond: [{$eq: [{$ifNull: ["$payBillDoc.billId", "UnSpecify"]}, "UnSpecify"]}, 0, "$payBillDoc.totalPaid"]}},
+                    totalDiscountFromBill: {$last: {$cond: [{$eq: [{$ifNull: ["$payBillDoc.billId", "UnSpecify"]}, "UnSpecify"]}, 0, "$payBillDoc.totalDiscount"]}},
+                    payBillDoc: {$last: "$payBillDoc"},
+                    isFromBill: {$last: {$cond: [{$eq: [{$ifNull: ["$payBillDoc.billId", "UnSpecify"]}, "UnSpecify"]}, false, true]}},
+
+
+                }
+            },
+            {
                 $unwind: {
                     path: "$payBillDoc.bill",
                     preserveNullAndEmptyArrays: true
@@ -150,8 +170,9 @@ Meteor.methods({
                     billDiscount: {$last: "$billDiscount"},
                     billPaid: {$last: "$billPaid"},
                     billDoc: {$push: "$payBillDoc.bill"},
-                    billList: {$last: "$billList"}
-
+                    billList: {$last: "$billList"},
+                    totalPaidFromBill: {$sum: {$cond: [{$and: [{$eq: ["$payBillDoc.bill._id", "$payBillDocBillId"]}, {$in: ["$payBillDocBillId", "$billList"]}]}, "$totalPaidFromBill", 0]}},
+                    totalDiscountFromBill: {$sum: {$cond: [{$eq: ["$payBillDoc.bill._id", "$payBillDocBillId"]}, "$totalDiscountFromBill", 0]}},
                 }
             },
 
@@ -205,6 +226,8 @@ Meteor.methods({
                         }
                     })
                 }
+                toPaid += obj.totalPaidFromBill;
+                toPaid += obj.totalDiscountFromBill;
 
                 if ((obj.billTotal - obj.billDiscount - toPaid) > 0) {
                     unPaidHTML += `

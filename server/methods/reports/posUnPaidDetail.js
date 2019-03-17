@@ -148,10 +148,11 @@ Meteor.methods({
                     payBillDoc: {$push: "$payBillDoc"},
                     lastBillNo: {$last: "$lastBillNo"},
                     data: {$last: "$data"},
+                    receiveDocBillId: {$last: "$payBillDoc.billId"},
                     lastBillDate: {$last: "$lastBillDate"},
-                    totalPaidFromBill: {$sum: {$cond: [{$ifNull: ["$payBillDoc.billId", true]}, 0, "$payBillDoc.totalPaid"]}},
-                    totalDiscountFromBill: {$sum: {$cond: [{$ifNull: ["$payBillDoc.billId", true]}, 0, "$payBillDoc.totalDiscount"]}},
-                    isFromBill: {$last: {$cond: [{$ifNull: ["$payBillDoc.billId", true]}, false, true]}},
+                    totalPaidFromBill: {$sum: {$cond: [{$eq: [{$ifNull: ["$payBillDoc.billId", "UnSpecify"]}, "UnSpecify"]}, 0, "$payBillDoc.totalPaid"]}},
+                    totalDiscountFromBill: {$sum: {$cond: [{$eq: [{$ifNull: ["$payBillDoc.billId", "UnSpecify"]}, "UnSpecify"]}, 0, "$payBillDoc.totalDiscount"]}},
+                    isFromBill: {$last: {$cond: [{$eq: [{$ifNull: ["$payBillDoc.billId", "UnSpecify"]}, "UnSpecify"]}, false, true]}},
                 }
             },
             {
@@ -176,8 +177,8 @@ Meteor.methods({
                     data: {$last: "$data"},
                     totalPaidReceive: {$sum: {$cond: [{$eq: ["$isFromBill", true]}, 0, "$payBillDoc.bill.paid"]}},
                     totalDiscountReceive: {$sum: {$cond: [{$eq: ["$isFromBill", true]}, 0, "$payBillDoc.bill.discount"]}},
-                    totalPaidFromBill: {$last: "$totalPaidFromBill"},
-                    totalDiscountFromBill: {$last: "$totalDiscountFromBill"}
+                    totalPaidFromBill: {$sum: {$cond: [{$eq: ["$payBillDoc.bill._id", "$receiveDocBillId"]}, "$totalPaidFromBill", 0]}},
+                    totalDiscountFromBill: {$sum: {$cond: [{$eq: ["$payBillDoc.bill._id", "$receiveDocBillId"]}, "$totalDiscountFromBill", 0]}},
                 }
             },
             {
@@ -244,17 +245,17 @@ Meteor.methods({
 
                     let payDoc = obj.dataPayment.find(findReceiveByBill);
 
-                    if (ob.total - (ob.totalPaidFromBill || 0) - (ob.totalDiscountFromBill || 0)  - (ob.discountValue || 0) - (payDoc && payDoc.totalPaidReceive || 0) - (payDoc && payDoc.totalDiscountReceive || 0) > 0) {
+                    if (ob.total - (payDoc && payDoc.totalPaidFromBill || 0) - (payDoc && payDoc.totalDiscountFromBill || 0) - (ob.discountValue || 0) - (payDoc && payDoc.totalPaidReceive || 0) - (payDoc && payDoc.totalDiscountReceive || 0) > 0) {
 
 
                         ob.billNo = ob && ob.billNo.length > 9 ? parseInt((ob && ob.billNo || "0000000000000").substr(9, 13)) : parseInt(ob && ob.billNo || "0");
                         ob.billNo = pad(ob.billNo, 6);
 
-                        balanceUnpay += ob.total - (ob.totalPaidFromBill || 0) - (ob.totalDiscountFromBill || 0)  - (ob.discountValue || 0) - (payDoc && payDoc.totalPaidReceive || 0) - (payDoc && payDoc.totalDiscountReceive || 0);
+                        balanceUnpay += ob.total - (payDoc && payDoc.totalPaidFromBill || 0) - (payDoc && payDoc.totalDiscountFromBill || 0) - (ob.discountValue || 0) - (payDoc && payDoc.totalPaidReceive || 0) - (payDoc && payDoc.totalDiscountReceive || 0);
                         newUnPaidHtml += `
                         <tr>
                             <td colspan="3" style="text-align: center !important;">${moment(ob.billDate).format("DD/MM/YYYY")}-(#${ob.billNo})</td>
-                            <td style="text-align: left !important;">${formatCurrency(ob.total - (ob.totalPaidFromBill || 0) - (ob.totalDiscountFromBill || 0)  - (ob.discountValue || 0) - (payDoc && payDoc.totalPaidReceive || 0) - (payDoc && payDoc.totalDiscountReceive || 0), companyDoc.baseCurrency)}</td>
+                            <td style="text-align: left !important;">${formatCurrency(ob.total - (payDoc && payDoc.totalPaidFromBill || 0) - (payDoc && payDoc.totalDiscountFromBill || 0) - (ob.discountValue || 0) - (payDoc && payDoc.totalPaidReceive || 0) - (payDoc && payDoc.totalDiscountReceive || 0), companyDoc.baseCurrency)}</td>
                         </tr>
                     `;
 

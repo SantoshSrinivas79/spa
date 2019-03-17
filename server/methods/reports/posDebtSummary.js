@@ -112,7 +112,7 @@ Meteor.methods({
                                 }
 
                         },
-                        {$project: {_id: 0}}
+                        //{$project: {_id: 0}}
                     ],
                     as: 'receiveDoc'
                 }
@@ -125,12 +125,29 @@ Meteor.methods({
                 }
             },
             {
-                $match: parameter2
-            },
-            {
                 $sort: {
                     "receiveDoc.createdAt": 1,
                     "receiveDoc.receivePaymentDate": 1,
+                }
+            },
+
+            {
+                $group: {
+                    _id: {
+                        receiveId: "$receiveDoc._id",
+                        customerId: "$_id.customerId",
+                    },
+                    invoiceTotal: {$last: "$invoiceTotal"},
+                    invoiceDiscount: {$last: "$invoiceDiscount"},
+                    invoicePaid: {$last: "$invoicePaid"},
+                    invoiceList: {$last: "$invoiceList"},
+                    invoiceDate: {$last: "$invoiceDate"},
+
+                    receiveDocInvoiceId: {$last: "$receiveDoc.invoiceId"},
+                    totalPaidFromInvoice: {$last: {$cond: [{$eq: [{$ifNull: ["$receiveDoc.invoiceId", "UnSpecify"]}, "UnSpecify"]}, 0, "$receiveDoc.totalPaid"]}},
+                    totalDiscountFromInvoice: {$last: {$cond: [{$eq: [{$ifNull: ["$receiveDoc.invoiceId", "UnSpecify"]}, "UnSpecify"]}, 0, "$receiveDoc.totalDiscount"]}},
+                    receiveDoc: {$last: "$receiveDoc"},
+                    isFromInvoice: {$last: {$cond: [{$eq: [{$ifNull: ["$receiveDoc.invoiceId", "UnSpecify"]}, "UnSpecify"]}, false, true]}},
                 }
             },
             {
@@ -150,7 +167,11 @@ Meteor.methods({
                     invoicePaid: {$last: "$invoicePaid"},
                     invoiceDoc: {$push: "$receiveDoc.invoice"},
                     invoiceList: {$last: "$invoiceList"},
-                    invoiceDate: {$last: "$invoiceDate"}
+                    invoiceDate: {$last: "$invoiceDate"},
+                    totalPaidFromInvoice: {$sum: {$cond: [{$and: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, {$in: ["$receiveDocInvoiceId", "$invoiceList"]}]}, "$totalPaidFromInvoice", 0]}},
+                    totalDiscountFromInvoice: {$sum: {$cond: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, "$totalDiscountFromInvoice", 0]}},
+
+
                 }
             },
 
@@ -205,6 +226,8 @@ Meteor.methods({
                         }
                     })
                 }
+                toPaid += obj.totalPaidFromInvoice;
+                toPaid += obj.totalDiscountFromInvoice;
 
                 if ((obj.invoiceTotal - obj.invoiceDiscount - toPaid) > 0) {
                     debtHTML += `

@@ -192,7 +192,7 @@ Meteor.methods({
                     transactionType: isReceiveItem == true ? "Invoice Sale Order" : (data.netTotal - data.paid) > 0 ? "Invoice" : "Sale Receipt"
                 };
 
-                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate, true, (err, result) => {
+                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate, data.locationId, true, (err, result) => {
                     posReceivePaymentDoc.invoice = result;
                     result.forEach((obj) => {
                         if (obj._id != id) {
@@ -335,7 +335,7 @@ Meteor.methods({
                     }
                 ];
                 */
-                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate, true, (err, result) => {
+                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate,data.locationId, true, (err, result) => {
                     posReceivePaymentDoc.invoice = result;
                     result.forEach((obj) => {
                         if (obj._id != _id) {

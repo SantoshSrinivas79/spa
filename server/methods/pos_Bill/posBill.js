@@ -161,7 +161,7 @@ Meteor.methods({
                 transactionType: (data.netTotal - data.paid) > 0 ? "Bill" : "Sale Receipt"
             };
 
-            Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate, true, (err, result) => {
+            Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate,data.locationId, true, (err, result) => {
                 posPayBillDoc.bill = result;
                 result.forEach((obj) => {
                     if (obj._id != id) {
@@ -241,7 +241,7 @@ Meteor.methods({
 
                     }
                 ;
-                Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate, true, (err, result) => {
+                Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate,data.locationId, true, (err, result) => {
                     posPayBillDoc.bill = result;
                     result.forEach((obj) => {
                         if (obj._id != _id) {
