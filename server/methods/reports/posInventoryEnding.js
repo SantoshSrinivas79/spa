@@ -154,7 +154,7 @@ Meteor.methods({
                     <tr>
                             <td style="text-align: left !important;">${ind}</td>
                             <td style="text-align: left !important;">${ob.productDoc && ob.productDoc.name || ""}</td>
-                            <td style="text-align: left !important;">${ob.qtyEnding || ""}</td>
+                            <td style="text-align: left !important;">${numeral(ob.qtyEnding).format("0,00.00")}</td>
                             <td style="text-align: left !important;">${ob.unitDoc && ob.unitDoc.name || ""}</td>
 
                             <td>${formatCurrency(ob.averageCost, companyDoc.baseCurrency)}</td>
