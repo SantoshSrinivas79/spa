@@ -248,10 +248,22 @@ Meteor.methods({
                             "item.isReceive": false,
                             _id: obj.saleOrderId
                         }).count();
+                        let orderDoc = Pos_SaleOrder.findOne({_id: obj.saleOrderId});
+                        let status = orderDoc.netTotal - (orderDoc.paid + orderDoc.cutOnPaid) <= 0.01 ? "Complete" : "Partial";
                         if (countNotReceive === 0) {
-                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {$set: {receiveStatus: "Complete"}});
+                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {
+                                $set: {
+                                    receiveStatus: "Complete",
+                                    status: status
+                                }
+                            });
                         } else {
-                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {$set: {receiveStatus: "Partial"}});
+                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {
+                                $set: {
+                                    receiveStatus: "Partial",
+                                    status: status
+                                }
+                            });
                         }
 
                     }
@@ -335,7 +347,7 @@ Meteor.methods({
                     }
                 ];
                 */
-                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate,data.locationId, true, (err, result) => {
+                Meteor.call("queryPosInvoiceEndingByCustomerId", data.customerId, data.invoiceDate, data.locationId, true, (err, result) => {
                     posReceivePaymentDoc.invoice = result;
                     result.forEach((obj) => {
                         if (obj._id != _id) {
@@ -371,11 +383,28 @@ Meteor.methods({
         return isUpdated;
     },
     removePosInvoice(id, data) {
-        Pos_ReceivePayment.direct.remove({invoiceId: id});
-        Pos_Customer.direct.update({_id: data.customerId}, {$inc: {invoiceNumber: -1}});
+        let invoiceDoc = Pos_Invoice.findOne({_id: id});
         let isRemoved = Pos_Invoice.remove({_id: id});
 
         if (isRemoved) {
+            let receivePaymentDoc = Pos_ReceivePayment.findOne({invoiceId: id});
+            Pos_ReceivePayment.direct.remove({invoiceId: id});
+            Pos_Customer.direct.update({_id: data.customerId}, {$inc: {invoiceNumber: -1}});
+
+            Pos_ReceivePayment.direct.update({
+                    "invoice._id": id,
+                    createdAt: {$gt: invoiceDoc.createdAt}
+                },
+                {
+                    $inc: {
+                        "invoice.$.amount": -(invoiceDoc.total - ((receivePaymentDoc && receivePaymentDoc.totalPaid || 0) + (receivePaymentDoc && receivePaymentDoc.totalDiscount || 0))),
+                        "invoice.$.netAmount": -(invoiceDoc.netTotal - (receivePaymentDoc && receivePaymentDoc.totalPaid || 0)),
+                        totalAmount: -(invoiceDoc.total - ((receivePaymentDoc && receivePaymentDoc.totalPaid || 0) + (receivePaymentDoc && receivePaymentDoc.totalDiscount || 0))),
+                        totalNetAmount: -(invoiceDoc.netTotal - (receivePaymentDoc && receivePaymentDoc.totalPaid || 0)),
+                        balanceUnPaid: -(invoiceDoc.netTotal - (receivePaymentDoc && receivePaymentDoc.totalPaid || 0))
+                    }
+                }, {multi: true}, true);
+
 
             if (data.transactionType == "Invoice Sale Order") {
                 let balanceNotCut = data.balanceNotCut;
@@ -402,14 +431,28 @@ Meteor.methods({
                         });
                         balanceNotCut -= balanceNotCut >= obj.amount ? obj.amount : balanceNotCut;
                         balanceNotCut = balanceNotCut >= 0 ? balanceNotCut : 0;
+
+                        let orderDoc = Pos_SaleOrder.findOne({_id: obj.saleOrderId});
+                        let status = orderDoc.netTotal - (orderDoc.paid + orderDoc.cutOnPaid) <= 0.01 ? "Complete" : "Partial";
+
                         let countNotReceive = Pos_SaleOrder.find({
                             "item.isReceive": false,
                             _id: obj.saleOrderId
                         }).count();
                         if (countNotReceive == 0) {
-                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {$set: {receiveStatus: "Complete"}});
+                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {
+                                $set: {
+                                    receiveStatus: "Complete",
+                                    status: status
+                                }
+                            });
                         } else {
-                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {$set: {receiveStatus: "Partial"}});
+                            Pos_SaleOrder.direct.update({_id: obj.saleOrderId}, {
+                                $set: {
+                                    receiveStatus: "Partial",
+                                    status: status
+                                }
+                            });
                         }
 
                     }

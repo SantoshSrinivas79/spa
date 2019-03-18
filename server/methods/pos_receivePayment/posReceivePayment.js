@@ -13,7 +13,7 @@ import {Pos_ProductionResultReact} from "../../../imports/collection/posProducti
 import {Pos_SaleOrder} from "../../../imports/collection/posSaleOrder";
 
 Meteor.methods({
-    queryPosReceivePayment({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
+    queryPosReceivePayment({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -247,6 +247,7 @@ Meteor.methods({
 
                         }
                         Pos_SaleOrder.direct.update({_id: data._id}, {
+                            $set: {status: "Partial"},
                             $inc: {
                                 paid: -data.paid,
                                 paidUSD: -paidUSD,
@@ -258,22 +259,24 @@ Meteor.methods({
 
                     } else {
                         let invoiceDoc = Pos_Invoice.findOne({_id: data._id});
-                        let newStatus = invoiceDoc.status;
+                        if (invoiceDoc) {
+                            let newStatus = invoiceDoc.status;
 
-                        if (invoiceDoc.paid - (data.paid + data.discount) > 0) {
-                            newStatus = "Partial";
-                        } else {
-                            newStatus = "Active";
-                        }
-
-                        Pos_Invoice.direct.update({_id: data._id}, {
-                            $set: {status: newStatus, closeDate: ""},
-                            $inc: {
-                                paid: -(data.paid + data.discount),
-                                paymentNumber: -1
+                            if (invoiceDoc.paid - (data.paid + data.discount) > 0) {
+                                newStatus = "Partial";
+                            } else {
+                                newStatus = "Active";
                             }
-                        }, true);
 
+                            Pos_Invoice.direct.update({_id: data._id}, {
+                                $set: {status: newStatus, closeDate: ""},
+                                $inc: {
+                                    paid: -(data.paid + data.discount),
+                                    paymentNumber: -1
+                                }
+                            }, true);
+
+                        }
                         Pos_ReceivePayment.direct.update({
                                 "invoice._id": data._id,
                                 createdAt: {$gt: receviePaymentDoc.createdAt}
@@ -385,7 +388,7 @@ Meteor.methods({
             ])
             if (obj) {
                 //let toInv = (obj.paid - obj.cutOnPaid) > 0 ? 0 : (obj.paid - obj.cutOnPaid);
-                let netAm = obj.netTotal - obj.paid - (receiveDoc && receiveDoc[0].totalInvoice || 0) + (receiveDoc && receiveDoc[0].balanceNotCut || 0);
+                let netAm = obj.netTotal - obj.paid - (receiveDoc && receiveDoc[0] && receiveDoc[0].totalInvoice || 0) + (receiveDoc && receiveDoc[0] && receiveDoc[0].balanceNotCut || 0);
                 if (netAm > 0) {
                     dataArr.push({
                         _id: obj._id,
@@ -463,7 +466,14 @@ Meteor.methods({
             paidTHB = numeral(data.paid).value();
 
         }
+
+        let orderDoc = Pos_SaleOrder.findOne({_id: data._id});
+        let status = orderDoc.netTotal - (orderDoc.paid + orderDoc.cutOnPaid + numeral(data.paid).value()) <= 0.01 ? "Complete" : "Partial";
+
         return Pos_SaleOrder.direct.update({_id: data._id}, {
+            $set: {
+                status: status
+            },
             $inc: {
                 paid: numeral(data.paid).value(),
                 paidUSD: paidUSD,

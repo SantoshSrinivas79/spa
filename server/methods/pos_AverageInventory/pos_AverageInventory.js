@@ -778,7 +778,7 @@ Meteor.methods({
             locationId: locationId,
         }, {sort: {createdAt: -1}});
         if (data) {
-            let productDoc = Pos_Product.findOne({_id: id}, {name: 1, code: 1, barcode: 1})
+            let productDoc = Pos_Product.findOne({_id: id});
             data.name = productDoc && productDoc.name || "";
             data.code = productDoc && productDoc.code || "";
             data.barcode = productDoc && productDoc.barcode || "";
@@ -786,7 +786,7 @@ Meteor.methods({
         }
         let setup = WB_waterBillingSetup.findOne();
         if (setup.validateStock === false) {
-            return true;
+            return data && data.qtyEnding > 0 ? data : true;
         }
         return data && data.qtyEnding > 0 ? data : false;
     },

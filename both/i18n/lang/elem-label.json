@@ -776,7 +776,8 @@
       "location": "Location",
       "chooseLocation": "Choose Location",
       "unit": "Unit",
-      "barcode": "Barcode"
+      "barcode": "Barcode",
+      "receiveStatus": "Receive Item Status"
     }
   },
   {
@@ -1540,7 +1541,8 @@
       "chooseItem": "ជ្រើសរើសទំនិញ",
       "chooseLocation": "ជ្រើសរើសទីតាំង",
       "unit": "ឯកតា",
-      "barcode": "លេខកូដ"
+      "barcode": "លេខកូដ",
+      "receiveStatus": "ស្ថានភាពយកទំនិញ"
     }
   }
 ]

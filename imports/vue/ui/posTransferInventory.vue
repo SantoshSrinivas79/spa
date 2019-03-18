@@ -1068,8 +1068,8 @@
                         Meteor.call("queryPosAverageCostById", dataRaw._id, Session.get("area"), this.posTransferInventoryForm.locationFromId, (err, data) => {
                             if (data) {
                                 vm.posTransferInventoryData.push({
-                                    itemId: data.itemId,
-                                    itemName: data.code + " : " + data.name,
+                                    itemId: dataRaw._id,
+                                    itemName: dataRaw.code + " : " + dataRaw.name,
                                     cost: formatCurrency(data.averageCost),
                                     rawQty: vm.$_numeral(data.qtyEnding).value(),
                                     qty: 0,
@@ -1082,7 +1082,7 @@
                                 vm.posTransferInventoryForm.code = "";
                                 vm.$message({
                                     duration: 1000,
-                                    message: `បន្ថែម ` + data.code + " : " + data.name + " បានជោគជ័យ !",
+                                    message: `បន្ថែម ` + dataRaw.code + " : " + dataRaw.name + " បានជោគជ័យ !",
                                     type: 'success'
                                 });
 

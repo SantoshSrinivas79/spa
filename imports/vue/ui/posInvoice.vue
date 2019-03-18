@@ -217,7 +217,6 @@
                                             v-model="posInvoiceForm.isRetailAll"
                                             active-color="#13ce66"
                                             inactive-color="#ff4949"
-                                            @change="changeRetail"
                                     >
                                     </el-switch>
                                 </th>

@@ -12,7 +12,7 @@ import {Pos_Customer} from "../../../imports/collection/posCustomer";
 import {Pos_LocationReact} from "../../../imports/collection/posLocation";
 
 Meteor.methods({
-    queryPayBill({q, filter,rolesArea, options = {limit: 10, skip: 0}}) {
+    queryPayBill({q, filter, rolesArea, options = {limit: 10, skip: 0}}) {
         if (Meteor.userId()) {
             let data = {
                 content: [],
@@ -177,22 +177,23 @@ Meteor.methods({
             if (payBillDoc) {
                 payBillDoc.bill.forEach((data) => {
                     let billDoc = Pos_Bill.findOne({_id: data._id});
-                    let newStatus = billDoc.status;
+                    if (billDoc) {
+                        let newStatus = billDoc.status;
 
-                    if (billDoc.paid - (data.paid + data.discount) > 0) {
-                        newStatus = "Partial";
-                    } else {
-                        newStatus = "Active";
-                    }
-
-                    Pos_Bill.direct.update({_id: data._id}, {
-                        $set: {status: newStatus, closeDate: ""},
-                        $inc: {
-                            paid: -(data.paid + data.discount),
-                            paymentNumber: -1
+                        if (billDoc.paid - (data.paid + data.discount) > 0) {
+                            newStatus = "Partial";
+                        } else {
+                            newStatus = "Active";
                         }
-                    }, true);
 
+                        Pos_Bill.direct.update({_id: data._id}, {
+                            $set: {status: newStatus, closeDate: ""},
+                            $inc: {
+                                paid: -(data.paid + data.discount),
+                                paymentNumber: -1
+                            }
+                        }, true);
+                    }
                     Pos_PayBill.direct.update({
                             "bill._id": data._id,
                             createdAt: {$gt: payBillDoc.createdAt}

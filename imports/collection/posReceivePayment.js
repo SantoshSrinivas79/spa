@@ -105,6 +105,10 @@ Pos_ReceivePayment.schema = new SimpleSchema({
         optional: true,
         index: true
     },
+    transactionType: {
+        type: String,
+        optional: true
+    },
     canRemove: {
         type: Boolean,
         defaultValue: true,

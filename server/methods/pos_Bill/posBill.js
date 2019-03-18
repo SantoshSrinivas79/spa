@@ -146,8 +146,8 @@ Meteor.methods({
                 balanceUnPaid: data.netTotal - data.paid,
                 totalAmount: data.total,
 
-                payBillDate: moment(data.payBillDate).toDate(),
-                payBillDateName: moment(data.payBillDate).format("DD/MM/YYYY"),
+                payBillDate: moment(data.billDate).toDate(),
+                payBillDateName: moment(data.billDate).format("DD/MM/YYYY"),
                 note: data.note,
                 address: data.address,
 
@@ -161,7 +161,7 @@ Meteor.methods({
                 transactionType: (data.netTotal - data.paid) > 0 ? "Bill" : "Sale Receipt"
             };
 
-            Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate,data.locationId, true, (err, result) => {
+            Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate, data.locationId, true, (err, result) => {
                 posPayBillDoc.bill = result;
                 result.forEach((obj) => {
                     if (obj._id != id) {
@@ -241,7 +241,7 @@ Meteor.methods({
 
                     }
                 ;
-                Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate,data.locationId, true, (err, result) => {
+                Meteor.call("queryPosBillEndingByVendorId", data.vendorId, data.billDate, data.locationId, true, (err, result) => {
                     posPayBillDoc.bill = result;
                     result.forEach((obj) => {
                         if (obj._id != _id) {
@@ -278,12 +278,28 @@ Meteor.methods({
         return isUpdated;
     },
     removePosBill(id, data) {
-
+        let billDoc = Pos_Bill.findOne({_id: id});
         let isRemoved = Pos_Bill.remove({_id: id});
 
         if (isRemoved) {
+            let payBillDoc = Pos_PayBill.findOne({billId: id});
             Pos_PayBill.direct.remove({billId: id});
             Pos_Vendor.direct.update({_id: data.vendorId}, {$inc: {billNumber: -1}});
+
+            Pos_PayBill.direct.update({
+                    "bill._id": id,
+                    createdAt: {$gt: billDoc.createdAt}
+                },
+                {
+
+                    $inc: {
+                        "bill.$.amount": -(billDoc.total - ((payBillDoc && payBillDoc.totalPaid || 0) + (payBillDoc && payBillDoc.totalDiscount || 0))),
+                        "bill.$.netAmount": -(billDoc.netTotal - (payBillDoc && payBillDoc.totalPaid || 0)),
+                        totalAmount: -(billDoc.total - ((payBillDoc && payBillDoc.totalPaid || 0) + (payBillDoc && payBillDoc.totalDiscount || 0))),
+                        totalNetAmount: -(billDoc.netTotal - (payBillDoc && payBillDoc.totalPaid || 0)),
+                        balanceUnPaid: -(billDoc.netTotal - (payBillDoc && payBillDoc.totalPaid || 0))
+                    }
+                }, {multi: true}, true);
 
             data.transactionType = "Remove Bill";
             Meteor.call("reducePosAverageInventory", data, (err, reuslt) => {

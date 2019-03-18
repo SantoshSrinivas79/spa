@@ -47,7 +47,7 @@ Meteor.methods({
             }
         ];
         let parameter2 = {};
-        parameter2.$or = [
+        /*parameter2.$or = [
             {
                 "payBillDoc.payBillDate": {
                     $exists: false
@@ -60,7 +60,7 @@ Meteor.methods({
             }
 
 
-        ]
+        ]*/
 
         let unPaidList = Pos_Bill.aggregate([
             {
@@ -74,6 +74,7 @@ Meteor.methods({
             },
             {
                 $project: {
+                    _id: 1,
                     vendorId: 1,
                     total: 1,
                     discountValue: 1,
@@ -132,8 +133,8 @@ Meteor.methods({
             },
             {
                 $sort: {
-                    "payBillDoc.payBillDate": 1,
-                    "payBillDoc.createdAt": 1
+                    "payBillDoc.createdAt": 1,
+                    "payBillDoc.payBillDate": 1
                 }
             },
             {
@@ -145,7 +146,7 @@ Meteor.methods({
                     billTotal: {$last: "$billTotal"},
                     billDiscount: {$last: "$billDiscount"},
                     billPaid: {$last: "$billPaid"},
-                    payBillDoc: {$push: "$payBillDoc"},
+                    payBillDoc: {$last: "$payBillDoc"},
                     lastBillNo: {$last: "$lastBillNo"},
                     data: {$last: "$data"},
                     receiveDocBillId: {$last: "$payBillDoc.billId"},
@@ -161,12 +162,11 @@ Meteor.methods({
                     preserveNullAndEmptyArrays: true
                 }
             },
-
             {
                 $group: {
                     _id: {
                         vendorId: "$_id.vendorId",
-                        receiveId: "$payBillDoc.bill._id",
+                        billId: "$payBillDoc.bill._id",
 
                     },
                     billTotal: {$last: "$billTotal"},
@@ -244,7 +244,6 @@ Meteor.methods({
                     }
 
                     let payDoc = obj.dataPayment.find(findReceiveByBill);
-
                     if (ob.total - (payDoc && payDoc.totalPaidFromBill || 0) - (payDoc && payDoc.totalDiscountFromBill || 0) - (ob.discountValue || 0) - (payDoc && payDoc.totalPaidReceive || 0) - (payDoc && payDoc.totalDiscountReceive || 0) > 0) {
 
 

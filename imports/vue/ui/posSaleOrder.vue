@@ -87,6 +87,18 @@
                             </el-tag>
                         </template>
                     </el-table-column>
+                    <el-table-column
+                            prop="status"
+                            :label="langConfig['receiveStatus']"
+                            width="150"
+                            filter-placement="bottom-end">
+                        <template slot-scope="scope">
+                            <el-tag
+                                    :type="scope.row.receiveStatus === 'Active' ? 'primary' : scope.row.receiveStatus === 'Partial' ? 'warning' : 'success'"
+                                    close-transition>{{scope.row.receiveStatus}}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
 
                     <el-table-column
                             :label="langConfig['action']"

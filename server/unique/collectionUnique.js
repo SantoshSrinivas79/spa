@@ -172,6 +172,7 @@ Pos_PayBill._ensureIndex({
     totalPaid: 1,
     locationId: 1,
     vendorId: 1,
+    billId: 1,
     rolesArea: 1,
     createdUser: 1
 }, {unique: 1});
@@ -185,7 +186,8 @@ Pos_ConvertInventory._ensureIndex({
     locationId: 1,
     qty: 1,
     rolesArea: 1,
-    createdUser: 1
+    createdUser: 1,
+    description: 1,
 }, {unique: 1});
 
 Pos_ReceivePayment._ensureIndex({
@@ -194,6 +196,7 @@ Pos_ReceivePayment._ensureIndex({
     customerId: 1,
     locationId: 1,
     rolesArea: 1,
+    invoiceId: 1,
     createdUser: 1
 }, {unique: 1});
 Pos_SaleOrder._ensureIndex({
@@ -201,6 +204,7 @@ Pos_SaleOrder._ensureIndex({
     customerId: 1,
     locationId: 1,
     rolesArea: 1,
+    saleOrderNo: 1,
     createdUser: 1
 }, {unique: 1});
 Pos_TransferInventory._ensureIndex({
@@ -209,6 +213,7 @@ Pos_TransferInventory._ensureIndex({
     locationToId: 1,
     total: 1,
     rolesArea: 1,
+    note: 1,
     createdUser: 1
 }, {unique: 1});
 
