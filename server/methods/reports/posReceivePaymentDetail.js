@@ -88,9 +88,9 @@ Meteor.methods({
         data.currencyHeader = companyDoc.baseCurrency;
         let receivePaymentHTML = "";
         if (receivePaymentList.length > 0) {
-            let ind = 1;
             receivePaymentList[0].data.forEach((obj) => {
                 if (obj.totalPaid > 0) {
+                    let ind = 1;
 
                     receivePaymentHTML += `
                     <tr>
@@ -116,6 +116,8 @@ Meteor.methods({
                             
                     </tr>     
             `
+                                ind++;
+
                             }
                             else {
 
@@ -135,12 +137,14 @@ Meteor.methods({
                             
                     </tr>     
             `
+                                            ind++;
+
                                         }
                                     }
                                 )
 
                             }
-                            ind++;
+
                         }
                     )
                 }

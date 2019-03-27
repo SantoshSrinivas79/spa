@@ -47,21 +47,7 @@ Meteor.methods({
                 }
             }
         ];
-        let parameter2 = {};
-        parameter2.$or = [
-            {
-                "receiveDoc.receivePaymentDate": {
-                    $exists: false
-                }
-            },
-            {
-                "receiveDoc.receivePaymentDate": {
-                    $lt: moment(params.date).endOf("day").toDate()
-                }
-            }
 
-
-        ]
 
         let collectionSheetList = Pos_Invoice.aggregate([
             {

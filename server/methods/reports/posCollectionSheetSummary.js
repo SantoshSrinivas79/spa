@@ -47,21 +47,7 @@ Meteor.methods({
                 }
             }
         ];
-        let parameter2 = {};
-        parameter2.$or = [
-            {
-                "receiveDoc.receivePaymentDate": {
-                    $exists: false
-                }
-            },
-            {
-                "receiveDoc.receivePaymentDate": {
-                    $lt: moment(params.date).endOf("day").toDate()
-                }
-            }
 
-
-        ]
 
         let collectionSheetList = Pos_Invoice.aggregate([
             {
@@ -92,42 +78,6 @@ Meteor.methods({
                     invoicePaid: {$sum: "$paid"},
                 }
             },
-            {
-                $lookup: {
-                    from: 'pos_receivePayment',
-                    localField: '_id.customerId',
-                    foreignField: 'customerId',
-                    as: 'receiveDoc'
-                }
-            }
-            ,
-            {
-                $unwind: {
-                    path: "$receiveDoc",
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $match: parameter2
-            },
-            {
-                $sort: {
-                    "receiveDoc.receivePaymentDate": 1,
-                    "receiveDoc.createdAt": 1
-                }
-            },
-            {
-                $group: {
-                    _id: {
-                        customerId: "$_id.customerId"
-                    },
-                    invoiceTotal: {$last: "$invoiceTotal"},
-                    invoiceDiscount: {$last: "$invoiceDiscount"},
-                    invoicePaid: {$last: "$invoicePaid"},
-                    receiveDoc: {$last: "$receiveDoc"}
-                }
-            },
-
             {
                 $lookup:
                     {
@@ -171,11 +121,11 @@ Meteor.methods({
                             <td style="text-align: left !important;">${ind}</td>
                             <td style="text-align: left !important;">${obj.customerDoc.name}</td>
                             <td style="text-align: left !important;">${obj.customerDoc.phoneNumber || ""}</td>
-                            <td>${formatCurrency((obj.receiveDoc && obj.receiveDoc.balanceUnPaid) || obj.invoiceTotal - obj.invoiceDiscount - obj.invoicePaid, companyDoc.baseCurrency)}</td>
+                            <td>${formatCurrency((obj.invoiceTotal - obj.invoiceDiscount - obj.invoicePaid), companyDoc.baseCurrency)}</td>
                     </tr>
             
                  `
-                    grandUnpaid += (obj.receiveDoc && obj.receiveDoc.balanceUnPaid) || obj.invoiceTotal - obj.invoiceDiscount - obj.invoicePaid;
+                    grandUnpaid += (obj.invoiceTotal - obj.invoiceDiscount - obj.invoicePaid);
                     ind++;
                 }
             })
