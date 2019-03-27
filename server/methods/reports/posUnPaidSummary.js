@@ -171,8 +171,8 @@ Meteor.methods({
                     billPaid: {$last: "$billPaid"},
                     billDoc: {$push: "$payBillDoc.bill"},
                     billList: {$last: "$billList"},
-                    totalPaidFromBill: {$sum: {$cond: [{$and: [{$eq: ["$payBillDoc.bill._id", "$payBillDocBillId"]}, {$in: ["$payBillDocBillId", "$billList"]}]}, "$totalPaidFromBill", 0]}},
-                    totalDiscountFromBill: {$sum: {$cond: [{$eq: ["$payBillDoc.bill._id", "$payBillDocBillId"]}, "$totalDiscountFromBill", 0]}},
+                    totalPaidFromBill: {$sum: {$cond: [{$and: [{$or: [{$eq: ["$payBillDoc.bill._id", "$payBillDocBillId"]}, {$eq: [{$ifNull: ["$payBillDoc.bill._id", "UnSpecify"]}, "UnSpecify"]}]}, {$in: ["$payBillDocBillId", "$billList"]}]}, "$totalPaidFromBill", 0]}},
+                    totalDiscountFromBill: {$sum: {$cond: [{$and: [{$or: [{$eq: ["$payBillDoc.bill._id", "$payBillDocBillId"]}, {$eq: [{$ifNull: ["$payBillDoc.bill._id", "UnSpecify"]}, "UnSpecify"]}]}, {$in: ["$payBillDocBillId", "$billList"]}]}, "$totalDiscountFromBill", 0]}},
                 }
             },
 

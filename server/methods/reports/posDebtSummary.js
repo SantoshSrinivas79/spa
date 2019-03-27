@@ -168,8 +168,8 @@ Meteor.methods({
                     invoiceDoc: {$push: "$receiveDoc.invoice"},
                     invoiceList: {$last: "$invoiceList"},
                     invoiceDate: {$last: "$invoiceDate"},
-                    totalPaidFromInvoice: {$sum: {$cond: [{$and: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, {$in: ["$receiveDocInvoiceId", "$invoiceList"]}]}, "$totalPaidFromInvoice", 0]}},
-                    totalDiscountFromInvoice: {$sum: {$cond: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, "$totalDiscountFromInvoice", 0]}},
+                    totalPaidFromInvoice: {$sum: {$cond: [{$and: [{$or: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, {$eq: [{$ifNull: ["$receiveDoc.invoice._id", "UnSpecify"]}, "UnSpecify"]}]}, {$in: ["$receiveDocInvoiceId", "$invoiceList"]}]}, "$totalPaidFromInvoice", 0]}},
+                    totalDiscountFromInvoice: {$sum: {$cond: [{$or: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, {$eq: [{$ifNull: ["$receiveDoc.invoice._id", "UnSpecify"]}, "UnSpecify"]}]}, "$totalDiscountFromInvoice", 0]}},
 
 
                 }

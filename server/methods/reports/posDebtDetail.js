@@ -97,6 +97,7 @@ Meteor.methods({
                     invoicePaid: {$sum: "$paid"},
                     lastInvoiceNo: {$last: "$invoiceNo"},
                     lastInvoiceDate: {$last: "$invoiceDate"},
+                    invoiceList: {$push: "$_id"},
                     data: {$addToSet: "$$ROOT"}
                 }
             },
@@ -155,6 +156,7 @@ Meteor.methods({
                     lastInvoiceNo: {$last: "$lastInvoiceNo"},
                     lastInvoiceDate: {$last: "$lastInvoiceDate"},
                     data: {$last: "$data"},
+                    invoiceList: {$last: "$invoiceList"},
                     receiveDocInvoiceId: {$last: "$receiveDoc.invoiceId"},
                     totalPaidFromInvoice: {$last: {$cond: [{$eq: [{$ifNull: ["$receiveDoc.invoiceId", "UnSpecify"]}, "UnSpecify"]}, 0, "$receiveDoc.totalPaid"]}},
                     totalDiscountFromInvoice: {$last: {$cond: [{$eq: [{$ifNull: ["$receiveDoc.invoiceId", "UnSpecify"]}, "UnSpecify"]}, 0, "$receiveDoc.totalDiscount"]}},
@@ -173,6 +175,7 @@ Meteor.methods({
                     _id: {
                         customerId: "$_id.customerId",
                         invoiceId: "$receiveDoc.invoice._id",
+                        recId: {$ifNull: ["$receiveDoc.invoice._id", "$receiveDoc._id"]}
 
                     },
                     invoiceTotal: {$last: "$invoiceTotal"},
@@ -181,10 +184,11 @@ Meteor.methods({
                     lastInvoiceNo: {$last: "$lastInvoiceNo"},
                     lastInvoiceDate: {$last: "$lastInvoiceDate"},
                     data: {$last: "$data"},
+                    receiveDocInvoiceId: {$last: "$receiveDocInvoiceId"},
                     totalPaidReceive: {$sum: {$cond: [{$eq: ["$isFromInvoice", true]}, 0, "$receiveDoc.invoice.paid"]}},
                     totalDiscountReceive: {$sum: {$cond: [{$eq: ["$isFromInvoice", true]}, 0, "$receiveDoc.invoice.discount"]}},
-                    totalPaidFromInvoice: {$sum: {$cond: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, "$totalPaidFromInvoice", 0]}},
-                    totalDiscountFromInvoice: {$sum: {$cond: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, "$totalDiscountFromInvoice", 0]}},
+                    totalPaidFromInvoice: {$sum: {$cond: [{$and: [{$or: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, {$eq: [{$ifNull: ["$receiveDoc.invoice._id", "UnSpecify"]}, "UnSpecify"]}]}, {$in: ["$receiveDocInvoiceId", "$invoiceList"]}]}, "$totalPaidFromInvoice", 0]}},
+                    totalDiscountFromInvoice: {$sum: {$cond: [{$and: [{$or: [{$eq: ["$receiveDoc.invoice._id", "$receiveDocInvoiceId"]}, {$eq: [{$ifNull: ["$receiveDoc.invoice._id", "UnSpecify"]}, "UnSpecify"]}]}, {$in: ["$receiveDocInvoiceId", "$invoiceList"]}]}, "$totalDiscountFromInvoice", 0]}},
                 }
             },
             {
@@ -225,7 +229,7 @@ Meteor.methods({
             {
                 $group: {
                     _id: null,
-                    data: {$addToSet: "$$ROOT"},
+                    data: {$push: "$$ROOT"},
                     total: {$sum: "$invoiceTotal"}
                 }
             }
@@ -248,8 +252,10 @@ Meteor.methods({
                         if (element._id.invoiceId === ob._id) {
                             return element;
                         }
+                        if (element.receiveDocInvoiceId === ob._id && element._id.invoiceId === undefined) {
+                            return element;
+                        }
                     }
-
 
                     let receiveDoc = obj.dataReceivePayment.find(findReceiveByInvoice);
                     if (ob.total - (receiveDoc && receiveDoc.totalPaidFromInvoice || 0) - (receiveDoc && receiveDoc.totalDiscountFromInvoice || 0) - (ob.discountValue || 0) - (receiveDoc && receiveDoc.totalPaidReceive || 0) - (receiveDoc && receiveDoc.totalDiscountReceive || 0) > 0) {
@@ -290,13 +296,13 @@ Meteor.methods({
                  `;
                     ind++;
 
+                    grandTotal += obj.invoiceTotal;
+                    grandUnpaid += balanceUnpay;
                 }
 
                 debtHTML += newDebtHtml;
 
 
-                grandTotal += obj.invoiceTotal;
-                grandUnpaid += balanceUnpay;
             });
 
             debtHTML += `

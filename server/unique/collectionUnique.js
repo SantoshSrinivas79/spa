@@ -73,7 +73,7 @@ Sch_BusRegister._ensureIndex({
     busId: 1,
     busStopId: 1,
     rolesArea: 1
-}, {unique: 1});
+}, {unique: 1, name: "Sch_BusRegister2"});
 Sch_BusPayment._ensureIndex({
     busPaymentDateName: 1,
     studentId: 1,
@@ -89,14 +89,14 @@ Sch_Class._ensureIndex({
     timeId: 1,
     classDateName: 1,
     rolesArea: 1
-}, {unique: 1});
+}, {unique: 1, name: "Sch_Class2"});
 Sch_TeacherActivity._ensureIndex({
     teacherId: 1,
     activityId: 1,
     startDateName: 1,
     endDateName: 1,
     rolesArea: 1
-}, {unique: 1});
+}, {unique: 1, name: "Sch_TeacherActivity2"});
 Sch_Time._ensureIndex({
     name: 1,
     rolesArea: 1
@@ -175,11 +175,17 @@ Pos_PayBill._ensureIndex({
     billId: 1,
     rolesArea: 1,
     createdUser: 1
-}, {unique: 1});
+}, {unique: 1, name: "Pos_PayBill2"});
 Pos_Unit._ensureIndex({name: 1, code: 1, rolesArea: 1, createdUser: 1}, {unique: 1});
 Pos_Location._ensureIndex({name: 1, code: 1, rolesArea: 1, createdUser: 1}, {unique: 1});
-Pos_Category._ensureIndex({name: 1, code: 1, subCategoryOf: 1, rolesArea: 1, createdUser: 1}, {unique: 1});
-Pos_Product._ensureIndex({name: 1, code: 1, categoryId: 1, rolesArea: 1, createdUser: 1}, {unique: 1});
+Pos_Category._ensureIndex({name: 1, code: 1, subCategoryOf: 1, rolesArea: 1, createdUser: 1}, {
+    unique: 1,
+    name: "Pos_Category2"
+});
+Pos_Product._ensureIndex({name: 1, code: 1, categoryId: 1, rolesArea: 1, createdUser: 1}, {
+    unique: 1,
+    name: "Pos_Product2"
+});
 Pos_ConvertInventory._ensureIndex({
     date: 1,
     productId: 1,
@@ -188,7 +194,7 @@ Pos_ConvertInventory._ensureIndex({
     rolesArea: 1,
     createdUser: 1,
     description: 1,
-}, {unique: 1});
+}, {unique: 1, name: "Pos_ConvertInventory2"});
 
 Pos_ReceivePayment._ensureIndex({
     receivePaymentDate: 1,
@@ -198,7 +204,7 @@ Pos_ReceivePayment._ensureIndex({
     rolesArea: 1,
     invoiceId: 1,
     createdUser: 1
-}, {unique: 1});
+}, {unique: 1, name: "Pos_ReceivePayment2"});
 Pos_SaleOrder._ensureIndex({
     saleOrderDate: 1,
     customerId: 1,
@@ -206,7 +212,7 @@ Pos_SaleOrder._ensureIndex({
     rolesArea: 1,
     saleOrderNo: 1,
     createdUser: 1
-}, {unique: 1});
+}, {unique: 1, name: "Pos_SaleOrder2"});
 Pos_TransferInventory._ensureIndex({
     transferInventoryDate: 1,
     locationFromId: 1,
@@ -215,6 +221,6 @@ Pos_TransferInventory._ensureIndex({
     rolesArea: 1,
     note: 1,
     createdUser: 1
-}, {unique: 1});
+}, {unique: 1, name: "Pos_TransferInventory2"});
 
 
