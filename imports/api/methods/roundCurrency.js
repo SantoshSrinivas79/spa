@@ -119,6 +119,9 @@ export const formatCurrency = (amount, currencyId) => {
 
 export const formatNumber = (amount) => {
     if (amount) {
+        if (parseFloat(amount) % 1 != 0) {
+            return numeral(amount).format("0,00.000");
+        }
         return numeral(amount).format("0,00");
     }
     return "";
