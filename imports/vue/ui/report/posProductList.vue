@@ -72,9 +72,9 @@
 
                         <!--  <th>{{langConfig['type']}}</th>
                           <th>{{langConfig['description']}}</th>-->
-                        <th>{{langConfig['price']}}</th>
+                        <th>{{langConfig['rePrice']}}</th>
+                        <th>{{langConfig['whPrice']}}</th>
                         <th>{{langConfig['cost']}}</th>
-                        <th>{{langConfig['qtyOnHand']}}</th>
                         <th>{{langConfig['barcode']}}</th>
                     </tr>
                 </thead>
@@ -84,9 +84,9 @@
                             <td style="text-align: left !important;">{{obj.code}} : {{obj.name}}</td>
                          <td v-if="isBarcode==false">{{obj.productType}}</td>
                          <td v-if="isBarcode==false">{{obj.description || ""}}</td>
-                            <td>{{obj.rePrice}}</td>
-                            <td>{{obj.cost}}</td>
-                            <td>{{obj.qtyOnHand}}</td>
+                            <td>{{obj.rePrice | numFormatBaseCurrency}}</td>
+                            <td>{{obj.whPrice | numFormatBaseCurrency}}</td>
+                            <td>{{obj.cost | numFormatBaseCurrency}}</td>
                             <td v-if="isBarcode==true"><barcode :doc="obj" :company="waterBillingSetup"></barcode></td>
                     </tr>
                 </tbody>
@@ -98,9 +98,9 @@
 
                           <th>{{langConfig['type']}}</th>
                           <th>{{langConfig['description']}}</th>
-                        <th>{{langConfig['price']}}</th>
+                        <th>{{langConfig['rePrice']}}</th>
+                        <th>{{langConfig['whPrice']}}</th>
                         <th>{{langConfig['cost']}}</th>
-                        <th>{{langConfig['qtyOnHand']}}</th>
                     </tr>
                 </thead>
 
