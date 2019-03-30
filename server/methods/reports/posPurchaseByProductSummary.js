@@ -6,7 +6,7 @@ import {Pos_ReceivePayment} from '../../../imports/collection/posReceivePayment'
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
@@ -111,7 +111,7 @@ Meteor.methods({
                                                                                         <td style="text-align: center !important;">${ind}</td>
 
                             <td style="text-align: left !important;">${obj._id.itemName && obj._id.itemName.split(":")[1] || ""}</td>
-                            <td style="text-align: left !important;">${obj.totalQty}</td>
+                            <td style="text-align: left !important;">${formatNumber(obj.totalQty)}</td>
                             <td>${formatCurrency(obj.total, companyDoc.baseCurrency)}</td>
                     </tr>
             

@@ -6,7 +6,7 @@ import {Pos_ReceivePayment} from '../../../imports/collection/posReceivePayment'
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
@@ -129,7 +129,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                
 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -211,7 +211,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -303,7 +303,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -396,7 +396,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                         
                     
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -486,7 +486,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -577,7 +577,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -669,7 +669,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -771,7 +771,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
@@ -860,7 +860,7 @@ Meteor.methods({
                                 <td style="text-align: left !important;">${ob.item.itemName && ob.item.itemName.split(":")[1] || ""}</td>
                                 <td style="text-align: left !important;">${convertToString(ob.item.imei || [], ob.item.desc || "")}</td>
                                 
-                                <td>${ob.item.qty}</td>
+                                <td>${formatNumber(ob.item.qty)}</td>
                                                                                                 <td>${ob.item.unitName || ""}</td>
 
                                 <td>${formatCurrency(ob.item.price, companyDoc.baseCurrency)}</td>
