@@ -526,13 +526,18 @@ Meteor.methods({
         if (q != "") {
             q = q.replace(/[/\\]/g, '');
             let reg = new RegExp(q, 'mi');
-            selector.$or = [
-                {name: {$regex: reg}},
-                {_id: q}
+            selector.$and = [
+                {
+                    $or: [
+                        {name: {$regex: reg}},
+                        {_id: q},
+                    ]
+                },
+                {
+                    $or: [{rolesArea: rolesArea}, {_id: "001"}]
+                }
             ];
         }
-        selector.$or = [{rolesArea: rolesArea}, {_id: "001"}];
-
         return Pos_Customer.find(selector, {limit: 100}).fetch().map(obj => ({label: obj.name, value: obj._id}));
     },
     queryLoanDisbursementOption(q, rolesArea) {
