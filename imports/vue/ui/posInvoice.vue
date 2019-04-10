@@ -1437,6 +1437,11 @@
                         :label="langConfig['imei']"
                 >
                 </el-table-column>
+                <el-table-column v-if="pharmacy===true"
+                                 prop="expiredDate"
+                                 :label="langConfig['expiredDate']"
+                >
+                </el-table-column>
                 <el-table-column
                         :label="langConfig['action']"
                         width="60"
@@ -1516,6 +1521,7 @@
                 typeDiscount: "",
                 fullScreen: true,
                 phoneShop: false,
+                pharmacy: false,
                 validateImei: false,
                 isMiniInvoice: false,
                 posInvoiceForm: {
@@ -2844,8 +2850,8 @@
                     }
 
                     if (this.validateImei === true) {
-                        Meteor.call("queryPosImeiBillByImei", imeiInputTem, vm.itemId, (err, result) => {
-                            if (result) {
+                        Meteor.call("queryPosImeiBillByImei", imeiInputTem, vm.itemId, (err, resultBillImei) => {
+                            if (resultBillImei) {
                                 let isFindImei = vm.imei.find((obj) => {
                                     return obj.name === imeiInputTem && obj.itemId === vm.itemId;
                                 })
@@ -2863,8 +2869,16 @@
                                                 message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
                                             });
                                         } else {
-                                            vm.imei.push({name: imeiInputTem, itemId: vm.itemId});
-                                            vm.imeiShow.push({name: imeiInputTem, itemId: vm.itemId});
+                                            vm.imei.push({
+                                                name: imeiInputTem,
+                                                itemId: vm.itemId,
+                                                expiredDate: resultBillImei && (resultBillImei.expiredDate === "" || resultBillImei.expiredDate != undefined) ? moment(resultBillImei.expiredDate).format("DD-MM-YYYY") : ""
+                                            });
+                                            vm.imeiShow.push({
+                                                name: imeiInputTem,
+                                                itemId: vm.itemId,
+                                                expiredDate: resultBillImei && (resultBillImei.expiredDate === "" || resultBillImei.expiredDate != undefined) ? moment(resultBillImei.expiredDate).format("DD-MM-YYYY") : ""
+                                            });
 
                                             imeiInputTem = "";
                                             vm.rowDoc.desc = "";
@@ -2890,43 +2904,52 @@
                             }
                         })
                     } else {
-                        let isFindImei = vm.imei.find((obj) => {
-                            return obj.name === imeiInputTem && obj.itemId === vm.itemId;
-                        })
-                        if (isFindImei) {
-                            vm.$message({
-                                type: 'error',
-                                message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
-                            });
-                            return false;
-                        } else {
-                            Meteor.call("queryPosImeiInvoiceByImei", imeiInputTem, vm.itemId, (err, result) => {
-                                if (result) {
-                                    vm.$message({
-                                        type: 'error',
-                                        message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
-                                    });
-                                } else {
-                                    vm.imei.push({name: imeiInputTem, itemId: vm.itemId});
-                                    vm.imeiShow.push({name: imeiInputTem, itemId: vm.itemId});
-
-                                    imeiInputTem = "";
-                                    vm.rowDoc.desc = "";
-                                    vm.imeiShow.forEach((o) => {
-                                        vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
-                                    })
-                                    vm.rowDoc.imei = vm.imeiShow;
-                                    vm.rowDoc.numImei = vm.imeiShow.length;
-                                    vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
-
-                                    vm.$message({
-                                        message: `បញ្ចូល ${imeiInputTem} បានជោគជ័យ`,
-                                        type: 'success'
-                                    });
-                                }
+                        Meteor.call("queryPosImeiBillByImei", imeiInputTem, vm.itemId, (err, resultBillImei) => {
+                            let isFindImei = vm.imei.find((obj) => {
+                                return obj.name === imeiInputTem && obj.itemId === vm.itemId;
                             })
-                        }
+                            if (isFindImei) {
+                                vm.$message({
+                                    type: 'error',
+                                    message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                });
+                                return false;
+                            } else {
+                                Meteor.call("queryPosImeiInvoiceByImei", imeiInputTem, vm.itemId, (err, result) => {
+                                    if (result) {
+                                        vm.$message({
+                                            type: 'error',
+                                            message: 'បញ្ចូលរួចម្តងហើយ!!!!!!!'
+                                        });
+                                    } else {
+                                        vm.imei.push({
+                                            name: imeiInputTem, itemId: vm.itemId,
+                                            expiredDate: resultBillImei && (resultBillImei.expiredDate === "" || resultBillImei.expiredDate != undefined) ? moment(resultBillImei.expiredDate).format("DD-MM-YYYY") : ""
+                                        });
+                                        vm.imeiShow.push({
+                                            name: imeiInputTem, itemId: vm.itemId,
+                                            expiredDate: resultBillImei && (resultBillImei.expiredDate === "" || resultBillImei.expiredDate != undefined) ? moment(resultBillImei.expiredDate).format("DD-MM-YYYY") : ""
+                                        });
+
+                                        imeiInputTem = "";
+                                        vm.rowDoc.desc = "";
+                                        vm.imeiShow.forEach((o) => {
+                                            vm.rowDoc.desc = vm.rowDoc.desc + " " + o.name;
+                                        })
+                                        vm.rowDoc.imei = vm.imeiShow;
+                                        vm.rowDoc.numImei = vm.imeiShow.length;
+                                        vm.updatePosInvoiceDetail(vm.rowDoc, vm.indexRow);
+
+                                        vm.$message({
+                                            message: `បញ្ចូល ${imeiInputTem} បានជោគជ័យ`,
+                                            type: 'success'
+                                        });
+                                    }
+                                })
+                            }
+                        })
                     }
+
                 }
 
 
@@ -2960,7 +2983,7 @@
                 this.imeiShow = [];
                 this.imei.forEach((obj) => {
                     if (obj.itemId === itemId) {
-                        vm.imeiShow.push({name: obj.name, itemId: obj.itemId});
+                        vm.imeiShow.push({name: obj.name, itemId: obj.itemId, expiredDate: obj.expiredDate || ""});
                     }
                 })
 
@@ -2982,7 +3005,11 @@
 
                 if (this.phoneShop === true) {
                     this.numMini = 1;
+                } else {
+                    this.phoneShop = ma.feature.indexOf("Pharmacy") > -1 ? true : false;
                 }
+
+                this.pharmacy = ma.feature.indexOf("Pharmacy") > -1 ? true : false;
             }
 
         },

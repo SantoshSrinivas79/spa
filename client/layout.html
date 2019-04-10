@@ -442,7 +442,7 @@
                                                                                 "pos.sidebarMenu.saleDetail"}}
                                                                         </a>
                                                                         </li>
-                                                                        {{#if manageModule.phoneShop}}
+                                                                        {{#if manageModule.pharmacy}}
                                                                             <li style="cursor: pointer;"><a
                                                                                     href="{{pathFor
                                                                                             'pos.posInvoiceByImeiReport'}}"
@@ -451,7 +451,28 @@
                                                                                     "pos.sidebarMenu.invoiceByImei"}}
                                                                             </a>
                                                                             </li>
+                                                                            <li style="cursor: pointer;"><a
+                                                                                    href="{{pathFor
+                                                                                            'pos.posImeiExpiredReport'}}"
+                                                                                    class="title-body">
+                                                                                <i class="fa fa-dollar"></i> {{_
+                                                                                    "pos.sidebarMenu.imeiExpired"}}
+                                                                            </a>
+                                                                            </li>
+                                                                        {{else}}
+                                                                            {{#if manageModule.phoneShop}}
+                                                                                <li style="cursor: pointer;"><a
+                                                                                        href="{{pathFor
+                                                                                                'pos.posInvoiceByImeiReport'}}"
+                                                                                        class="title-body">
+                                                                                    <i class="fa fa-dollar"></i> {{_
+                                                                                        "pos.sidebarMenu.invoiceByImei"}}
+                                                                                </a>
+                                                                                </li>
+
+                                                                            {{/if}}
                                                                         {{/if}}
+
                                                                         <hr>
 
                                                                     </ul>

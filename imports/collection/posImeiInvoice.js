@@ -4,9 +4,33 @@ Pos_ImeiInvoice.schema = new SimpleSchema({
     name: {
         type: String,
         label: "Name",
+        optional: true
+    },
+    expiredDate: {
+        type: Date,
+        label: "Expired Date",
+        optional: true
+    },
+    billDate: {
+        type: Date,
+        label: "Bill Date",
+        optional: true
+    },
+    invoiceDate: {
+        type: Date,
+        label: "Invoice Date",
+        optional: true
     },
     invoiceId: {
         type: String,
+    },
+    billId: {
+        type: String,
+        optional: true
+    },
+    rolesArea: {
+        type: String,
+        optional: true
     },
     itemId: {
         type: String,

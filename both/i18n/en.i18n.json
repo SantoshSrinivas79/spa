@@ -62,7 +62,8 @@
       "saleReceivePaymentByCustomerDetail": "Sale Receive Payment By Customer Detail",
       "invoiceByImei": "Invoice By Imei",
       "dashBoard": "Dashboard",
-      "saleDetail": "Sale Detail"
+      "saleDetail": "Sale Detail",
+      "imeiExpired": "Imei Expired"
     },
     "customer": {
       "customerAdd": "Add Customer",

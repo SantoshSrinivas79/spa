@@ -147,6 +147,7 @@
                     {label: "Coffee", value: "Coffee"},
                     {label: "Restaurant", value: "Restaurant"},
                     {label: "Phone Shop", value: "Phone Shop"},
+                    {label: "Pharmacy", value: "Pharmacy"},
 
                 ],
                 moduleOption: [

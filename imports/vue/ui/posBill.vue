@@ -968,6 +968,17 @@
                         :label="langConfig['imei']"
                 >
                 </el-table-column>
+                <el-table-column v-if="pharmacy===true"
+                                 prop="expiredDate"
+                                 :label="langConfig['expiredDate']"
+                >
+                    <template slot-scope="scope">
+                        <el-input size="small" v-model="scope.row.expiredDate" type="string"
+                                  :placeholder="langConfig['expiredDateFormat']"
+                                  @keyup.native="handleEditImei(scope.$index, scope.row)"
+                                  @change="handleEditImei(scope.$index, scope.row)"></el-input>
+                    </template>
+                </el-table-column>
                 <el-table-column
                         :label="langConfig['action']"
                         width="60"
@@ -1046,6 +1057,7 @@
                 fullScreen: true,
                 timeStamp: [],
                 phoneShop: false,
+                pharmacy: false,
                 posBillForm: {
                     itemId: "",
                     itemName: "",
@@ -2109,12 +2121,18 @@
                 this.imeiShow = [];
                 this.imei.forEach((obj) => {
                     if (obj.itemId === itemId) {
-                        vm.imeiShow.push({name: obj.name, itemId: obj.itemId});
+                        vm.imeiShow.push({name: obj.name, itemId: obj.itemId, expiredDate: obj.expiredDate || ""});
                     }
                 })
 
 
-            }
+            },
+            handleEditImei(index, row) {
+                let findIndex = this.imei.map(function (item) {
+                    return item.name;
+                }).indexOf(row.name);
+                this.imei[findIndex] = row;
+            },
         },
         created() {
             this.isSearching = true;
@@ -2127,7 +2145,13 @@
                 this.phoneShop = ma.feature.indexOf("Phone Shop") > -1 ? true : false;
                 if (this.phoneShop === true) {
                     this.numMini = 1;
+                } else {
+                    this.phoneShop = ma.feature.indexOf("Pharmacy") > -1 ? true : false;
                 }
+
+                this.pharmacy = ma.feature.indexOf("Pharmacy") > -1 ? true : false;
+
+
             }
 
         },

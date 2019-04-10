@@ -96,7 +96,6 @@
                                 <el-button type="primary" icon="el-icon-edit" size="small" class="cursor-pointer"
                                            @click="popupSchBusRegisterUpdate(scope.row),findSchBusRegisterById(scope),dialogUpdateSchBusRegister= true"
                                            :disabled="disabledUpdate"></el-button>
-                                </el-button>
                             </el-button-group>
 
                         </template>

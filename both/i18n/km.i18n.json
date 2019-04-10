@@ -62,7 +62,8 @@
       "saleReceivePaymentByCustomerDetail": "លក់និងទទួលប្រាក់ដោយអតិថិជនលម្អិត",
       "invoiceByImei": "លក់ដោយលេខកូដ",
       "dashBoard": "សង្ខេប",
-      "saleDetail": "លក់លម្អិត"
+      "saleDetail": "លក់លម្អិត",
+      "imeiExpired": "លេខកូដផុតកំណត់"
     },
     "customer": {
       "customerAdd": "បញ្ចូលពត័មានអតិថិជន",

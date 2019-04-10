@@ -520,3 +520,14 @@ posReport.route('/posInvoiceByImeiReport', {
     }
 
 });
+import '../../imports/ui/report/posImeiExpired/posImeiExpired';
+
+posReport.route('/posImeiExpiredReport', {
+    name: 'pos.posImeiExpiredReport',
+    title: "Imei Expired",
+    parent: 'wb.home',
+    action: function (query, params) {
+        _Main('pos_imeiExpiredReport');
+    }
+
+});

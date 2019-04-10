@@ -204,7 +204,7 @@ Meteor.methods({
             }
 
             invoiceReact(id);
-            addImeiInvoice(data.imei, id);
+            addImeiInvoice(data.imei, id, moment(data.invoiceDate).toDate(), data.rolesArea);
 
         }
 
@@ -297,7 +297,7 @@ Meteor.methods({
             return obj;
         });
         removeImeiByInvoiceId(_id);
-        addImeiInvoice(data.imei, _id);
+        addImeiInvoice(data.imei, _id, moment(data.invoiceDate).toDate(), data.rolesArea);
 
         let isUpdated = Pos_Invoice.update({_id: _id},
             {
@@ -541,14 +541,21 @@ let invoiceReact = function (id) {
 }
 
 
-let addImeiInvoice = function (imeiList, invoiceId) {
+let addImeiInvoice = function (imeiList, invoiceId, invoiceDate, rolesArea) {
     if (imeiList && imeiList.length > 0) {
         imeiList.forEach((obj) => {
             let data = {};
             data.name = obj.name;
             data.invoiceId = invoiceId;
             data.itemId = obj.itemId;
-
+            data.expiredDate = (obj.expiredDate === "" || obj.expiredDate === undefined) ? "" : moment(obj.expiredDate + "", "DD-MM-YYYY").toDate();
+            let imBill = Pos_ImeiBill.findOne({name: obj.name});
+            if (imBill) {
+                data.billId = imBill.billId;
+                data.billDate = imBill.billDate;
+            }
+            data.invoiceDate = invoiceDate;
+            data.rolesArea = rolesArea;
             Pos_ImeiInvoice.insert(data);
             Pos_ImeiBill.remove({name: obj.name});
 
@@ -556,5 +563,18 @@ let addImeiInvoice = function (imeiList, invoiceId) {
     }
 };
 let removeImeiByInvoiceId = function (invoiceId) {
+    let imInvoice = Pos_ImeiInvoice.find({invoiceId: invoiceId}).fetch();
+    if (imInvoice.length > 0) {
+        imInvoice.forEach((ob) => {
+            Pos_ImeiBill.insert({
+                name: ob.name,
+                billId: ob.billId,
+                billDate: ob.billDate || "",
+                expiredDate: ob.expiredDate || "",
+                itemId: ob.itemId,
+                rolesArea: ob.rolesArea || ""
+            });
+        })
+    }
     return Pos_ImeiInvoice.remove({invoiceId: invoiceId});
 };

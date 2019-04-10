@@ -184,9 +184,8 @@ Meteor.methods({
 
             billReact(id);
 
-            addImeiBill(data.imei, id);
+            addImeiBill(data.imei, id, moment(data.billDate).toDate(), data.rolesArea);
         }
-
 
         return id;
     },
@@ -205,7 +204,7 @@ Meteor.methods({
         });
 
         removeImeiByBillId(_id);
-        addImeiBill(data.imei, _id);
+        addImeiBill(data.imei, _id, moment(data.billDate).toDate(), data.rolesArea);
 
         let isUpdated = Pos_Bill.update({_id: _id},
             {
@@ -352,13 +351,16 @@ let billReact = function (id) {
 }
 
 
-let addImeiBill = function (imeiList, billId) {
+let addImeiBill = function (imeiList, billId, billDate, rolesArea) {
     if (imeiList && imeiList.length > 0) {
         imeiList.forEach((obj) => {
             let data = {};
             data.name = obj.name;
             data.billId = billId;
             data.itemId = obj.itemId;
+            data.billDate = billDate;
+            data.rolesArea = rolesArea;
+            data.expiredDate = (obj.expiredDate === "" || obj.expiredDate === undefined) ? "" : moment(obj.expiredDate + "", "DD-MM-YYYY").toDate();
             Pos_ImeiBill.insert(data);
             Pos_ImeiInvoice.remove({name: obj.name});
         })

@@ -4,14 +4,29 @@ Pos_ImeiBill.schema = new SimpleSchema({
     name: {
         type: String,
         label: "Name",
+        optional: true
     },
-    billId:{
-        type:String,
-        label:"Bill Id"
+    expiredDate: {
+        type: Date,
+        label: "Expired Date",
+        optional: true
     },
-    itemId:{
-        type:String,
-        label:"Item Id"
+    billDate: {
+        type: Date,
+        label: "Bill Date",
+        optional: true
+    },
+    billId: {
+        type: String,
+        label: "Bill Id"
+    },
+    itemId: {
+        type: String,
+        label: "Item Id"
+    },
+    rolesArea: {
+        type: String,
+        optional: true
     },
     createdAt: {
         type: Date,
