@@ -70,6 +70,28 @@
                                     </el-col>
 
                                 </el-row>
+
+                                <el-row type="flex" class="row-bg" justify="center">
+                                    <el-col>
+                                        <el-form-item :label="langConfig['vendor']">
+                                            <el-select style="display: block !important;"
+                                                       filterable clearable
+                                                       v-model="params.vendorId"
+                                                       :placeholder="langConfig['all']">
+                                                <el-option
+                                                        v-for="item in vendorOption"
+                                                        :key="item.value"
+                                                        :label="item.label"
+                                                        :value="item.value"
+                                                        :disabled="item.disabled">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col>&nbsp;</el-col>
+                                    <el-col>&nbsp;</el-col>
+                                    <el-col>&nbsp;</el-col>
+                                </el-row>
                             </el-form>
 
                         </el-card>
@@ -179,6 +201,7 @@
                     locationId: "",
                     categoryId: "",
                     productId: "",
+                    vendorId: ""
 
                 },
                 rolesArea: '',
@@ -190,6 +213,7 @@
                 categoryOptions: [],
                 productOptions: [],
                 locationOptions: [],
+                vendorOption: [],
 
 
                 waterBillingSetup: {
@@ -209,7 +233,7 @@
                         text: 'Last week',
                         onClick(picker) {
                             const end = moment().endOf("day").toDate();
-                            const start= moment().startOf("day").toDate();
+                            const start = moment().startOf("day").toDate();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
                             picker.$emit('pick', [start, end]);
                         }
@@ -238,7 +262,7 @@
                         text: 'Today',
                         onClick(picker) {
                             const end = moment().endOf("day").toDate();
-                            const start= moment().startOf("day").toDate();
+                            const start = moment().startOf("day").toDate();
                             picker.$emit('pick', [start, end]);
                         }
                     }]
@@ -274,6 +298,7 @@
             this.fetchBranch();
             this.fetchLocation();
             this.categoryOpt();
+            this.vendorOpt();
         },
         methods: {
 
@@ -296,6 +321,11 @@
                     if (result) {
                         this.locationOptions = result;
                     }
+                })
+            },
+            vendorOpt() {
+                Meteor.call('queryPosVendorOption', Session.get("area"), (err, result) => {
+                    this.vendorOption = result;
                 })
             },
             productOpt(query) {

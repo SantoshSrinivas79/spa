@@ -88,7 +88,8 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['product']">
                                             <el-select filterable v-model="params.productId" clearable
-                                                       :placeholder="langConfig['all']" remote :remote-method="productOpt"
+                                                       :placeholder="langConfig['all']" remote
+                                                       :remote-method="productOpt"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in productOptions"
@@ -99,7 +100,22 @@
                                         </el-form-item>
 
                                     </el-col>
-                                    <el-col>&nbsp;</el-col>
+                                    <el-col>
+                                        <el-form-item :label="langConfig['customer']">
+                                            <el-select style="width: 95%"
+                                                       filterable clearable
+                                                       v-model="params.customerId" remote :remote-method="customerOpt"
+                                                       :placeholder="langConfig['all']">
+                                                <el-option
+                                                        v-for="item in customerOption"
+                                                        :key="item.value"
+                                                        :label="item.label"
+                                                        :value="item.value"
+                                                        :disabled="item.disabled">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
                                     <el-col>&nbsp;</el-col>
                                 </el-row>
                             </el-form>
@@ -211,6 +227,7 @@
                     locationId: "",
                     categoryId: "",
                     productId: "",
+                    customerId:""
 
                 },
                 rolesArea: '',
@@ -222,7 +239,7 @@
                 categoryOptions: [],
                 productOptions: [],
                 locationOptions: [],
-
+                customerOption: [],
 
                 waterBillingSetup: {
                     khName: '',
@@ -241,7 +258,7 @@
                         text: 'Last week',
                         onClick(picker) {
                             const end = moment().endOf("day").toDate();
-                            const start= moment().startOf("day").toDate();
+                            const start = moment().startOf("day").toDate();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
                             picker.$emit('pick', [start, end]);
                         }
@@ -270,7 +287,7 @@
                         text: 'Today',
                         onClick(picker) {
                             const end = moment().endOf("day").toDate();
-                            const start= moment().startOf("day").toDate();
+                            const start = moment().startOf("day").toDate();
                             picker.$emit('pick', [start, end]);
                         }
                     }]
@@ -306,6 +323,7 @@
             this.fetchBranch();
             this.fetchLocation();
             this.categoryOpt();
+            this.customerOpt();
         },
         methods: {
 
@@ -345,6 +363,28 @@
                     Meteor.call('queryItemOptionReport', "", this.params.categoryId, (err, result) => {
                         if (!err) {
                             this.productOptions = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+            },
+            customerOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        let lists = [];
+                        Meteor.call('queryPosCustomerOption', query, Session.get("area"), (err, result) => {
+                            if (!err) {
+                                this.customerOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryPosCustomerOption', "", Session.get("area"), (err, result) => {
+                        if (!err) {
+                            this.customerOption = result;
                         } else {
                             console.log(err.message);
                         }

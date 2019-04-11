@@ -69,6 +69,28 @@
                                     </el-col>
 
                                 </el-row>
+
+                                <el-row  type="flex" class="row-bg" justify="center">
+                                    <el-col>
+                                        <el-form-item :label="langConfig['vendor']">
+                                            <el-select style="display: block !important;"
+                                                       filterable clearable
+                                                       v-model="params.vendorId"
+                                                       :placeholder="langConfig['all']">
+                                                <el-option
+                                                        v-for="item in vendorOption"
+                                                        :key="item.value"
+                                                        :label="item.label"
+                                                        :value="item.value"
+                                                        :disabled="item.disabled">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col>&nbsp;</el-col>
+                                    <el-col>&nbsp;</el-col>
+                                    <el-col>&nbsp;</el-col>
+                                </el-row>
                             </el-form>
 
                         </el-card>
@@ -175,7 +197,8 @@
                     branch: '',
                     area: '',
                     date: null,
-                    locationId: ""
+                    locationId: "",
+                    vendorId:""
 
                 },
                 rolesArea: '',
@@ -185,7 +208,7 @@
                 branchOptions: [],
                 areaOptions: [],
                 locationOptions: [],
-
+                vendorOption: [],
 
                 waterBillingSetup: {
                     khName: '',
@@ -224,6 +247,7 @@
             })
             this.fetchBranch();
             this.fetchLocation();
+            this.vendorOpt();
         },
         methods: {
 
@@ -246,6 +270,11 @@
                     if (result) {
                         this.locationOptions = result;
                     }
+                })
+            },
+            vendorOpt() {
+                Meteor.call('queryPosVendorOption', Session.get("area"), (err, result) => {
+                    this.vendorOption = result;
                 })
             },
             handleRun() {

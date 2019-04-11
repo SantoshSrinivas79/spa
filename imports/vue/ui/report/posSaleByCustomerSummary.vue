@@ -71,6 +71,27 @@
                                     </el-col>
 
                                 </el-row>
+                                <el-row type="flex" class="row-bg" justify="center">
+                                    <el-col>
+                                        <el-form-item :label="langConfig['customer']">
+                                            <el-select style="width: 95%"
+                                                       filterable clearable
+                                                       v-model="params.customerId" remote :remote-method="customerOpt"
+                                                       :placeholder="langConfig['all']">
+                                                <el-option
+                                                        v-for="item in customerOption"
+                                                        :key="item.value"
+                                                        :label="item.label"
+                                                        :value="item.value"
+                                                        :disabled="item.disabled">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col>&nbsp;</el-col>
+                                    <el-col>&nbsp;</el-col>
+                                    <el-col>&nbsp;</el-col>
+                                </el-row>
                             </el-form>
 
                         </el-card>
@@ -181,6 +202,7 @@
                     locationId: "",
                     categoryId: "",
                     productId: "",
+                    customerId:""
 
                 },
                 rolesArea: '',
@@ -192,7 +214,7 @@
                 categoryOptions: [],
                 productOptions: [],
                 locationOptions: [],
-
+                customerOption: [],
 
                 waterBillingSetup: {
                     khName: '',
@@ -277,6 +299,7 @@
             this.fetchBranch();
             this.fetchLocation();
             this.categoryOpt();
+            this.customerOpt();
 
         },
         methods: {
@@ -317,6 +340,28 @@
                     Meteor.call('queryItemOptionReport', "", this.params.categoryId, (err, result) => {
                         if (!err) {
                             this.productOptions = result;
+                        } else {
+                            console.log(err.message);
+                        }
+                    })
+                }
+            },
+            customerOpt(query) {
+                if (!!query) {
+                    setTimeout(() => {
+                        let lists = [];
+                        Meteor.call('queryPosCustomerOption', query, Session.get("area"), (err, result) => {
+                            if (!err) {
+                                this.customerOption = result;
+                            } else {
+                                console.log(err.message);
+                            }
+                        })
+                    }, 200);
+                } else {
+                    Meteor.call('queryPosCustomerOption', "", Session.get("area"), (err, result) => {
+                        if (!err) {
+                            this.customerOption = result;
                         } else {
                             console.log(err.message);
                         }

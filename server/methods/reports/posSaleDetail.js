@@ -25,6 +25,9 @@ Meteor.methods({
             parameter.locationId = params.locationId;
         }
 
+        if (params.customerId != "") {
+            parameter.customerId = params.customerId;
+        }
         let newParams = {};
         if (params.categoryId !== "") {
             if (params.productId != "") {
