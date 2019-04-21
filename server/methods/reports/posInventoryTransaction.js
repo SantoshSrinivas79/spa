@@ -48,7 +48,8 @@ Meteor.methods({
             },
             {
                 $sort: {
-                    averageInventoryDate: 1
+                    //averageInventoryDate: 1
+                    createdAt: 1
                 }
             },
             {
@@ -136,6 +137,7 @@ Meteor.methods({
                         inventoryTransactionHTML += `
                     <tr>
                             <td style="text-align: left !important;">${ind}</td>
+                            <td style="text-align: left !important;">${moment(ob.createdAt).format("DD/MM/YYYY hh:mm:ss")}</td>
                             <td style="text-align: left !important;">${ob.averageInventoryDateName}</td>
                             <td style="text-align: left !important;">${ob.cusVendName || ""}</td>
                             <td style="text-align: left !important;">${ob.productDoc && ob.productDoc.name || ""}</td>

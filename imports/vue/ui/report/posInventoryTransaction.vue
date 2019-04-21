@@ -88,7 +88,8 @@
                                     <el-col>
                                         <el-form-item :label="langConfig['product']">
                                             <el-select filterable v-model="params.productId" clearable
-                                                       :placeholder="langConfig['all']" remote :remote-method="productOpt"
+                                                       :placeholder="langConfig['all']" remote
+                                                       :remote-method="productOpt"
                                                        style="width: 95%">
                                                 <el-option
                                                         v-for="item in productOptions"
@@ -165,6 +166,7 @@
                 <thead style="margin-top: 5px">
                     <tr>
                         <th>{{langConfig['no']}}</th>
+                        <th>{{langConfig['entryDate']}}</th>
                         <th>{{langConfig['date']}}</th>
                         <th>{{langConfig['venCus']}}</th>
                         <th>{{langConfig['item']}}</th>
@@ -248,7 +250,7 @@
                         text: 'Last week',
                         onClick(picker) {
                             const end = moment().endOf("day").toDate();
-                            const start= moment().startOf("day").toDate();
+                            const start = moment().startOf("day").toDate();
                             start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
                             picker.$emit('pick', [start, end]);
                         }
@@ -277,7 +279,7 @@
                         text: 'Today',
                         onClick(picker) {
                             const end = moment().endOf("day").toDate();
-                            const start= moment().startOf("day").toDate();
+                            const start = moment().startOf("day").toDate();
                             picker.$emit('pick', [start, end]);
                         }
                     }]
@@ -336,7 +338,7 @@
                         this.locationOptions = result;
                     }
                 })
-            },productOpt(query) {
+            }, productOpt(query) {
                 if (!!query) {
                     setTimeout(() => {
                         Meteor.call('queryItemOptionReport', query, this.params.categoryId, (err, result) => {
