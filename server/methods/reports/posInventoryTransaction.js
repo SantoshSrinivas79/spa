@@ -7,7 +7,7 @@ import {Pos_AverageInventory} from '../../../imports/collection/posAverageInvent
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
@@ -147,7 +147,7 @@ Meteor.methods({
 
                             <td>${formatCurrency(ob.price, companyDoc.baseCurrency)}</td>
                             <td>${formatCurrency(ob.amount, companyDoc.baseCurrency)}</td>
-                             <td style="text-align: left !important;">${ob.qtyEnding || ""}</td>
+                             <td style="text-align: left !important;">${formatNumber(ob.qtyEnding || "")}</td>
                             <td>${formatCurrency(ob.averageCost, companyDoc.baseCurrency)}</td>
                             <td>${formatCurrency(ob.amountEnding, companyDoc.baseCurrency)}</td>
                     </tr>
