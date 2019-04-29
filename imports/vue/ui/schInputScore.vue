@@ -151,6 +151,14 @@
                     >
                     </el-table-column>
                     <el-table-column
+                            prop="studentDoc.personal.gender"
+                            :label="langConfig['gender']"
+                    >
+                        <template slot-scope="scope">
+                            {{scope.row.studentDoc.personal.gender==="Male" ? "ប" :"ស"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
                             :label="langConfig['score']"
                     >
                         <template slot-scope="scope">
