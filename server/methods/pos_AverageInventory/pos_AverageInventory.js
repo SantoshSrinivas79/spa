@@ -50,8 +50,8 @@ Meteor.methods({
                     qty: doc.qty,
                     price: doc.cost,
                     amount: doc.amount,
-                    amountEnding: math.round((onHandInventory && onHandInventory.amountEnding || 0) + doc.amount,6),
-                    qtyEnding: math.round((onHandInventory && onHandInventory.qtyEnding || 0) + doc.qty,6),
+                    amountEnding: (onHandInventory && onHandInventory.amountEnding || 0) + doc.amount,
+                    qtyEnding: (onHandInventory && onHandInventory.qtyEnding || 0) + doc.qty,
                     averageCost: (onHandInventory && onHandInventory.qtyEnding || 0) + doc.qty == 0 ? 0 : ((onHandInventory && onHandInventory.amountEnding || 0) + doc.amount) / ((onHandInventory && onHandInventory.qtyEnding || 0) + doc.qty),
                     transactionType: "Bill",
                     rolesArea: data.rolesArea
@@ -162,12 +162,12 @@ Meteor.methods({
                     qty: doc.qty,
                     price: doc.price,
                     amount: doc.amount,
-                    amountEnding: math.round((onHandInventory && onHandInventory.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty),6),
-                    qtyEnding: math.round((onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty,6),
+                    amountEnding: (onHandInventory && onHandInventory.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty),
+                    qtyEnding: (onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty,
                     averageCost: onHandInventory && onHandInventory.averageCost || 0,
                     transactionType: "Invoice",
                     rolesArea: data.rolesArea,
-                    profit: math.round(doc.amount - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty),2)
+                    profit: doc.amount - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty)
                 };
 
                 avgCost += (obj.averageCost * doc.qty);
@@ -299,8 +299,8 @@ Meteor.methods({
                     qty: doc.qty,
                     price: onHandInventory && onHandInventory.averageCost || 0,
                     amount: (onHandInventory && onHandInventory.averageCost || 0) * doc.qty,
-                    amountEnding: math.round((onHandInventory && onHandInventory.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty),6),
-                    qtyEnding: math.round((onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty,6),
+                    amountEnding: (onHandInventory && onHandInventory.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty),
+                    qtyEnding: (onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty,
                     averageCost: onHandInventory && onHandInventory.averageCost || 0,
                     transactionType: "Transfer From",
                     rolesArea: data.rolesArea,
@@ -375,8 +375,8 @@ Meteor.methods({
                 qty: data.qty,
                 price: onHandInventory && onHandInventory.averageCost || 0,
                 amount: (onHandInventory && onHandInventory.averageCost || 0) * data.qty,
-                amountEnding: math.round((onHandInventory && onHandInventory.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * data.qty),6),
-                qtyEnding: math.round((onHandInventory && onHandInventory.qtyEnding || 0) - data.qty,6),
+                amountEnding: (onHandInventory && onHandInventory.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * data.qty),
+                qtyEnding: (onHandInventory && onHandInventory.qtyEnding || 0) - data.qty,
                 averageCost: onHandInventory && onHandInventory.averageCost || 0,
                 transactionType: "Convert Inventory From",
                 rolesArea: data.rolesArea,
@@ -442,9 +442,9 @@ Meteor.methods({
                         qty: doc.qty,
                         price: onHandInventoryTo && onHandInventoryTo.averageCost || 0,
                         amount: (onHandInventoryTo && onHandInventoryTo.averageCost || 0) * doc.qty,
-                        amountEnding: math.round((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo && onHandInventoryTo.averageCost || 0) * doc.qty),6),
-                        qtyEnding: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6),
-                        averageCost: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6) === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo.averageCost || 0) * doc.qty)) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
+                        amountEnding: (onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo && onHandInventoryTo.averageCost || 0) * doc.qty),
+                        qtyEnding: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,
+                        averageCost: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo.averageCost || 0) * doc.qty)) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
                         transactionType: "Production",
                         rolesArea: data.rolesArea
                     };
@@ -514,9 +514,9 @@ Meteor.methods({
                     qty: onHandInventory.qty,
                     price: onHandInventory.price,
                     amount: onHandInventory.amount,
-                    amountEnding: math.round((onHandInventory && onHandInventory.amountEnding || 0) - doc.amount,6),
-                    qtyEnding: math.round((onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty,6),
-                    averageCost: math.round((onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty,6) === 0 ? 0 : ((onHandInventory && onHandInventory.amountEnding || 0) - doc.amount) / ((onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty),
+                    amountEnding: (onHandInventory && onHandInventory.amountEnding || 0) - doc.amount,
+                    qtyEnding: (onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty,
+                    averageCost: (onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty === 0 ? 0 : ((onHandInventory && onHandInventory.amountEnding || 0) - doc.amount) / ((onHandInventory && onHandInventory.qtyEnding || 0) - doc.qty),
                     transactionType: "Remove Bill",
                     rolesArea: data.rolesArea
                 };
@@ -593,9 +593,9 @@ Meteor.methods({
                     qty: doc.qty,
                     price: doc.cost,
                     amount: doc.amount,
-                    amountEnding: math.round((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - (doc.cost * doc.qty),6),
-                    qtyEnding: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6),
-                    averageCost: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6) === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - doc.amount) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
+                    amountEnding: (onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - (doc.cost * doc.qty),
+                    qtyEnding: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,
+                    averageCost: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - doc.amount) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
                     transactionType: "Remove Transfer To",
                     rolesArea: data.rolesArea
                 };
@@ -688,9 +688,9 @@ Meteor.methods({
                         qty: doc.qty,
                         price: onHandInventory && onHandInventory.averageCost || 0,
                         amount: (onHandInventory && onHandInventory.averageCost || 0) * doc.qty,
-                        amountEnding: math.round((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty),6),
-                        qtyEnding: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6),
-                        averageCost: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6) === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty)) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
+                        amountEnding: (onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty),
+                        qtyEnding: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,
+                        averageCost: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventory && onHandInventory.averageCost || 0) * doc.qty)) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
                         transactionType: "Remove Convert Inventory To",
                         rolesArea: data.rolesArea
                     };
@@ -759,9 +759,9 @@ Meteor.methods({
                         qty: doc.qty,
                         price: onHandInventoryTo.averageCost || 0,
                         amount: (onHandInventoryTo.averageCost || 0) * doc.qty,
-                        amountEnding: math.round((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo.averageCost || 0) * doc.qty),6),
-                        qtyEnding: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6),
-                        averageCost: math.round((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,6) === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo.averageCost || 0) * doc.qty)) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
+                        amountEnding: (onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo.averageCost || 0) * doc.qty),
+                        qtyEnding: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty,
+                        averageCost: (onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty === 0 ? 0 : ((onHandInventoryTo && onHandInventoryTo.amountEnding || 0) - ((onHandInventoryTo.averageCost || 0) * doc.qty)) / ((onHandInventoryTo && onHandInventoryTo.qtyEnding || 0) - doc.qty),
                         transactionType: "Remove Production",
                         rolesArea: data.rolesArea
                     };
