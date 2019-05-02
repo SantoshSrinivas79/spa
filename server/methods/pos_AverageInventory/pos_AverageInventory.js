@@ -196,7 +196,7 @@ Meteor.methods({
             //Integrated To Account===============================================================================================
             let companyDoc = WB_waterBillingSetup.findOne({});
             if (companyDoc.integratedPosAccount === true) {
-                if (data.paid + data.balanceUnPaid + data.discountValue > 0) {
+                if (data.paid + data.balanceUnPaid + data.discountValue > 0 || avgCost>0) {
                     let cashAcc = Acc_ChartAccount.findOne({mapToAccount: "005"});
                     let arrAcc = Acc_ChartAccount.findOne({mapToAccount: "006"});
                     let saleDiscountAcc = Acc_ChartAccount.findOne({mapToAccount: "011"});
