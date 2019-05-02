@@ -39,6 +39,9 @@ Meteor.methods({
                     rolesArea: data.rolesArea
                 }, {sort: {createdAt: -1}});
                 let vendorDoc = Pos_Vendor.findOne({_id: data.vendorId});
+
+                doc.qty=doc.qty || 0;
+                doc.cost=doc.cost || 0;
                 obj = {
                     cusVendId: data.vendorId,
                     cusVendName: vendorDoc && vendorDoc.name || "",
@@ -149,7 +152,8 @@ Meteor.methods({
                     productName += doc.itemName.split(":")[1] ? " និង " + doc.itemName.split(":")[1] : "";
                 }
                 proId++;
-
+                doc.qty=doc.qty || 0;
+                doc.price=doc.price || 0;
                 obj = {
                     cusVendId: data.customerId,
                     cusVendName: customerDoc && customerDoc.name || "",
@@ -502,7 +506,8 @@ Meteor.methods({
                     rolesArea: data.rolesArea
                 }, {sort: {createdAt: -1}});
                 let vendorDoc = Pos_Vendor.findOne({_id: onHandInventory.cusVendId});
-
+                doc.qty=doc.qty || 0;
+                doc.cost=doc.cost || 0;
                 obj = {
                     cusVendId: onHandInventory.cusVendId,
                     cusVendName: vendorDoc && vendorDoc.name || "",
@@ -540,6 +545,8 @@ Meteor.methods({
                     rolesArea: data.rolesArea
                 }, {sort: {createdAt: -1}});
                 let customerDoc = Pos_Customer.findOne({_id: onHandInventory.cusVendId});
+                doc.qty=doc.qty || 0;
+                doc.price=doc.price || 0;
                 obj = {
                     cusVendId: onHandInventory.cusVendId,
                     cusVendName: customerDoc && customerDoc.name || "",
