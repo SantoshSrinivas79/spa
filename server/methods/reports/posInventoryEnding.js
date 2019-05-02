@@ -7,7 +7,7 @@ import {Pos_AverageInventory} from '../../../imports/collection/posAverageInvent
 import {SpaceChar} from "../../../both/config.js/space"
 
 import numeral from 'numeral';
-import {exchangeCoefficient} from "../../../imports/api/methods/roundCurrency"
+import {exchangeCoefficient, formatNumber} from "../../../imports/api/methods/roundCurrency"
 import {getCurrencySymbolById} from "../../../imports/api/methods/roundCurrency"
 import {roundCurrency} from "../../../imports/api/methods/roundCurrency"
 import {formatCurrency} from "../../../imports/api/methods/roundCurrency"
@@ -148,13 +148,12 @@ Meteor.methods({
                         <th colspan="6" style="text-align: left !important;">${translate['location']} : ${obj.locationDoc.name}</th>
                     </tr>
                 `;
-
                     obj.data.forEach((ob) => {
                         inventoryEndingHTML += `
                     <tr>
                             <td style="text-align: left !important;">${ind}</td>
                             <td style="text-align: left !important;">${ob.productDoc && ob.productDoc.name || ""}</td>
-                            <td style="text-align: left !important;">${numeral(ob.qtyEnding).format("0,00.00")}</td>
+                            <td style="text-align: left !important;">${formatNumber(ob.qtyEnding)}</td>
                             <td style="text-align: left !important;">${ob.unitDoc && ob.unitDoc.name || ""}</td>
 
                             <td>${formatCurrency(ob.averageCost, companyDoc.baseCurrency)}</td>
