@@ -70,6 +70,11 @@ Pos_Table.schema = new SimpleSchema({
                 return Meteor.userId();
             }
         }
+    },
+    rolesArea: {
+        type: String,
+        label: "Role Area",
+        index: true
     }
 });
 

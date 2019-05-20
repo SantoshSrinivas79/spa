@@ -254,7 +254,8 @@
 
                         let posTableLocationDoc = {
                             name: vm.posTableLocationForm.name,
-                            description: vm.posTableLocationForm.description
+                            description: vm.posTableLocationForm.description,
+                            rolesArea: Session.get('area')
                         };
                         Meteor.call("insertPosTableLocation", posTableLocationDoc, (err, result) => {
                             if (!err) {
@@ -290,6 +291,7 @@
                             _id: vm.posTableLocationForm._id,
                             name: vm.posTableLocationForm.name,
                             description: vm.posTableLocationForm.description,
+                            rolesArea: Session.get('area')
                         };
 
                         Meteor.call("updatePosTableLocation", posTableLocationDoc, (err, result) => {

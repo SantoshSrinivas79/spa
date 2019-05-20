@@ -315,7 +315,8 @@
                                 code: vm.posTableForm.code,
                                 name: vm.posTableForm.name,
                                 tableLocationId: vm.posTableForm.tableLocationId,
-                                description: vm.posTableForm.description
+                                description: vm.posTableForm.description,
+                                rolesArea: Session.get('area')
                             };
                             Meteor.call("insertPosTable", posTableDoc, (err, result) => {
                                 if (!err) {
@@ -354,6 +355,7 @@
                             name: vm.posTableForm.name,
                             tableLocationId: vm.posTableForm.tableLocationId,
                             description: vm.posTableForm.description,
+                            rolesArea: Session.get('area')
                         };
 
                         Meteor.call("updatePosTable", posTableDoc, (err, result) => {

@@ -73,7 +73,7 @@
                 </div>
             </slot>
             <slot v-else>
-                <el-form :model="posSaleRestaurantForm" :rules="rules" :ref="refForm" label-width="120px"
+                <el-form :model="posSaleRestaurantForm"  :ref="refForm" label-width="120px"
                          :label-position="labelPosition"
                          class="posSaleRestaurantForm"
                          style="background-color: black !important;min-height:100% !important;">
@@ -226,7 +226,7 @@
                 :visible.sync="dialogPayMoney"
                 width="30%">
             <!--<hr style="margin-top: 0px !important;border-top: 2px solid teal">-->
-            <el-form :model="posSaleRestaurantForm" :rules="rules" ref="posSaleRestaurantFormPayment"
+            <el-form :model="posSaleRestaurantForm"  ref="posSaleRestaurantFormPayment"
                      label-width="120px"
                      class="posSaleRestaurantForm">
                 <div class="ui segments plan">

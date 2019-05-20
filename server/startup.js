@@ -23,6 +23,13 @@ Meteor.startup(function () {
             data: doc
         });
     });
+    JsonRoutes.add("get", "/api_fetchCategorys", function (req, res, next) {
+        res.charset = "utf-8";
+        let doc = Meteor.call("api_fetchCategory");
+        return JsonRoutes.sendResult(res, {
+            data: doc
+        });
+    });
 
     /*Accounts.config({
         loginExpirationInDays: (1 / 24 / 60) / 20
@@ -30,7 +37,9 @@ Meteor.startup(function () {
     //SyncedCron.start();
 
     // Enable cross origin requests for all endpoints
-    JsonRoutes.setResponseHeaders({
+
+    //Way 2
+   /* JsonRoutes.setResponseHeaders({
         "Cache-Control": "no-store",
         "Pragma": "no-cache",
         "Access-Control-Allow-Origin": "*",
@@ -41,5 +50,5 @@ Meteor.startup(function () {
     WebApp.rawConnectHandlers.use("/", function (req, res, next) {
         res.setHeader("Access-Control-Allow-Origin", "*");
         return next();
-    });
+    });*/
 });
